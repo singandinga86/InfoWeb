@@ -7,4 +7,6 @@ InfoWeb.Domain/obj
 InfoWeb.Presentation/bin
 InfoWeb.Presentation/obj
 InfoWeb.Presentation/wwwroot/lib
+.vs
+InfoWeb.DataAccess/appsettings.json
 
