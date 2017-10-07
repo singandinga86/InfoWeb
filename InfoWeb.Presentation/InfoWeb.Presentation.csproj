@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />
-    <Content Include="wwwroot\scripts\routes.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
@@ -16,9 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\scripts\controllers\" />
-    <Folder Include="wwwroot\scripts\services\" />
-    <Folder Include="wwwroot\scripts\views\" />
+    <Folder Include="wwwroot\application\controllers\" />
+    <Folder Include="wwwroot\application\services\" />
+    <Folder Include="wwwroot\application\views\" />
   </ItemGroup>
 
 </Project>
