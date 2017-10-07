@@ -4,4 +4,10 @@
         templateUrl: "",
         controller: 'ContactsCtrl'
     });
+
+    $stateProvider.state('login', {
+        templateUrl: "application/views/login/login.html",
+        controller: 'loginController',
+        url:"/login"
+    });
 }

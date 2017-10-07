@@ -21,6 +21,7 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\application\controllers\" />
     <Folder Include="wwwroot\application\views\" />
+    <Folder Include="wwwroot\application\services\" />
   </ItemGroup>
 
 </Project>
