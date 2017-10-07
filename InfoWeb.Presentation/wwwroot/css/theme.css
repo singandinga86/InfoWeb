@@ -150,6 +150,7 @@ a {
  * read docs for more info on proper use*/
 a {
     color: #fff !important;
+    text-decoration:none;
 }
 a span{
     cursor:pointer
