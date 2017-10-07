@@ -1,0 +1,10 @@
+InfoWeb.DataAccess/bin
+InfoWeb.DataAccess/obj
+InfoWeb.DistributedServices/bin
+InfoWeb.DistributedServices/obj
+InfoWeb.Domain/bin
+InfoWeb.Domain/obj
+InfoWeb.Presentation/bin
+InfoWeb.Presentation/obj
+InfoWeb.Presentation/wwwroot/lib
+
