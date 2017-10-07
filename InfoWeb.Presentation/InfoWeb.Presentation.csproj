@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Content Include="wwwroot\application\routes.js" />
+    <Content Include="wwwroot\application\services\AuthenticationService.js" />
+    <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />
   </ItemGroup>
@@ -15,9 +17,9 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\application\directives\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\application\controllers\" />
-    <Folder Include="wwwroot\application\services\" />
     <Folder Include="wwwroot\application\views\" />
   </ItemGroup>
 

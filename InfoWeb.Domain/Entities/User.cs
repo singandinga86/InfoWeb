@@ -12,6 +12,9 @@ namespace InfoWeb.Domain.Entities
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string Password { get; set; }
+
         [Range(1, int.MaxValue)]
         public int RoleId { get; set; }
 

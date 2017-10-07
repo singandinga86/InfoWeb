@@ -8,9 +8,10 @@ using InfoWeb.DataAccess;
 namespace InfoWeb.DataAccess.Migrations
 {
     [DbContext(typeof(InfoWebDatabaseContext))]
-    partial class HoursManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20171007180934_AddedPasswordFieldToUserModel")]
+    partial class AddedPasswordFieldToUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
