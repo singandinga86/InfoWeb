@@ -1,15 +1,20 @@
-﻿
-<div class="container">
+﻿<div class="container" id="panelLogin">
     <div class="row">
-        <form method="post" class="form-horizontal" role="form">
-            <div class="panel-body bg-light p30">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span>Login</span>
+                </div>
+            </div>
+          <hr />
+            <div class="panel-body" id="panelContent">
                 <div class="row">
-                    <div class="col-sm-7 pr30">
+                    <div class="col-md-12">
 
                         <div class="section">
                             <label class="field-label text-muted fs18 mb10">Username</label>
                             <label class="field prepend-icon">
-                                <input class="gui-input" placeholder="Enter username" />
+                                <input class="gui-input" placeholder="Enter username" ng-model="userName" />
                                 <label class="field-icon">
                                     <i class="fa fa-user"></i>
                                 </label>
@@ -20,23 +25,33 @@
                         <div class="section">
                             <label class="field-label text-muted fs18 mb10">Password</label>
                             <label class="field prepend-icon">
-                                <input class="gui-input" placeholder="Enter password" />
+                                <input class="gui-input" placeholder="Enter password" ng-model="password" type="password"/>
                                 <label class="field-icon">
                                     <i class="fa fa-lock"></i>
                                 </label>
                             </label>
                         </div>
                         <!-- end section -->
-
+                        <label class="text-danger" ng-show="invalidCredentials">Usuario o contraseña incorrectos</label>
                     </div>
                 </div>
             </div>
-            <!-- end .form-body section -->
-            <div class="panel-footer clearfix p10 ph15">
-                <button type="submit" class="button btn-primary mr10 pull-right">Sign In</button>
+            <div class="panel-footer" style="width:100%">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary pull-right" style="margin-right:40px" ng-click="onLoginClicked();">Sign In</button>
+                    </div>
+                </div>
             </div>
-            <!-- end .form-footer section -->
-        </form>
+        </div>
     </div>
 </div>
+   
 
+         
+            <!-- end .form-body section -->
+            <!--<div class="panel-footer">-->
+                
+            <!--</div>-->
+            <!-- end .form-footer section -->
+     

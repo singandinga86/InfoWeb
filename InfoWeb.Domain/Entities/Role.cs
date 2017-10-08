@@ -7,6 +7,10 @@ namespace InfoWeb.Domain.Entities
 {
     public class Role
     {
+        public Role()
+        {
+
+        }
         public int Id { get; set; }
 
         [Required]

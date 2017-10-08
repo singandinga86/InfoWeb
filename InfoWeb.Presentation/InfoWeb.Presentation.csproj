@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
@@ -14,14 +16,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\application\directives\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\application\controllers\" />
     <Folder Include="wwwroot\application\views\" />
     <Folder Include="wwwroot\application\services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfoWeb.Domain\InfoWeb.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,21 +2,24 @@
 
 module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
 
-    var currentUser = null;
+    var currentUser = "singandinga";
 
     return {
         login: function (userName, password) {
             var deferred = $q.defer();
 
-            $http.post({
+            console.log(userName + " " + password);
+
+            $http({
+                method: "POST",
                 url: UrlService.getServiceRootUrl() + "api/User/Login",
                 data: {
                     Name: userName,
                     Password: password
                 }
-            }).then(function (data) {
-                currentUser = data;
-                deferred.resolve(data);
+            }).then(function (response) {
+                currentUser = response.data;
+                deferred.resolve(response);
             },
             function (error) {
                 deferred.reject(error);

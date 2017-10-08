@@ -5,62 +5,69 @@
     <title></title>
   
     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-    <!-- <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.css">-->
-    <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">
+     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.css">-->
+    <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
     <!--Theme-->
-    <link rel="stylesheet" href="css/theme.css" />
+   
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
-    <script src="scripts/routes.js"></script>
 
+    <script src="application/routes.js"></script>
     <script type="text/javascript">
         var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router']);
         app.config(function ($stateProvider) {
             configureRoutes($stateProvider);
         });
 
-        app.controller("SampleController", ["$scope", function ($scope) {
-            $scope.variable = "la singandinga";
+        app.controller("MainController", ["$scope", '$rootScope', function ($scope, $rootScope) {
+            $scope.currentUser = null;
+
+            $rootScope.$on("userAuthenticated", function (event,user) {
+                $scope.currentUser = user;
+            });
+
             }
-        }]);
+        ]);
     </script>
+
+    <script src="application/services/UrlService.js"></script>
+    <script src="application/services/AuthenticationService.js"></script>
+    <script src="application/controllers/login-controller.js"></script>
+    
 
     <!--<script src="demo.js"></script>-->
 
 </head>
 <body ng-app="InfoWeb">
-    <div id="main">
-        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary">
+    <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
+    <div id="main" ng-controller="MainController">
+
+        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary" ng-show="currentUser != null">
             <div class="navbar-branding">
                 <h2>
                     <a href="#" style="margin-left:20px">InfoWeb</a>
                 </h2>
             </div>
             <ul class="nav navbar navbar-right" style="background-color:transparent">
-                <li class="dropdown menu-merge">
-                    <a href="#" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
+                <li class="dropdown ">
+                    <a href="#" class="dropdown-toggle fw600 p15">
                         <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
                         <span> UsuarioLogueado</span>
                         <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu list-group dropdown-persist" role="menu">                        
-                        <li class="dropdown-footer">
-                            <a asp-action="LogOff" asp-controller="Account">
-                                <span class="fa fa-power-off pr5"></span>Logout
-                            </a>
-                        </li>
-                    </ul>
+                    </a>                   
                 </li>
             </ul>
         </header>
-        <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar">
+        
+        <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar" ng-show="currentUser != null">
 
             <!-- Start: Sidebar Left Content -->
             <div class="sidebar-left-content nano-content" style="margin-right: -17px;">
@@ -77,9 +84,9 @@
                 </ul>
             </div>
         </aside>
-        <section id="content">
-            <div class="center-block" ng-view>
 
+        <section id="content">
+            <div ui-view>
             </div>
         </section>
     </div>

@@ -4,7 +4,7 @@ module.factory("UrlService", [function () {
     return {
         getServiceRootUrl: function ()
         {
-            return "http://localhost:50367/"
+            return "http://localhost:50360/"
         }
     }
 }]);
