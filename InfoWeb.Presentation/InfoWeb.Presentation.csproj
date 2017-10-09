@@ -7,9 +7,12 @@
 
   <ItemGroup>
     <Content Include="wwwroot\application\controllers\login-controller.js" />
+    <Content Include="wwwroot\application\controllers\project-controller.js" />
     <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
+    <Content Include="wwwroot\application\services\project-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
+    <Content Include="wwwroot\application\views\project\list.html" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />
   </ItemGroup>
@@ -22,8 +25,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\application\directives\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\application\views\" />
-    <Folder Include="wwwroot\application\services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfoWeb.Domain\InfoWeb.Domain.csproj" />

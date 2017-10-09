@@ -7,6 +7,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <!--<link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />-->
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
      <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.css">-->
@@ -19,20 +20,36 @@
     <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
+    <script src="lib/ng-table-bundle/ng-table.min.js"></script>
 
     <script src="application/routes.js"></script>
     <script type="text/javascript">
-        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router']);
+        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router','ngTable']);
         app.config(function ($stateProvider) {
             configureRoutes($stateProvider);
         });
 
-        app.controller("MainController", ["$scope", '$rootScope', function ($scope, $rootScope) {
-            $scope.currentUser = null;
+        app.run(function ($transitions, $state, AuthenticationService) {
+            $transitions.onStart({}, function (transition) {
+                var targetState = transition.to();
+                var user = AuthenticationService.getCurrentUser();
 
+                if (targetState.authenticate == true && (user == null || user == undefined))
+                {
+                    $state.go('login');
+                    return true;
+                }
+            });
+        });
+
+        app.controller("MainController", ["$scope", '$rootScope', '$state', function ($scope, $rootScope, $state) {
+            $scope.currentUser = null;
             $rootScope.$on("userAuthenticated", function (event,user) {
                 $scope.currentUser = user;
+                $state.go('projectList');
             });
+
+            
 
             }
         ]);
@@ -40,7 +57,9 @@
 
     <script src="application/services/UrlService.js"></script>
     <script src="application/services/AuthenticationService.js"></script>
+    <script src="application/services/project-service.js"></script>
     <script src="application/controllers/login-controller.js"></script>
+    <script src="application/controllers/project-controller.js"></script>
     
 
     <!--<script src="demo.js"></script>-->
@@ -70,15 +89,34 @@
         <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar" ng-show="currentUser != null">
 
             <!-- Start: Sidebar Left Content -->
-            <div class="sidebar-left-content nano-content" style="margin-right: -17px;">
+            <div class="sidebar-left-content nano-content" style="margin-right: -17px; margin-top: 30px;">
                 <!-- Start: Sidebar Header -->
                 <header class="sidebar-header"></header>
                 <ul class="nav sidebar-menu">
                     <!--<li class="sidebar-label">Menu</li>-->
                     <li>
-                        <a asp-controller="Home" asp-action="Index">
+                            <a asp-controller="Home" asp-action="Index">
                             <span class="glyphicon glyphicon-home"></span>
                             <span class="sidebar-title">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Notificaciones" asp-action="Index">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title">Notificaciones</span>
+                            <span class="caret"></span>              
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Proyectos" asp-action="Index">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title">Gestion de Proyectos</span>
+                        </a>
+                    </li>
+                     <li>
+                        <a asp-controller="Horas" asp-action="Index">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title">Gestion de Horas</span>
                         </a>
                     </li>
                 </ul>

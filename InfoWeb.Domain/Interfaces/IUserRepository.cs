@@ -12,7 +12,6 @@ namespace InfoWeb.Domain.Interfaces
         void Remove(User user);
         void Remove(int id);
         void Update(User user);
-        IQueryable<User> Users { get; }        
-
+        IQueryable<User> Users { get; }
     }
 }

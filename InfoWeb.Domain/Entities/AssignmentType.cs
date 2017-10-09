@@ -7,6 +7,9 @@ namespace InfoWeb.Domain.Entities
 {
     public class AssignmentType
     {
+        public static string AssignmentTypeHours { get => "Hours"; }
+        public static string AssignmentTypeProject { get => "Projects"; }
+
         public int Id { get; set; }
 
         [Required]

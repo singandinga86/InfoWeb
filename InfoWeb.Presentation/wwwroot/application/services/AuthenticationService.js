@@ -2,7 +2,7 @@
 
 module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
 
-    var currentUser = "singandinga";
+    var currentUser = null;
 
     return {
         login: function (userName, password) {
