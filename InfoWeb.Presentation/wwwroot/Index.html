@@ -29,10 +29,27 @@
 
         app.controller("MainController", ["$scope", '$rootScope', function ($scope, $rootScope) {
             $scope.currentUser = null;
-
+            $scope.open = false;
+            $scope.item = null;
+            $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
+          
             $rootScope.$on("userAuthenticated", function (event,user) {
                 $scope.currentUser = user;
             });
+
+            $scope.toggleMenu = function ($event, open,item) {
+
+                if (open && item == $scope.item)
+                    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
+                else
+                    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
+
+                $scope.open = !open;              
+                $scope.item = item;
+         
+
+                console.log($event);
+            };
 
             }
         ]);
@@ -75,13 +92,47 @@
                 <header class="sidebar-header"></header>
                 <ul class="nav sidebar-menu">
                     <!--<li class="sidebar-label">Menu</li>-->
-                    <li>
-                        <a asp-controller="Home" asp-action="Index">
+                    <li ng-click="toggleMenu($event,open,1);">
+                        <a class="nav-submenu" data-toggle="nav-submenu" >
                             <span class="glyphicon glyphicon-home"></span>
                             <span class="sidebar-title">Home</span>
+                            <b ng-class="toggleMenuClass" class=""></b>
                         </a>
+                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="item == 1">
+                            <li >
+                                <a ng-click="$event.stopPropagation();">
+                                    <span class="glyphicon glyphicon-user" ></span>Item 1
+                                </a>
+                            </li>
+                            <li >
+                                <a ng-click="$event.stopPropagation();">
+                                    <span class="glyphicon glyphicon-calendar"></span>Item 2
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+                    <li ng-click="toggleMenu($event,open,2);">
+                        <a class="nav-submenu" data-toggle="nav-submenu">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title">Probando</span>
+                            <b ng-class="toggleMenuClass" class=""></b>
+                        </a>
+                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="item == 2">
+                            <li>
+                                <a ng-click="$event.stopPropagation();">
+                                    <span class="glyphicon glyphicon-user"></span>Item 1
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="$event.stopPropagation();">
+                                    <span class="glyphicon glyphicon-calendar"></span>Item 2
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                   
                 </ul>
+                
             </div>
         </aside>
 

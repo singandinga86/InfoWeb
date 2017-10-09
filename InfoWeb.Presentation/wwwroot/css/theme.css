@@ -133,3 +133,46 @@ hr {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+
+/*.menuVisible {
+    width: 0px;
+    height: auto;
+    background-color: #ccc;
+    position: fixed;
+    left: 0;
+    border: none;
+    -webkit-transition: height 0.5s ease-in-out;
+    -moz-transition: height 0.5s ease-in-out;
+    -o-transition: height 0.5s ease-in-out;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+    .menuVisible.is-visible {
+        width: auto;
+        -webkit-transition: height 0.5s ease-in-out;
+        -moz-transition: height 0.5s ease-in-out;
+        -o-transition: height 0.5s ease-in-out;
+        transition: height 0.5s ease-in-out;
+    }*/
+
+.toggleOn {
+    transition: width 1s;
+    -webkit-transition: width 1s;
+    -moz-transition: width 1s;
+    -o-transition: width 1s;
+}
+
+.toggleOff {
+    transition: width 1s;
+    -webkit-transition: width 1s;
+    -moz-transition: width 1s;
+    -o-transition: width 1s;
+}
+.sidebar {
+    color: #fff;
+    height: 100vh;
+}
+ul li a{
+    cursor:pointer;
+}
