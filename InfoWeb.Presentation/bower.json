@@ -5,6 +5,7 @@
     "angular": "^v1.6.6",
     "angular-ui-router": "^1.0.7",
     "angular-bootstrap-material": "abm#^v0.1.4",
-    "angular-bootstrap": "^2.5.0"
+    "angular-bootstrap": "^2.5.0",
+    "ng-table-bundle": "^v4.0.0"
   }
 }

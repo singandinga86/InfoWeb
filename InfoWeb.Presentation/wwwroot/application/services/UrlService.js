@@ -4,7 +4,11 @@ module.factory("UrlService", [function () {
     return {
         getServiceRootUrl: function ()
         {
-            return "http://localhost:50360/"
+            return "http://localhost:50360/";
+        },
+        getApiUrlPrefix: function ()
+        {
+            return "http://localhost:50360/api/";
         }
     }
 }]);

@@ -23,5 +23,7 @@ namespace InfoWeb.Domain.Entities
         public int TypeId { get; set; }
 
         public virtual ICollection<ProjectsHoursTypes> ProjectsHoursTypes { get; set; }
+
+        public virtual ICollection<Assignment> Assignments { get; set; }
     }
 }

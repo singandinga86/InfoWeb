@@ -133,6 +133,16 @@ hr {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+table{
+    background-color:#fff !important;
+}
+#tableList {
+    margin-top: 50px;
+}
+#search {
+    margin-bottom: 10px !important;
+}
+}
 
 /*.menuVisible {
     width: 0px;

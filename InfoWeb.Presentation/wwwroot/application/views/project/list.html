@@ -1,0 +1,22 @@
+﻿
+<div class="container-fluid">
+    <div id="search" class="pull-right">
+        <input class="form-control" type="text" name="searchMovies" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+    </div>
+ <div id="tableList">
+     <table ng-table="model.tableParams" class="table table-hover table-responsive">
+         <tr ng-repeat="assignment in $data">
+             <td title="'Nombre'">
+                 {{assignment.project.name}}
+             </td>
+             <td title="'Fecha'">
+                 {{assignment.date}}
+             </td>
+             <td title="'Cliente'">
+                 {{assignment.project.client.name}}
+             </td>
+         </tr>
+     </table>
+ </div>
+ 
+</div>

@@ -9,4 +9,5 @@ InfoWeb.Presentation/obj
 InfoWeb.Presentation/wwwroot/lib
 .vs
 InfoWeb.DataAccess/appsettings.json
+InfoWeb.DistributedServices/appsettings.json
 

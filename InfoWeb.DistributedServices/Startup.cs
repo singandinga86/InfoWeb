@@ -47,7 +47,9 @@ namespace InfoWeb.DistributedServices
             {
                 options.UseSqlServer(connectionString);
             });
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
