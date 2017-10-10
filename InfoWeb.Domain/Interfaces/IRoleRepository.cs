@@ -4,11 +4,11 @@ using System.Text;
 using System.Linq;
 using InfoWeb.Domain.Entities;
 
+
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IUserRepository: IGenericRepository<User,int>
+    public interface IRoleRepository: IGenericRepository<Role, int>
     {
-        IQueryable<User> Users { get; }
-            
+        IQueryable<Role> Roles { get; }
     }
 }

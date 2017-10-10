@@ -6,9 +6,8 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IUserRepository: IGenericRepository<User,int>
+    public interface IClientRepository: IGenericRepository<Client, int>
     {
-        IQueryable<User> Users { get; }
-            
+        IQueryable<Client> Clients { get; }
     }
 }

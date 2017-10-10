@@ -6,7 +6,7 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IProjectRepository
+    public interface IProjectRepository: IGenericRepository<Project, int>
     {
         IQueryable<Project> Projects { get; }
     }

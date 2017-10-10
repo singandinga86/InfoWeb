@@ -6,9 +6,8 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IUserRepository: IGenericRepository<User,int>
+    public interface IProjectHourTypeRepository: IGenericRepository<ProjectsHoursTypes, int>
     {
-        IQueryable<User> Users { get; }
-            
+        IQueryable<ProjectsHoursTypes> ProjectHourTypes { get; }
     }
 }

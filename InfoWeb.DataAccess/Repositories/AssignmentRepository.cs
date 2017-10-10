@@ -4,28 +4,56 @@ using System.Collections.Generic;
 using System.Text;
 using InfoWeb.Domain.Entities;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace InfoWeb.DataAccess.Repositories
 {
-    public class AssignmentRepository : IAssignmentRepository
+    public class AssignmentRepository : GenericRepository<Assignment,int>, IAssignmentRepository
     {
-        private readonly InfoWebDatabaseContext context;
-        public AssignmentRepository(InfoWebDatabaseContext context)
+        public AssignmentRepository(InfoWebDatabaseContext context):base(context)
         {
             this.context = context;
         }
         public IQueryable<Assignment> Assignments => context.Assignments;
 
-        
-        public IEnumerable<Project> GetAssignedProjects(int userId, string assignmentType)
+        public IEnumerable<Assignment> GetRange(int skip, int take)
         {
-            /*var q = from a in context.Assignments join p in context.Projects on a.ProjectId equals p.Id into g
-                     join c in context.Clients on g.*/
-
-            return null;
-
-
-            
+            var query = context.Assignments.Include(a => a.Project)
+                                       .Include(e => e.Assignee)
+                                       .Include(e => e.Assignator)
+                                       .Include(e => e.HourType)
+                                       .Include(e => e.Project);
+            return base.GetRange(query, skip, take);
         }
+
+        public IEnumerable<Assignment> GetAll()
+        {
+            return entitySet.Include(e => e.Assignator)
+                   .Include(e => e.Assignee)
+                   .Include(e => e.Assignator)
+                   .Include(e => e.HourType)
+                   .Include(e => e.Project)
+                   .ToList();
+        }
+
+        public IEnumerable<Assignment> GetAssignments(int userId, string assignmentType, int skip = 0, int take = 0)
+        {
+            var query = context.Assignments.Include(a => a.Project)
+                                        .Where(a => a.AssigneeId == userId && a.AssignmentType.Name == AssignmentType.AssignmentTypeProject)
+                                        .Include(a => a.Project.Client)
+                                        .Include(a => a.Assignator);
+
+            return base.GetRange(query, skip, take);
+        }
+
+        public override Assignment GetById(int id)
+        {
+            return entitySet.Where(a => a.Id == id).Include(e => e.Assignee)
+                   .Include(e => e.Assignee)
+                   .Include(e => e.Assignator)
+                   .Include(e => e.HourType)
+                   .Include(e => e.Project)
+                   .FirstOrDefault();
+        }       
     }
 }
