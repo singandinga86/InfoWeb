@@ -44,12 +44,34 @@
 
         app.controller("MainController", ["$scope", '$rootScope', '$state', function ($scope, $rootScope, $state) {
             $scope.currentUser = null;
+            $scope.open = false;
+
             $rootScope.$on("userAuthenticated", function (event,user) {
                 $scope.currentUser = user;
                 $state.go('projectList');
             });
 
-            
+            $scope.listUser = function ($event) {
+                $event.stopPropagation();
+                $state.go('userList');               
+            };
+            $scope.listProject = function ($event) {
+                $event.stopPropagation();
+                $state.go('projectList');               
+            }
+
+            $scope.toggleMenu = function ($event, open) {
+
+                //if (open && item == $scope.item)
+                //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
+                //else
+                //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
+
+                $scope.open = !open;
+                //$scope.item = item;
+
+            };
+
 
             }
         ]);
@@ -58,8 +80,12 @@
     <script src="application/services/UrlService.js"></script>
     <script src="application/services/AuthenticationService.js"></script>
     <script src="application/services/project-service.js"></script>
+    <script src="application/services/user-service.js"></script>
+
     <script src="application/controllers/login-controller.js"></script>
     <script src="application/controllers/project-controller.js"></script>
+    <script src="application/controllers/user-controller.js"></script>
+
     
 
     <!--<script src="demo.js"></script>-->
@@ -93,31 +119,38 @@
                 <!-- Start: Sidebar Header -->
                 <header class="sidebar-header"></header>
                 <ul class="nav sidebar-menu">
-                    <!--<li class="sidebar-label">Menu</li>-->
-                    <li>
-                            <a asp-controller="Home" asp-action="Index">
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-controller="Notificaciones" asp-action="Index">
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Notificaciones</span>
-                            <span class="caret"></span>              
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-controller="Proyectos" asp-action="Index">
+                    <!--<li class="sidebar-label">Menu</li>-->   
+                    <li ng-click="toggleMenu($event,open);">
+                        <a>
                             <span class="glyphicon glyphicon-home"></span>
                             <span class="sidebar-title">Gestion de Proyectos</span>
+                            <span class="caret"></span>
                         </a>
+                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                            <li>
+                                <a ng-click="listProject($event);">
+                                    <span class="glyphicon glyphicon-user sidebar-title">Ver Proyectos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="listUser($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Ver Usuarios</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="asignar($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Asignar</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                      <li>
-                        <a asp-controller="Horas" asp-action="Index">
+                        <a >
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestion de Horas</span>
+                            <span class="sidebar-title" ng-click="ir();">Gestion de Horas</span>
+                            <span class="caret"></span>
                         </a>
+                         
                     </li>
                 </ul>
             </div>

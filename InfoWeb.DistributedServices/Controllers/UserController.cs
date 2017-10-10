@@ -35,5 +35,13 @@ namespace InfoWeb.DistributedServices.Controllers
             //return loggedUser;
 
         }
+
+        [HttpGet()]
+        public IEnumerable<User> List()
+        {
+            IEnumerable<User> result = userRepository.Users.Include(u => u.Role).ToList();
+
+            return result;
+        }
     }
 }

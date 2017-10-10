@@ -138,6 +138,7 @@ table{
 }
 #tableList {
     margin-top: 50px;
+    background-color: #fff !important;
 }
 #search {
     margin-bottom: 10px !important;

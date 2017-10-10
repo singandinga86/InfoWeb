@@ -1,19 +1,19 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectController", ['$scope', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams', function ($scope, ProjectService, AuthenticationService, $state ,$filter , NgTableParams) {
+app.controller("UserListController", ['$scope', 'UserListService', '$filter', 'NgTableParams', function ($scope, UserListService, $filter, NgTableParams) {
 
-
-    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
+    UserListService.getUser().then(function (response) {
 
         $scope.model = {};
         $scope.search = { term: '' };
         var orderedData = [];
+        console.log(response.data);
 
         //$scope.model.tableParams = new NgTableParams({}, { dataset: response.data });
         $scope.model.tableParams = new NgTableParams({
             page: 1,
             count: 6,
-         
+
             filter: $scope.search
         }, {
                 total: response.data.length,
@@ -26,18 +26,15 @@ app.controller("ProjectController", ['$scope', 'ProjectService', 'Authentication
                     }
 
                     //$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                   
+
                     params.total(orderedData.length);
-                    return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()); 
+                    return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                 }
             }
         );
-        $scope.verDetalles = function (id) {
-            $state.go('login');
-        };
 
-    },
-        function (error) {
+    }, function (error) {
 
-        });
+    });
+
 }]);

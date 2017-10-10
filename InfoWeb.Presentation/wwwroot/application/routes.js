@@ -22,6 +22,13 @@
         controller: 'ProjectController',
         url: "/projects",
         authenticate: true
+    }); 
+
+    $stateProvider.state('userList', {
+        templateUrl: "application/views/user/list.html",
+        controller: 'UserListController',
+        url: "/users",
+        authenticate: true
     });
 
 
