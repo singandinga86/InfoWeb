@@ -4,38 +4,33 @@ using System.Linq;
 using System.Text;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace InfoWeb.DataAccess.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository<User,int>, IUserRepository
     {
-        private readonly InfoWebDatabaseContext context;
 
-        public UserRepository(InfoWebDatabaseContext context)
+        public UserRepository(InfoWebDatabaseContext context):base(context)
         {
-            this.context = context;
+            
         }
 
         public IQueryable<User> Users { get => context.Users; }
 
-        public void Add(User user)
+        public IEnumerable<User> GetAll()
         {
-            
+            return entitySet.Include(u => u.Role).ToList();
         }
 
-        public void Remove(User user)
+        public override User GetById(int id)
         {
-            
+            return entitySet.Where(u => u.Id == id).Include(u => u.Role).FirstOrDefault();
         }
 
-        public void Remove(int id)
+        public IEnumerable<User> GetRange(int skip, int take)
         {
-            
-        }
-
-        public void Update(User user)
-        {
-            
+            return base.GetRange(entitySet.Include(u => u.Role), skip, take);
         }
     }
 }

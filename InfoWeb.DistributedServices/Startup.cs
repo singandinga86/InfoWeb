@@ -50,6 +50,14 @@ namespace InfoWeb.DistributedServices
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+            services.AddScoped<IAssignmentTypeRepository, AssignmentTypeRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IHourTypeRepository, HourTypeRepository>();
+            services.AddScoped<IProjectHourTypeRepository, ProjectHourTypeRepository>();
+            services.AddScoped<IProjectTypeRepository, ProjectTypeRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IInfoWebQueryModel, InfoWebQueryModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

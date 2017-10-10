@@ -6,12 +6,7 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository: IGenericRepository<User,int>
     {
-        void Add(User user);
-        void Remove(User user);
-        void Remove(int id);
-        void Update(User user);
-        IQueryable<User> Users { get; }
     }
 }
