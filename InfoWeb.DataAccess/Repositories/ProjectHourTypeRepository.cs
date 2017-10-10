@@ -15,6 +15,8 @@ namespace InfoWeb.DataAccess.Repositories
         {
         }
 
+        public IQueryable<ProjectsHoursTypes> ProjectHourTypes => this.entitySet;
+
         public IEnumerable<ProjectsHoursTypes> GetAll()
         {
             return entitySet.ToList();

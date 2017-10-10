@@ -13,6 +13,8 @@ namespace InfoWeb.DataAccess.Repositories
         {
         }
 
+        public IQueryable<ProjectType> ProjectTypes => this.entitySet;
+
         public IEnumerable<ProjectType> GetAll()
         {
             return entitySet.ToList();

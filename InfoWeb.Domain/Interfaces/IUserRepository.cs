@@ -8,5 +8,7 @@ namespace InfoWeb.Domain.Interfaces
 {
     public interface IUserRepository: IGenericRepository<User,int>
     {
+        IQueryable<User> Users { get; }
+            
     }
 }

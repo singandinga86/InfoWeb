@@ -8,5 +8,6 @@ namespace InfoWeb.Domain.Interfaces
 {
     public interface IProjectRepository: IGenericRepository<Project, int>
     {
+        IQueryable<Project> Projects { get; }
     }
 }

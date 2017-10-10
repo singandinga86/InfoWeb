@@ -8,6 +8,7 @@ namespace InfoWeb.Domain.Interfaces
 {
     public interface IAssignmentRepository: IGenericRepository<Assignment,int>
     {
+        IQueryable<Assignment> Assignments { get; }
         IEnumerable<Assignment> GetAssignments(int userId, string assignmentType, int skip = 0, int take = 0);
     }
 }

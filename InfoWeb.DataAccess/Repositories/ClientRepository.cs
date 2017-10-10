@@ -14,6 +14,8 @@ namespace InfoWeb.DataAccess.Repositories
         {
         }
 
+        public IQueryable<Client> Clients => this.entitySet;
+
         public IEnumerable<Client> GetAll()
         {
             return entitySet.ToList();
