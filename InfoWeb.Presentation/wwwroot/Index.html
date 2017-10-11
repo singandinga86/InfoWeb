@@ -59,7 +59,16 @@
                 $event.stopPropagation();
                 $state.go('projectList');               
             }
+            $scope.asignar = function ($event) {
+                $event.stopPropagation();
+                $state.go('assign');  
+            };
 
+            $scope.delegate = function ($event) {
+                $event.stopPropagation();
+                $state.go('delegateProject');
+            };
+                
             $scope.toggleMenu = function ($event, open) {
 
                 //if (open && item == $scope.item)
@@ -85,6 +94,10 @@
     <script src="application/controllers/login-controller.js"></script>
     <script src="application/controllers/project-controller.js"></script>
     <script src="application/controllers/user-controller.js"></script>
+    <script src="application/controllers/assign-controller.js"></script>
+    <script src="application/controllers/delegate-controller.js"></script>
+
+
 
     
 
@@ -140,6 +153,11 @@
                             <li>
                                 <a ng-click="asignar($event);">
                                     <span class="glyphicon glyphicon-calendar sidebar-title">Asignar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="delegate($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Delegar</span>
                                 </a>
                             </li>
                         </ul>

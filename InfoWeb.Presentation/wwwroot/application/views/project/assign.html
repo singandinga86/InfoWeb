@@ -1,0 +1,26 @@
+﻿
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>Asignar Proyectos</span>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <select class="form-control" ng-model="selectedProject" ng-options=" project.project.name for project in projects">
+                        <option value="">Select Option</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control" ng-model="selectedUser" ng-options=" user.name for user in users">
+                        <option value="">Select Option</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" ng-click="assignProject();">Asignar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>

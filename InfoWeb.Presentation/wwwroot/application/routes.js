@@ -31,5 +31,19 @@
         authenticate: true
     });
 
+    $stateProvider.state('assign', {
+        templateUrl: "application/views/project/assign.html",
+        controller: 'ProjectAssignController',
+        url: "/assign",
+        authenticate: true
+    });
+
+
+    $stateProvider.state('delegateProject', {
+        templateUrl: "application/views/project/delegate.html",
+        controller: 'ProjectDelegateController',
+        url: "/delegateProject",
+        authenticate: true
+    });
 
 }

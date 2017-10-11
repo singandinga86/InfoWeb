@@ -16,10 +16,7 @@ namespace InfoWeb.Domain.Entities
         public DateTime Date { get; set; }
 
         public User Assignator { get; set; }
-
-        [Range(1, int.MaxValue)]
-        public int AssigmatorId { get; set; }
-
+               
         public Project Project { get; set; }
 
         [Range(1, int.MaxValue)]

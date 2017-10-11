@@ -36,10 +36,19 @@ namespace InfoWeb.DistributedServices.Controllers
 
         }
 
-        [HttpGet()]
+        [HttpGet("list")]
         public IEnumerable<User> List()
         {
             IEnumerable<User> result = userRepository.Users.Include(u => u.Role).ToList();
+
+            return result;
+        }
+
+
+        [HttpGet("listAdmin")]
+        public IEnumerable<User> ListAdmin()
+        {
+            IEnumerable<User> result = userRepository.Users.Include(u => u.Role).Where(u => u.Role.Name == "TAM" || u.Role.Name == "PM").ToList();
 
             return result;
         }
