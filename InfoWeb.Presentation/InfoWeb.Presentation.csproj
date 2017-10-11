@@ -6,15 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\application\controllers\create-role-controller.js" />
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
+    <Content Include="wwwroot\application\controllers\role-controller.js" />
+    <Content Include="wwwroot\application\controllers\role-list-controller.js" />
+    <Content Include="wwwroot\application\controllers\update-role-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
     <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
     <Content Include="wwwroot\application\services\project-service.js" />
+    <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
     <Content Include="wwwroot\application\views\project\list.html" />
+    <Content Include="wwwroot\application\views\role\list.html" />
+    <Content Include="wwwroot\application\views\role\remove-modal.html" />
+    <Content Include="wwwroot\application\views\role\role-input.html" />
     <Content Include="wwwroot\application\views\user\list.html" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />

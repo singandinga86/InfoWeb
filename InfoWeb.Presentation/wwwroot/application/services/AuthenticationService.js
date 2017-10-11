@@ -8,8 +8,6 @@ module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function (
         login: function (userName, password) {
             var deferred = $q.defer();
 
-            console.log(userName + " " + password);
-
             $http({
                 method: "POST",
                 url: UrlService.getServiceRootUrl() + "api/User/Login",

@@ -187,3 +187,7 @@ table{
 ul li a{
     cursor:pointer;
 }
+
+td span.glyphicon{
+    cursor:pointer;
+}

@@ -1,0 +1,21 @@
+﻿<div class="container-fluid">
+    <div class="pull-left">
+        <button class="btn btn-success" ng-click="onCreateClicked()"><span class="glyphicon glyphicon-plus">Nuevo</span></button>
+    </div>
+    <div id="search" class="pull-right">
+        <input class="form-control" type="text" name="searchUsers" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+    </div>
+    <div id="tableList">
+        <table ng-table="model.tableParams" class="table table-hover table-responsive">
+            <tr ng-repeat="role in $data">
+                <td title="'Nombre'">
+                    {{role.name}}
+                </td>
+                <td title="'Acciones'">
+                    <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(role.id)"></span>
+                    <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(role.id)"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

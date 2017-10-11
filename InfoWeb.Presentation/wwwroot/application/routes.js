@@ -31,5 +31,24 @@
         authenticate: true
     });
 
+    $stateProvider.state('roleList', {
+        templateUrl: "application/views/role/list.html",
+        controller: 'RoleListController',
+        url: "/roles",
+        authenticate: true
+    });
+    $stateProvider.state('createRole', {
+        templateUrl: "application/views/role/role-input.html",
+        controller: 'CreateRoleController',
+        url: "/roles/create",
+        authenticate: true
+    });
+    $stateProvider.state('updateRole', {
+        templateUrl: "application/views/role/role-input.html",
+        controller: 'UpdateRoleController',
+        url: "/roles/update/:roleId",
+        authenticate: true
+    });
+
 
 }

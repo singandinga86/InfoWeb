@@ -33,7 +33,8 @@ app.controller("ProjectController", ['$scope', 'ProjectService', 'Authentication
             }
         );
         $scope.verDetalles = function (id) {
-            $state.go('login');
+
+            
         };
 
     },
