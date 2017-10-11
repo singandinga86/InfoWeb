@@ -1,0 +1,44 @@
+﻿<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>Delegar Proyectos</span>
+        </div>
+        <div class="panel-body">
+            <div class="section row">
+                <div class="col-md-4">
+                    <label>Seleccione el proyecto</label>
+                    <select class="form-control" ng-model="selectedProject" ng-options=" project.project.name for project in projects">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Seleccione el usuario</label>
+                    <select class="form-control" ng-model="selectedUser" ng-options=" user.name for user in users">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Seleccione la asignación</label>
+                    <select class="form-control" ng-model="selectedTypeAssignment" ng-change="changeValue();" ng-options="assigmentType.name for assigmentType in assigmentTypes">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+            </div>
+            <div class="section row" style="margin-top:25px" ng-show="showHoras">
+                <div class="col-md-4">
+                    <label>Seleccione el tipo de horas</label>
+                    <select class="form-control" ng-model="selectedTypeHours" ng-options="HoursType.name for HoursType in HoursTypes">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Cantidad de horas</label>
+                   <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="pull-right" style="margin-top:25px">
+                <button class="btn btn-primary" ng-click="send();">Asignar</button>
+            </div>
+        </div>
+    </div>
+</div>

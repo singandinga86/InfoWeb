@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <Content Include="wwwroot\application\controllers\create-role-controller.js" />
+    <Content Include="wwwroot\application\controllers\assign-controller.js" />
+    <Content Include="wwwroot\application\controllers\delegate-controller.js" />
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
@@ -21,6 +23,8 @@
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
+    <Content Include="wwwroot\application\views\project\assign.html" />
+    <Content Include="wwwroot\application\views\project\delegate.html" />
     <Content Include="wwwroot\application\views\project\list.html" />
     <Content Include="wwwroot\application\views\role\list.html" />
     <Content Include="wwwroot\application\views\role\remove-modal.html" />

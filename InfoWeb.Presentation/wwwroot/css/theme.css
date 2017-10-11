@@ -191,3 +191,6 @@ ul li a{
 td span.glyphicon{
     cursor:pointer;
 }
+td span{
+    cursor:pointer
+}

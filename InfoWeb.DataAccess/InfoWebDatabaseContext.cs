@@ -33,7 +33,7 @@ namespace InfoWeb.DataAccess
             modelBuilder.Entity<User>().HasIndex(user => user.Name).HasName("IX_USER_NAME").IsUnique();
             modelBuilder.Entity<Role>().HasIndex(role => role.Name).HasName("IX_ROLE_NAME").IsUnique();
             modelBuilder.Entity<ProjectType>().HasIndex(type => type.Name).HasName("IX_PROJECTTYPE_NAME").IsUnique();
-            modelBuilder.Entity<HourType>().HasIndex(type => type.Name).HasName("IX_HOUrTYPE_NAME").IsUnique();
+            modelBuilder.Entity<HourType>().HasIndex(type => type.Name).HasName("IX_HOURTYPE_NAME").IsUnique();
             modelBuilder.Entity<AssignmentType>().HasIndex(type => type.Name).HasName("IX_ASSIGNMENTTYPE_NAME").IsUnique();
         }
     }

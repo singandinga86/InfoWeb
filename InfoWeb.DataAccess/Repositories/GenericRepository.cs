@@ -41,7 +41,8 @@ namespace InfoWeb.DataAccess.Repositories
             {
                 throw new ArgumentOutOfRangeException(nameof(skip));
             }
-            var query = entitySet.Skip(skip);
+            
+            var query = sourceQuery.Skip(skip);
             if(take < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(take));

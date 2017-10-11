@@ -8,9 +8,10 @@ using InfoWeb.DataAccess;
 namespace InfoWeb.DataAccess.Migrations
 {
     [DbContext(typeof(InfoWebDatabaseContext))]
-    partial class HoursManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20171010162340_update-hourType")]
+    partial class updatehourType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -20,6 +21,8 @@ namespace InfoWeb.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AssigmatorId");
 
                     b.Property<int?>("AssignatorId");
 
@@ -92,7 +95,7 @@ namespace InfoWeb.DataAccess.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique()
-                        .HasName("IX_HOURTYPE_NAME");
+                        .HasName("IX_HOUrTYPE_NAME");
 
                     b.ToTable("HourTypes");
                 });
