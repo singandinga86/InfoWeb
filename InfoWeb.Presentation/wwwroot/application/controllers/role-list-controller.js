@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("RoleListController", ['$scope', '$state', '$uibModal','RoleService', 'NgTableParams', function ($scope, $state, $uibModal, RoleService, NgTableParams) {
+app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal', 'RoleService', 'NgTableParams', function ($scope, $state, $filter, $uibModal, RoleService, NgTableParams) {
 
     $scope.search = { term: '' };
     $scope.model = {};
@@ -51,13 +51,16 @@ app.controller("RoleListController", ['$scope', '$state', '$uibModal','RoleServi
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'application/views/role/remove-modal.html',
-            controller: "RemoveRoleDialogController"
+            controller: "RemoveRoleDialogController",
+            resolve: {
+                targetRole: function () { return role; }
+            }
         });
 
         dialog.result.then(function (result) {
             if (result == true)
             {
-                RoleService.removeRole(role).then(function (response) {
+                RoleService.removeRole(role.id).then(function (response) {
                     fillTable();
                 }, function (error) { });
 

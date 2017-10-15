@@ -10,5 +10,7 @@ namespace InfoWeb.Domain.Interfaces
     {
         IQueryable<Assignment> Assignments { get; }
         IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0);
+
+        Assignment GetAssigmentExist(int idUser, int idHourType, int idProject);
     }
 }
