@@ -9,6 +9,7 @@ namespace InfoWeb.Domain.Interfaces
     public interface IUserRepository: IGenericRepository<User,int>
     {
         IQueryable<User> Users { get; }
-            
+        IEnumerable<User> getUsersByRoleName(string roleName, int skip = 0, int take = 0);
+        IEnumerable<User> getUsersByRoleName(IEnumerable<string> roles, int skip = 0, int take = 0);
     }
 }

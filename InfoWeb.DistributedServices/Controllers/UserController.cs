@@ -52,5 +52,11 @@ namespace InfoWeb.DistributedServices.Controllers
 
             return result;
         }
+
+        [HttpGet("listTechnicians")]
+        public IEnumerable<User> GetTechnicians()
+        {
+            return userRepository.getUsersByRoleName("Technician");
+        }
     }
 }

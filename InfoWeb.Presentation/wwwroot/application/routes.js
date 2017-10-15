@@ -72,6 +72,13 @@
         authenticate: true
     }); 
 
+    $stateProvider.state('assignHoursToDeveloper', {
+        templateUrl: "application/views/assignments/single-developer.html",
+        controller: 'DeveloperAssignmentController',
+        url: "/assign/developer",
+        authenticate: true
+    }); 
+
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",
         controller: 'SampleController',

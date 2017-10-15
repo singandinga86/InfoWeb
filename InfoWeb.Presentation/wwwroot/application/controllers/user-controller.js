@@ -7,7 +7,6 @@ app.controller("UserListController", ['$scope', 'UserListService', '$filter', 'N
         $scope.model = {};
         $scope.search = { term: '' };
         var orderedData = [];
-        console.log(response.data);
 
         //$scope.model.tableParams = new NgTableParams({}, { dataset: response.data });
         $scope.model.tableParams = new NgTableParams({

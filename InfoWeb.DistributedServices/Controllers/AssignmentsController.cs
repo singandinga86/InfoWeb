@@ -7,6 +7,7 @@ using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using InfoWeb.DistributedServices.InputModels;
+using System.Net;
 
 namespace InfoWeb.DistributedServices.Controllers
 {
@@ -16,17 +17,24 @@ namespace InfoWeb.DistributedServices.Controllers
         private readonly IAssignmentRepository assigmentRepository;
         private readonly IAssignmentTypeRepository assigmentTypeRepository;
         private readonly IUserRepository userRepository;
+        private readonly IHourTypeRepository hourTypeRepository;
+        private readonly IProjectRepository projectRepository;
+
         public AssignmentsController(IAssignmentRepository assigmentRepository,
                                      IAssignmentTypeRepository assigmentTypeRepository,
-                                     IUserRepository userRepository)
+                                     IUserRepository userRepository,
+                                     IHourTypeRepository hourTypeRepository,
+                                     IProjectRepository projectRepository)
         {
             this.assigmentRepository = assigmentRepository;
             this.assigmentTypeRepository = assigmentTypeRepository;
             this.userRepository = userRepository;
+            this.hourTypeRepository = hourTypeRepository;
+            this.projectRepository = projectRepository;
         }
 
         [HttpGet()]
-        public IEnumerable<Assignment> GetAssignments(int userId)
+        public IEnumerable<Assignment> GetAssignments([FromRoute]int userId)
         {
             IEnumerable<Assignment> result = assigmentRepository.GetAssignmentsAssignedTo(userId);
             return result;
@@ -77,6 +85,60 @@ namespace InfoWeb.DistributedServices.Controllers
 
                 assigmentRepository.Update(assigmentUpdate);
             }  
+        }
+
+        [HttpPost("technician")]
+        public void CreateTechnicianAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
+        {
+            var assignator = userRepository.GetById(userId);
+            User assignee = (assignment.User != null) ? userRepository.GetById(assignment.User.Id): null;
+            Project project = (assignment.Project != null) ? projectRepository.GetById(assignment.Project.Id) : null;
+            HourType hourType = (assignment.HourType != null) ? hourTypeRepository.GetById(assignment.HourType.Id): null;
+            AssignmentType assignmentType = assigmentTypeRepository.GetByName("Asignar hora");
+            int hours = assignment.Hours;
+
+            if (assignee != null && assignee.Role.Name == "Technician"
+                && assignator != null && project != null && hourType != null
+                && assignmentType != null && hours > 0)
+            {
+                Assignment targetAssignment = assigmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+
+                if(targetAssignment == null)
+                {
+                    targetAssignment = new Assignment
+                    {
+                        Assignee = assignee,
+                        Assignator = assignator,
+                        AssignmentType = assignmentType,
+                        HourType = hourType,
+                        Date = DateTime.Now,
+                        Project = project
+                    };
+                    assigmentRepository.Add(targetAssignment);
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                }
+                else
+                {
+                    if(targetAssignment.Assignator.Id == assignator.Id)
+                    {
+                        targetAssignment.Hours += hours;
+                        assigmentRepository.Update(targetAssignment);
+                        Response.StatusCode = (int)HttpStatusCode.Created;
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                    
+                }
+
+                
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+
         }
 
         //[HttpGet("Hours")]

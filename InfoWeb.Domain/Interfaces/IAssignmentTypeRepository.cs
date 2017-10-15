@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IAssignmentTypeRepository: IGenericRepository<AssignmentType, int>
+    public interface IAssignmentTypeRepository: IGenericRepository<AssignmentType, int>, INamedObjectRepository<AssignmentType>
     {
         IQueryable<AssignmentType> AssignmentTypes { get; }
     }

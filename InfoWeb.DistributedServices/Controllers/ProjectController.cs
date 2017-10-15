@@ -26,6 +26,17 @@ namespace InfoWeb.DistributedServices.Controllers
             this.queryModel = queryModel;
         }
 
+        [HttpGet]
+        public IEnumerable<Project> GetProjectsForUser([FromRoute]int userId)
+        {
+            var projects = projectRepository.GetProjectsAssignedTo(userId);
+            foreach(var p in projects)
+            {
+                p.Client.Projects = null;
+            }
+            return projects;
+        }
+
         [HttpGet("AssignedBy")]
         public IEnumerable<Project> GetProjectsAssignedBy(int userId)
         {

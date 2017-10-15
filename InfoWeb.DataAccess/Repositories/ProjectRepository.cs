@@ -55,11 +55,14 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IEnumerable<Project> GetProjectsAssignedTo(int userId, int skip = 0, int take = 0)
         {
-            var query = (from p in entitySet
-                        join a in this.context.Assignments
-                        on p.Id equals a.Project.Id
+            var query = (from a in this.context.Assignments
+                         join p in entitySet
+                         on a.Project.Id equals p.Id
                          where a.Assignee.Id == userId
-                         select p).Include(p => p.Client).AsNoTracking().Distinct();
+                         select p)
+                         .Include(p => p.Client)
+                         .GroupBy(p => p)
+                         .Select(p => p.First());
             return base.GetRange(query, skip, take);
 
         }

@@ -1,0 +1,38 @@
+﻿
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>Asignar horas a un desarrollador</span>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects">
+                        <option value="">Seleccione proycto</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" ng-model="assignment.user" ng-options=" user.name for user in technicians">
+                        <option value="">Seleccione usuario</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes">
+                        <option value="">Seleccione Hora</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" ng-model="assignment.hours" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary" ng-click="create();">Asignar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

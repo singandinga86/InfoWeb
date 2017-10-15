@@ -32,5 +32,17 @@ namespace InfoWeb.DataAccess.Repositories
         {
             return base.GetRange(entitySet.Include(u => u.Role), skip, take);
         }
+
+        public IEnumerable<User> getUsersByRoleName(string roleName, int skip = 0, int take = 0)
+        {
+            var query = this.entitySet.Where(u => u.Role.Name == roleName);
+            return base.GetRange(query, skip, take);
+        }
+
+        public IEnumerable<User> getUsersByRoleName(IEnumerable<string> roles, int skip = 0, int take = 0)
+        {
+            var query = this.entitySet.Where(u => roles.Any(r => r == u.Role.Name)).Include(u => u.Role);
+            return base.GetRange(query, skip, take);
+        }
     }
 }

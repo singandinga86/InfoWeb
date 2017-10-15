@@ -9,13 +9,13 @@
     <Content Include="wwwroot\application\controllers\create-role-controller.js" />
     <Content Include="wwwroot\application\controllers\assign-controller.js" />
     <Content Include="wwwroot\application\controllers\delegate-controller.js" />
+    <Content Include="wwwroot\application\controllers\developer-assignment-controller.js" />
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
     <Content Include="wwwroot\application\controllers\project-details-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\role-list-controller.js" />
-    <Content Include="wwwroot\application\controllers\tree-controller.js" />
     <Content Include="wwwroot\application\controllers\update-role-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
     <Content Include="wwwroot\application\directives\tree-detail-view\details-directive.js" />
@@ -30,6 +30,7 @@
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
+    <Content Include="wwwroot\application\views\assignments\single-developer.html" />
     <Content Include="wwwroot\application\views\project\assign.html" />
     <Content Include="wwwroot\application\views\project\delegate.html" />
     <Content Include="wwwroot\application\views\project\list.html" />

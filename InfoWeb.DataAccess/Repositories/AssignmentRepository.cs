@@ -75,7 +75,9 @@ namespace InfoWeb.DataAccess.Repositories
         
         public Assignment GetAssigmentExist(int idUser, int idHourType, int idProject)
         {
-            var query = context.Assignments.Where(a => a.AssigneeId == idUser && a.HourTypeId == idHourType && a.ProjectId == idProject).FirstOrDefault();
+            var query = context.Assignments.Where(a => a.AssigneeId == idUser && a.HourTypeId == idHourType && a.ProjectId == idProject)
+                .Include(a => a.Assignator)
+                .FirstOrDefault();
 
             return query;
         }

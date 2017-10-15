@@ -4,9 +4,9 @@ angular
     .module("InfoWeb")
     .controller("ProjectDetailsController", ProjectDetailsController);
 
-ProjectDetailsController.$inject = ["$scope", "$stateParams","ProjectServiceTmp","AuthenticationService"];
+ProjectDetailsController.$inject = ["$scope", "$stateParams","ProjectService","AuthenticationService"];
 
-function ProjectDetailsController($scope, $stateParams, ProjectServiceTmp, AuthenticationService) {
+function ProjectDetailsController($scope, $stateParams, ProjectService, AuthenticationService) {
     var vm = this;
     vm.expandAll = expandAll;
 
@@ -14,7 +14,7 @@ function ProjectDetailsController($scope, $stateParams, ProjectServiceTmp, Authe
     var projectId = $stateParams.projectId;
 
 
-    ProjectServiceTmp.getProjectDetails(userId, projectId).then(function (response) {
+    ProjectService.getProjectDetails(userId, projectId).then(function (response) {
         var data = response.data;
 
 

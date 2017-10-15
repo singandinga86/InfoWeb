@@ -1,15 +1,17 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'AuthenticationService', 'UserListService', function ($scope, ProjectService, AuthenticationService, UserListService) {
+app.controller("ProjectDelegateController",
+    ['$scope', 'ProjectService', 'AssignmentService', 'AuthenticationService', 'UserListService',
+        function ($scope, ProjectService, AssignmentService, AuthenticationService, UserListService) {
 
     $scope.showHoras = false;
     $scope.assignment = {};
     $scope.assignment.hours = 35;
     $scope.project = {};
 
-    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
+    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
 
-        $scope.projects = response.data;       
+        $scope.projects = response.data;
     },
         function (error) {
 
@@ -23,7 +25,7 @@ app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'Authen
 
         });
 
-    ProjectService.getAssigmentType().then(function (response) {
+    AssignmentService.getAssigmentType().then(function (response) {
 
         $scope.assigmentTypes = response.data;
     },
@@ -31,7 +33,7 @@ app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'Authen
 
         });
 
-    ProjectService.getHoursType().then(function (response) {
+    AssignmentService.getHoursType().then(function (response) {
 
         $scope.HoursTypes = response.data;       
     },
@@ -50,7 +52,7 @@ app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'Authen
     $scope.send = function () {
         console.log($scope.assignment.project.project);
         $scope.assignment.project =  $scope.assignment.project.project;
-        ProjectService.createAssigment($scope.assignment).then(function (response) {           
+        AssignmentService.createAssigment($scope.assignment).then(function (response) {           
             $scope.assignment = {};
             $scope.showHoras = false;
         }, function (error) {           

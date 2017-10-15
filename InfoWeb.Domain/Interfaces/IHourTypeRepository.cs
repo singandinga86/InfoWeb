@@ -6,7 +6,7 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IHourTypeRepository: IGenericRepository<HourType,int>
+    public interface IHourTypeRepository: IGenericRepository<HourType,int>, INamedObjectRepository<HourType>
     {
         IQueryable<HourType> HourTypes { get; }
     }

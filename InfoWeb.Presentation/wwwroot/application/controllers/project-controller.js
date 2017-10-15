@@ -1,9 +1,11 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectController", ['$scope', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams', function ($scope, ProjectService, AuthenticationService, $state ,$filter , NgTableParams) {
+app.controller("ProjectController",
+    ['$scope', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams',
+        function ($scope, ProjectService, AuthenticationService, $state, $filter, NgTableParams) {
 
 
-    ProjectService.getAssignmentsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
+    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
 
         $scope.model = {};
         $scope.search = { term: '' };

@@ -25,6 +25,11 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.Where(a => a.Id == id).FirstOrDefault();
         }
 
+        public AssignmentType GetByName(string name)
+        {
+            return entitySet.Where(at => at.Name == name).FirstOrDefault();
+        }
+
         public IEnumerable<AssignmentType> GetRange(int skip = 0, int take = 0)
         {
             return base.GetRange(entitySet, skip, take);
