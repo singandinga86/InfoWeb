@@ -12,7 +12,7 @@
    
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">-->
+     <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
     <!--<link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.css">
     <link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.min.css">
@@ -141,6 +141,9 @@
     <script src="application/directives/tree-detail-view/tree-directive.js"></script>
 
 
+
+
+
     
 
     <!--<script src="demo.js"></script>-->
@@ -148,9 +151,9 @@
 </head>
 <body ng-app="InfoWeb">
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
-    <div id="main" ng-controller="MainController">
+    <div id="main" ng-controller="MainController" >
 
-        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary" ng-show="currentUser != null">
+        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
             <div class="navbar-branding">
                 <h2>
                     <a href="#" style="margin-left:20px">InfoWeb</a>

@@ -1,24 +1,47 @@
 ﻿<div class="container-fluid">
-    <div class="pull-left">
-        <button class="btn btn-success" ng-click="onCreateClicked()"><span class="glyphicon glyphicon-plus">Nuevo</span></button>
-    </div>
-    <div id="search" class="pull-right">
-        <input class="form-control" type="text" name="searchUsers" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
-    </div>
-    <div id="tableList">
-        <table ng-table="model.tableParams" class="table table-hover table-responsive" id="rolTable">
-            <tr ng-repeat="role in $data">
-                <td title="'Nombre'">
-                    {{role.name}}
-                </td>
-                <td title="'Opciones'" >
-                    <span class="pull-right" style="margin-right:25px">
-                        <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(role.id)">
-                        </span>
-                        <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(role)"></span>
-                    </span>                   
-                </td>
-            </tr>
-        </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>Listado de  Roles</span>
+        </div>
+        <div class="panel-body">
+            <div id="search" class="pull-right">
+                <div class="inner-addon left-addon">
+                    <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+                    <i class="glyphicon glyphicon-search"></i>
+                </div>
+            </div>
+            <div class="pull-left">
+                <button class="btn btn-success btn-raised" ng-click="onCreateClicked()"><span class="glyphicon glyphicon-plus">Nuevo</span></button>
+            </div>
+
+
+            <div id="tableList" class="ng-table-responsive">
+                <table ng-table="model.tableParams" class="table striped bordered" id="rolTable">
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Opciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="role in $data">
+                            <td>
+                                {{role.name}}
+                            </td>
+                            <td>
+                                <span>
+                                    <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(role.id)"></span>
+                                    <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(role)"></span>
+                                </span>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+
+
