@@ -1,0 +1,34 @@
+﻿
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>Detalles de proyecto</span>
+        </div>
+        <div class="panel-body">
+            <div class="panel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Nombre: </label>{{innerAssignments.project.name}}
+                    </div>
+                    <div class="col-md-6">
+                        <label>Nombre: </label>{{innerAssignments.project.client.name}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <button class="btn btn-default" ng-click="vm.expandAll(assignments)">Expand All</button>-->
+                    <tree branch="innerAssignments"></tree>
+                </div>
+
+                <div class="col-md-8">
+                    <div tree-details>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

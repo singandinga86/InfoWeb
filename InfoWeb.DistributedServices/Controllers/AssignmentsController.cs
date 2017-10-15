@@ -25,10 +25,10 @@ namespace InfoWeb.DistributedServices.Controllers
             this.userRepository = userRepository;
         }
 
-        [HttpGet("Projects")]
-        public IEnumerable<Assignment> GetProjects(int userId)
+        [HttpGet()]
+        public IEnumerable<Assignment> GetAssignments(int userId)
         {
-            IEnumerable<Assignment> result = assigmentRepository.GetAssignments(userId);
+            IEnumerable<Assignment> result = assigmentRepository.GetAssignmentsAssignedTo(userId);
             return result;
         }
 
@@ -36,20 +36,47 @@ namespace InfoWeb.DistributedServices.Controllers
         public void CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         { 
             User assignator = userRepository.GetById(userId);
-            IEnumerable<AssignmentType> typesAssigment = assigmentTypeRepository.GetAll();
-            Assignment assigment = new Assignment
-            {
-                ProjectId = assignment.Project.Id,
-                AssigneeId = assignment.User.Id,  
-                Assignator = assignator,
-                AssignmentTypeId = typesAssigment.First(t => t.Name == "Delegar proyecto").Id,
-                HourTypeId = assignment.HourType.Id,
-                Hours = assignment.Hours,
-                Date = DateTime.Now
-            };
+            Assignment assigmentUpdate = assigmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
 
-            assigmentRepository.Add(assigment);            
-          
+            IEnumerable<AssignmentType> typesAssigment = assigmentTypeRepository.GetAll();
+            Assignment assigmentAdd = null;
+
+            if(assigmentUpdate == null)
+            {
+                if (assignment.HourType == null)
+                {
+                    assigmentAdd = new Assignment
+                    {
+                        ProjectId = assignment.Project.Id,
+                        AssigneeId = assignment.User.Id,
+                        Assignator = assignator,
+                        AssignmentTypeId = typesAssigment.First(t => t.Name == "Delegar proyecto").Id,
+                        Hours = assignment.Hours,
+                        Date = DateTime.Now
+                    };
+                }
+                else
+                {
+                    assigmentAdd = new Assignment
+                    {
+                        ProjectId = assignment.Project.Id,
+                        AssigneeId = assignment.User.Id,
+                        Assignator = assignator,
+                        AssignmentTypeId = typesAssigment.First(t => t.Name == "Delegar proyecto").Id,
+                        HourTypeId = assignment.HourType.Id,
+                        Hours = assignment.Hours,
+                        Date = DateTime.Now
+                    };
+                }
+
+                assigmentRepository.Add(assigmentAdd);
+            }
+            else
+            {
+                assigmentUpdate.Hours += assignment.Hours;
+
+                assigmentRepository.Update(assigmentUpdate);
+            }  
         }
 
         //[HttpGet("Hours")]

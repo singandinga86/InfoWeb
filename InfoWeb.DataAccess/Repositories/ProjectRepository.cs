@@ -41,5 +41,27 @@ namespace InfoWeb.DataAccess.Repositories
                   .Include(p => p.ProjectsHoursTypes)
                   .Include(p => p.Type), skip, take);
         }
+
+        public IEnumerable<Project> GetProjectsAssignedBy(int userId, int skip = 0, int take = 0)
+        {
+            var query = (from p in entitySet
+                        join a in this.context.Assignments
+                        on p.Id equals a.Project.Id
+                        where a.Assignator.Id == userId
+                        select p).Include(p => p.Client).AsNoTracking().Distinct();
+            return base.GetRange(query, skip, take);
+                        
+        }
+
+        public IEnumerable<Project> GetProjectsAssignedTo(int userId, int skip = 0, int take = 0)
+        {
+            var query = (from p in entitySet
+                        join a in this.context.Assignments
+                        on p.Id equals a.Project.Id
+                         where a.Assignee.Id == userId
+                         select p).Include(p => p.Client).AsNoTracking().Distinct();
+            return base.GetRange(query, skip, take);
+
+        }
     }
 }

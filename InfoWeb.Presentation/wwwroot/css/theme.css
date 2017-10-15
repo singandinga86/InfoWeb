@@ -146,7 +146,7 @@ table{
 #search {
     margin-bottom: 10px !important;
 }
-}
+
 
 /*.menuVisible {
     width: 0px;
@@ -230,8 +230,20 @@ td span{
 .right-addon input {
     padding-right: 30px;
 }
-
+/*checkbox size*/
 .big-checkbox > input {
     width: 25px;
     height: 25px;
+}
+
+/*text align td*/
+td{
+    text-align:center
+}
+
+/*Project details tree*/
+tree {
+    margin-left: 20px;
+    display: block;
+    background-color: blue
 }

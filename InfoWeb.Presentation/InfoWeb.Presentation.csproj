@@ -11,14 +11,21 @@
     <Content Include="wwwroot\application\controllers\delegate-controller.js" />
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
+    <Content Include="wwwroot\application\controllers\project-details-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
-    <Content Include="wwwroot\application\controllers\role-controller.js" />
     <Content Include="wwwroot\application\controllers\role-list-controller.js" />
+    <Content Include="wwwroot\application\controllers\tree-controller.js" />
     <Content Include="wwwroot\application\controllers\update-role-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
+    <Content Include="wwwroot\application\directives\tree-detail-view\details-directive.js" />
+    <Content Include="wwwroot\application\directives\tree-detail-view\details.html" />
+    <Content Include="wwwroot\application\directives\tree-detail-view\tree-directive.js" />
+    <Content Include="wwwroot\application\directives\tree-detail-view\tree.css" />
+    <Content Include="wwwroot\application\directives\tree-detail-view\tree.html" />
     <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
+    <Content Include="wwwroot\application\services\project-service-tmp.js" />
     <Content Include="wwwroot\application\services\project-service.js" />
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
@@ -26,6 +33,7 @@
     <Content Include="wwwroot\application\views\project\assign.html" />
     <Content Include="wwwroot\application\views\project\delegate.html" />
     <Content Include="wwwroot\application\views\project\list.html" />
+    <Content Include="wwwroot\application\views\project\details.html" />
     <Content Include="wwwroot\application\views\role\list.html" />
     <Content Include="wwwroot\application\views\role\remove-modal.html" />
     <Content Include="wwwroot\application\views\role\role-input.html" />
@@ -42,7 +50,6 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\application\directives\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>

@@ -36,12 +36,28 @@ namespace InfoWeb.DataAccess.Repositories
                    .ToList();
         }
 
-        public IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0)
+        public IEnumerable<Assignment> GetAssignmentsAssignedTo(int userId, int skip = 0, int take = 0)
         {
             var query = context.Assignments.Where(a => a.AssigneeId == userId)
                                         .Include(a => a.Project)
                                         .ThenInclude(a => a.Client)
-                                        .Include(a => a.Assignator);
+                                        .Include(a => a.HourType)
+                                        .Include(a => a.Assignator)
+                                        .Include(a => a.AssignmentType)
+                                        .Include(a => a.Assignee);
+            
+
+
+            return base.GetRange(query, skip, take);
+        }
+
+        public IEnumerable<Assignment> GetAssignmentsAssignedBy(int userId, int skip = 0, int take = 0)
+        {
+            var query = context.Assignments.Where(a => a.Assignator.Id == userId)
+                                        .Include(a => a.Project)
+                                        .ThenInclude(a => a.Client)
+                                        .Include(a => a.Assignator)
+                                        .Include(a => a.Assignee);
 
 
             return base.GetRange(query, skip, take);
@@ -55,6 +71,26 @@ namespace InfoWeb.DataAccess.Repositories
                    .Include(e => e.HourType)
                    .Include(e => e.Project)
                    .FirstOrDefault();
-        }       
+        }     
+        
+        public Assignment GetAssigmentExist(int idUser, int idHourType, int idProject)
+        {
+            var query = context.Assignments.Where(a => a.AssigneeId == idUser && a.HourTypeId == idHourType && a.ProjectId == idProject).FirstOrDefault();
+
+            return query;
+        }
+
+        public IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0)
+        {
+            var query = context.Assignments.Where(a => a.AssigneeId == userId)
+                                        .Include(a => a.Project)
+                                        .ThenInclude(a => a.Client)
+                                        .Include(a => a.HourType)
+                                        .Include(a => a.Assignator)
+                                        .Include(a => a.AssignmentType);
+
+
+            return base.GetRange(query, skip, take);
+        }
     }
 }

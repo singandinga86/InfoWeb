@@ -35,6 +35,6 @@ namespace InfoWeb.Domain.Entities
         public HourType HourType { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int HourTypeId { get; set; }
+        public int? HourTypeId { get; set; }
     }
 }

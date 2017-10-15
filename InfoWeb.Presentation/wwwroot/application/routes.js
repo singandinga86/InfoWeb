@@ -64,5 +64,20 @@
         authenticate: true
     });
 
+    $stateProvider.state('projectDetails', {
+        templateUrl: "application/views/project/details.html",
+        controller: 'ProjectDetailsController',
+        controllerAs: 'vm',
+        url: "/projects/:projectId",
+        authenticate: true
+    }); 
+
+    /*$stateProvider.state('tree', {
+        templateUrl: "application/views/tree/tree.html",
+        controller: 'SampleController',
+        controllerAs: 'vm',
+        url: "/tree",
+    }); */
+
 
 }

@@ -9,5 +9,7 @@ namespace InfoWeb.Domain.Interfaces
     public interface IProjectRepository: IGenericRepository<Project, int>
     {
         IQueryable<Project> Projects { get; }
+        IEnumerable<Project> GetProjectsAssignedBy(int userId, int skip = 0, int take = 0);
+        IEnumerable<Project> GetProjectsAssignedTo(int userId, int skip = 0, int take = 0);
     }
 }

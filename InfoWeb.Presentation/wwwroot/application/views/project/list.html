@@ -1,52 +1,38 @@
 ﻿
-    <div class="container-fluid">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span>Listado Proyectos</span>
-            </div>
-            <div class="panel-body">
-                <div id="search" class="pull-right">    
-                    <div class="inner-addon left-addon">
-                        <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
-                        <i class="glyphicon glyphicon-search"></i>
-                    </div>
-                </div>
-                <div id="tableList" class="ng-table-responsive">
-                    <table ng-table="model.tableParams" class="table striped bordered">
-                        <thead >
-                            <tr>
-                            <td>Nombre</td>
-                            <td>Fecha</td>
-                            <td>Cliente</td>
-                            <td>Opciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="assignment in $data" ng-click="verDetalles(assignment.id);">
-                            <td>
-                                {{assignment.project.name}}
-                            </td>
-                            <td>
-                                {{assignment.date}}
-                            </td>
-                            <td>
-                                {{assignment.project.client.name}}
-                            </td>
-                            <td>
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </td>
-                        </tr>
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid">
+    <div id="search" class="pull-right">
+        <input class="form-control" type="text" name="searchProject" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
     </div>
-
-
-
-
-
-
-
-
+ <div id="tableList">
+     <table ng-table="model.tableParams" class="table table-hover table-responsive">
+         <tr ng-repeat="assignment in $data">
+             <td title="'Nombre'">
+                 {{assignment.project.name}}
+             </td>
+             <td title="'Cliente'">
+                 {{assignment.project.client.name}}
+             </td>
+             <!--<td title="'Tipo de Hora'" >
+                 <div ng-if="assignment.hourType.name == null">
+                     <span>Todas</span>
+                 </div>
+                 {{assignment.hourType.name}}               
+             </td>
+             <td title="'Cant. Horas'">
+                 {{assignment.hours}}
+             </td>
+             <td title="'Fecha Inicio'">
+                 {{assignment.date | date:"dd/MM/yyyy"}}
+             </td>-->
+             <td title="'Tipo de asignación'">
+                 {{assignment.assignmentType.name}}
+             </td>
+             <td title="'Opciones'">
+                 <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(assignment.project.id)"></span>
+                 <span class="glyphicon glyphicon-trash"></span>
+             </td>
+         </tr>
+     </table>
+ </div>
+ 
+</div>
