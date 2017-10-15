@@ -1,6 +1,6 @@
 ﻿var module = angular.module("InfoWeb");
 
-module.factory("ProjectService", ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
+module.factory("ProjectService", ['$http', '$q', 'UrlService','AuthenticationService', function ($http, $q, UrlService, AuthenticationService) {
     return {
         getAssignmentsForUser: function (user) {
             var userId = user.id;
@@ -26,6 +26,14 @@ module.factory("ProjectService", ['$http', '$q', 'UrlService', function ($http, 
                 method: 'GET',
                 url: url
             });
-        }
+        },
+        createAssigment: function (assignment) {
+            var userId = AuthenticationService.getCurrentUser().id;
+            return $http({
+                method: 'POST',
+                url: UrlService.getApiUrlPrefix() + "user/" + userId + "/Assignments",
+                data: assignment
+            });
+        },
     }   
 }]);

@@ -6,14 +6,17 @@
         <input class="form-control" type="text" name="searchUsers" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
     </div>
     <div id="tableList">
-        <table ng-table="model.tableParams" class="table table-hover table-responsive">
+        <table ng-table="model.tableParams" class="table table-hover table-responsive" id="rolTable">
             <tr ng-repeat="role in $data">
                 <td title="'Nombre'">
                     {{role.name}}
                 </td>
-                <td title="'Acciones'">
-                    <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(role.id)"></span>
-                    <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(role.id)"></span>
+                <td title="'Opciones'" >
+                    <span class="pull-right" style="margin-right:25px">
+                        <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(role.id)">
+                        </span>
+                        <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(role)"></span>
+                    </span>                   
                 </td>
             </tr>
         </table>

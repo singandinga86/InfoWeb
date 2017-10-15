@@ -9,11 +9,23 @@
              <td title="'Nombre'">
                  {{assignment.project.name}}
              </td>
-             <td title="'Fecha'">
-                 {{assignment.date}}
-             </td>
              <td title="'Cliente'">
                  {{assignment.project.client.name}}
+             </td>
+             <!--<td title="'Tipo de Hora'" >
+                 <div ng-if="assignment.hourType.name == null">
+                     <span>Todas</span>
+                 </div>
+                 {{assignment.hourType.name}}               
+             </td>
+             <td title="'Cant. Horas'">
+                 {{assignment.hours}}
+             </td>
+             <td title="'Fecha Inicio'">
+                 {{assignment.date | date:"dd/MM/yyyy"}}
+             </td>-->
+             <td title="'Tipo de asignación'">
+                 {{assignment.assignmentType.name}}
              </td>
              <td title="'Opciones'">
                  <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(assignment.project.id)"></span>
