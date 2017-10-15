@@ -3,6 +3,7 @@
 app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'AuthenticationService', 'UserListService', function ($scope, ProjectService, AuthenticationService, UserListService) {
 
     $scope.showHoras = false;
+    $scope.assignment = {};
 
     ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
 
@@ -38,7 +39,7 @@ app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'Authen
 
     $scope.changeValue = function () {
 
-        if ($scope.selectedTypeAssignment.name == "Asignar horas")
+        if ($scope.selectedItem == true)
             $scope.showHoras = true;
         else
             $scope.showHoras = false;
@@ -46,7 +47,13 @@ app.controller("ProjectDelegateController", ['$scope', 'ProjectService', 'Authen
 
     $scope.send = function () {
 
-        console.log($scope.selectedTypeAssignment.name);
+        console.log($scope.assignment);
+
+        ProjectService.createAssigment($scope.assignment).then(function (response) {
+            console.log("pincha");
+        }, function (error) {
+            console.log("no pincha");
+        });
 
     };
 

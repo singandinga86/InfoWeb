@@ -10,25 +10,24 @@
             <div class="panel-body" id="panelContent">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="section">
-                            <label class="field-label text-muted fs18 mb10">Username</label>
-                            <label class="field prepend-icon">
-                                <input class="gui-input" placeholder="Enter username" ng-model="userName" />
-                                <label class="field-icon">
-                                    <i class="fa fa-user"></i>
-                                </label>
-                            </label>
-                        </div>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                <label class="field-label text-muted fs18 mb10">Username</label>
+                                <div class="inner-addon left-addon">
+                                    <input class="form-control" placeholder="Enter username" ng-model="userName" />
+                                    <i class="glyphicon glyphicon-user"></i>
+                                </div>
+                            </div>                         
+                        </div>                       
                         <!-- end section -->
-
-                        <div class="section">
-                            <label class="field-label text-muted fs18 mb10">Password</label>
-                            <label class="field prepend-icon">
-                                <input class="gui-input" placeholder="Enter password" ng-model="password" type="password"/>
-                                <label class="field-icon">
-                                    <i class="fa fa-lock"></i>
-                                </label>
-                            </label>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                <label class="field-label text-muted fs18 mb10">Password</label>
+                                <div class="inner-addon left-addon">
+                                    <input class="form-control" placeholder="Enter password" ng-model="password" type="password" />
+                                    <i class="glyphicon glyphicon-lock"></i>                                  
+                                </div>
+                            </div>                          
                         </div>
                         <!-- end section -->
                         <label class="text-danger" ng-show="invalidCredentials">Usuario o contraseña incorrectos</label>
@@ -38,7 +37,7 @@
             <div class="panel-footer" style="width:100%">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary pull-right" style="margin-right:40px" ng-click="onLoginClicked();">Sign In</button>
+                        <button class="btn btn-primary btn-raised pull-right" style="margin-right:14%" ng-click="onLoginClicked();">Sign In</button>
                     </div>
                 </div>
             </div>

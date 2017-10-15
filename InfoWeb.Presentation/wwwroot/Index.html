@@ -4,23 +4,51 @@
     <meta charset="utf-8" />
     <title></title>
   
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="css/theme.css" />
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
-    <!--<link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />-->
+    <!-- Bootstrap -->  
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+   
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.css">-->
+     <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
-    <!--Theme-->
-   
+    <!--<link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.css">
+    <link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.min.css">
 
+
+    <script src="lib/material/bootstrap-material-design/js/bootstrap-material-design.js"></script>
+    <script src="lib/material/bootstrap-material-design/js/bootstrap-material-design.min.js"></script>-->
+    <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">
+    <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.min.css">-->
+
+    <!--Theme-->
+    <link rel="stylesheet" href="css/theme.css" />
+    <!--Ng-Table-->
+    <link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />
+   
+    <!--JQuery Angular-->
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
     <script src="lib/ng-table-bundle/ng-table.min.js"></script>
+
+    <!--JQuery Bootstrap-->
+    <!--<script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
+    <!--<script src="lib/bootstrap-material-design/scripts/material.js"></script>-->
+
+
+    <!--<script src="lib/jquery.min.js"></script>-->
+
+   
+    <!--<script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>-->
+
+
+
 
     <script src="application/routes.js"></script>
     <script type="text/javascript">
@@ -68,6 +96,10 @@
                 $event.stopPropagation();
                 $state.go('delegateProject');
             };
+
+            $scope.listRoles = function () {              
+                $state.go('roleList');
+            };
                 
             $scope.toggleMenu = function ($event, open) {
 
@@ -101,6 +133,12 @@
     <script src="application/controllers/remove-role-dialog-controller.js"></script>
     <script src="application/controllers/assign-controller.js"></script>
     <script src="application/controllers/delegate-controller.js"></script>
+    <script src="application/controllers/role-list-controller.js"></script>
+    <script src="application/controllers/update-role-controller.js"></script>
+    <script src="application/controllers/create-role-controller.js"></script>
+
+
+
 
 
 
@@ -111,9 +149,9 @@
 </head>
 <body ng-app="InfoWeb">
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
-    <div id="main" ng-controller="MainController">
+    <div id="main" ng-controller="MainController" >
 
-        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary" ng-show="currentUser != null">
+        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
             <div class="navbar-branding">
                 <h2>
                     <a href="#" style="margin-left:20px">InfoWeb</a>
@@ -138,10 +176,16 @@
                 <header class="sidebar-header"></header>
                 <ul class="nav sidebar-menu">
                     <!--<li class="sidebar-label">Menu</li>-->   
+                    <li>
+                        <a>
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title" ng-click="asignar($event);">Gestión de Admon</span>
+                        </a>
+                    </li>
                     <li ng-click="toggleMenu($event,open);">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestion de Proyectos</span>
+                            <span class="sidebar-title">Gestión de Proyectos</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
@@ -154,12 +198,7 @@
                                 <a ng-click="listUser($event);">
                                     <span class="glyphicon glyphicon-calendar sidebar-title">Ver Usuarios</span>
                                 </a>
-                            </li>
-                            <li>
-                                <a ng-click="asignar($event);">
-                                    <span class="glyphicon glyphicon-calendar sidebar-title">Asignar</span>
-                                </a>
-                            </li>
+                            </li>                          
                             <li>
                                 <a ng-click="delegate($event);">
                                     <span class="glyphicon glyphicon-calendar sidebar-title">Delegar</span>
@@ -172,8 +211,13 @@
                             <span class="glyphicon glyphicon-home"></span>
                             <span class="sidebar-title" ng-click="ir();">Gestion de Horas</span>
                             <span class="caret"></span>
+                        </a>                         
+                    </li>
+                    <li>
+                        <a>
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span class="sidebar-title" ng-click="listRoles();">Gestion de Roles</span>                           
                         </a>
-                         
                     </li>
                 </ul>
             </div>
@@ -184,6 +228,5 @@
             </div>
         </section>
     </div>
-   
 </body>
 </html>

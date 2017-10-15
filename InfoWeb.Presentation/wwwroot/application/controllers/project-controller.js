@@ -12,8 +12,7 @@ app.controller("ProjectController", ['$scope', 'ProjectService', 'Authentication
         //$scope.model.tableParams = new NgTableParams({}, { dataset: response.data });
         $scope.model.tableParams = new NgTableParams({
             page: 1,
-            count: 6,
-         
+            count: 6,         
             filter: $scope.search
         }, {
                 total: response.data.length,

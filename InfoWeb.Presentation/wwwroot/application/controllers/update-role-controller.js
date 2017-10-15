@@ -6,7 +6,7 @@ app.controller("UpdateRoleController", ['$scope', '$state', '$stateParams', 'Rol
     $scope.role = {};
 
     $scope.acceptButtonCaption = "Actualizar";
-    $scope.title = "Actualizar rol";
+    $scope.title = "Actualizar Rol";
 
     RoleService.getRole(roleId).then(function (response) {
         $scope.role = response.data;
