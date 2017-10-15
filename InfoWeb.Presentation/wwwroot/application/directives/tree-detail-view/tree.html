@@ -1,0 +1,28 @@
+﻿<ul class="nav nav-pills nav-stacked">
+    <li class="presentation">
+        <a href="javascript:void(0)">
+            <div ng-click="setCurrentAssigments(branch.assignments)">
+                <span ng-show="branch.innerAssignments.length>0 && !branch.isExpanded">
+                    <i class="glyphicon glyphicon-plus"
+                       ng-click="branch.isExpanded=true;"
+                       ng-dblclick="expand(branch, true)"></i>
+                </span>
+                <span ng-show="branch.innerAssignments.length>0 && branch.isExpanded">
+                    <i class="glyphicon glyphicon-minus"
+                       ng-click="branch.isExpanded=false;"
+                       ng-dblclick="expand(branch, false)"></i>
+                </span>
+                <!--<span ng-show="!branch.isSelected"><i class="fa fa-square-o" ng-click="toggle(branch,true)"></i></span>-->
+                <!--<span ng-show="branch.isSelected"><i class="fa fa-check-square-o" ng-click="toggle(branch,false)"></i></span>--> 
+                {{ branch.user.name}} -- {{branch.user.role.name}}
+            </div>
+        </a>
+    </li>
+    <div ng-if="branch.isExpanded" class="tree">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="presentation" ng-repeat="child in branch.innerAssignments">
+                <tree branch="child"></tree>
+            </li>
+        </ul>
+    </div>
+</ul>

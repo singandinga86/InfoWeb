@@ -3,7 +3,7 @@
 app.controller("ProjectController", ['$scope', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams', function ($scope, ProjectService, AuthenticationService, $state ,$filter , NgTableParams) {
 
 
-    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
+    ProjectService.getAssignmentsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
 
         $scope.model = {};
         $scope.search = { term: '' };
@@ -32,9 +32,8 @@ app.controller("ProjectController", ['$scope', 'ProjectService', 'Authentication
                 }
             }
         );
-        $scope.verDetalles = function (id) {
-
-            
+        $scope.viewDetails = function (id) {
+            $state.go('projectDetails', { projectId: id });
         };
 
     },

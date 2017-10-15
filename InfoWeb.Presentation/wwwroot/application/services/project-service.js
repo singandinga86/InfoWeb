@@ -2,9 +2,9 @@
 
 module.factory("ProjectService", ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
     return {
-        getProjectsForUser: function (user) {
+        getAssignmentsForUser: function (user) {
             var userId = user.id;
-            var url = UrlService.getApiUrlPrefix() + "user/" + userId + "/Assignments/Projects";
+            var url = UrlService.getApiUrlPrefix() + "user/" + userId + "/Assignments";
 
             return $http({
                 method: 'GET',

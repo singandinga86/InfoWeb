@@ -36,12 +36,26 @@ namespace InfoWeb.DataAccess.Repositories
                    .ToList();
         }
 
-        public IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0)
+        public IEnumerable<Assignment> GetAssignmentsAssignedTo(int userId, int skip = 0, int take = 0)
         {
             var query = context.Assignments.Where(a => a.AssigneeId == userId)
                                         .Include(a => a.Project)
                                         .ThenInclude(a => a.Client)
-                                        .Include(a => a.Assignator);
+                                        .Include(a => a.Assignator)
+                                        .Include(a => a.Assignee);
+            
+
+
+            return base.GetRange(query, skip, take);
+        }
+
+        public IEnumerable<Assignment> GetAssignmentsAssignedBy(int userId, int skip = 0, int take = 0)
+        {
+            var query = context.Assignments.Where(a => a.Assignator.Id == userId)
+                                        .Include(a => a.Project)
+                                        .ThenInclude(a => a.Client)
+                                        .Include(a => a.Assignator)
+                                        .Include(a => a.Assignee);
 
 
             return base.GetRange(query, skip, take);

@@ -1,0 +1,16 @@
+﻿<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Tipo de hora</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="assignment in assignments">
+            <td>{{assignment.date | date:"dd/MM/yyyy"}}</td>
+            <td>{{assignment.hours}}</td>
+            <td>{{assignment.hourTypeId}}</td>            
+        </tr>
+    </tbody>
+</table>

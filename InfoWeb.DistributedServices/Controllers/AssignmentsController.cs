@@ -18,10 +18,10 @@ namespace InfoWeb.DistributedServices.Controllers
             this.assigmentRepository = assigmentRepository;           
         }
 
-        [HttpGet("Projects")]
-        public IEnumerable<Assignment> GetProjects(int userId)
+        [HttpGet()]
+        public IEnumerable<Assignment> GetAssignments(int userId)
         {
-            IEnumerable<Assignment> result = assigmentRepository.GetAssignments(userId);
+            IEnumerable<Assignment> result = assigmentRepository.GetAssignmentsAssignedTo(userId);
             return result;
         }
 

@@ -5,7 +5,7 @@
     </div>
  <div id="tableList">
      <table ng-table="model.tableParams" class="table table-hover table-responsive">
-         <tr ng-repeat="assignment in $data" ng-click="verDetalles(assignment.id);">
+         <tr ng-repeat="assignment in $data">
              <td title="'Nombre'">
                  {{assignment.project.name}}
              </td>
@@ -16,6 +16,7 @@
                  {{assignment.project.client.name}}
              </td>
              <td title="'Opciones'">
+                 <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(assignment.project.id)"></span>
                  <span class="glyphicon glyphicon-trash"></span>
              </td>
          </tr>
