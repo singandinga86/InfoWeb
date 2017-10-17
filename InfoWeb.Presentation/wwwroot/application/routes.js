@@ -79,6 +79,24 @@
         authenticate: true
     }); 
 
+    $stateProvider.state('hourTypeList', {
+        templateUrl: "application/views/hour-type/list.html",
+        controller: 'HourTypesController',
+        url: "/hourtypes"
+    }); 
+
+    $stateProvider.state('createHourType', {
+        templateUrl: "application/views/hour-type/hour-type-input.html",
+        controller: 'CreateHourTypeController',
+        url: "/hourtypes/create"
+    }); 
+
+    $stateProvider.state('updateHourType', {
+        templateUrl: "application/views/hour-type/hour-type-input.html",
+        controller: 'UpdateHourTypeController',
+        url: "/hourtypes/:id/update"
+    }); 
+
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",
         controller: 'SampleController',

@@ -128,11 +128,8 @@ namespace InfoWeb.DistributedServices.Controllers
                     else
                     {
                         Response.StatusCode = (int)HttpStatusCode.Conflict;
-                    }
-                    
-                }
-
-                
+                    }                    
+                }                
             }
             else
             {
