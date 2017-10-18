@@ -1,8 +1,8 @@
 ﻿var module = angular.module("InfoWeb");
 
 app.controller("ProjectController",
-    ['$scope', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams',
-        function ($scope, ProjectService, AuthenticationService, $state, $filter, NgTableParams) {
+    ['$scope','$uibModal' ,'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams',
+        function ($scope, $uibModal,ProjectService, AuthenticationService, $state, $filter, NgTableParams) {
 
 
     ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
@@ -40,5 +40,31 @@ app.controller("ProjectController",
     },
         function (error) {
 
+                });
+
+    $scope.onRemoveClicked = function (id) {
+        var dialog = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'application/views/project/remove-modal.html',
+            controller: "RemoveProjetcDialogController",
+            resolve: {
+                targetRole: function () { return id; }
+            }
         });
+
+        dialog.result.then(function (result) {
+            if (result == true) {
+                ProjectService.removeProject(id).then(function (response) {
+                    fillTable();
+                }, function (error) { });
+
+            }
+        }, function () {
+
+        });
+
+
+    }
 }]);
