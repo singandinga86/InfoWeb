@@ -1,7 +1,7 @@
 ﻿<div class="container-fluid">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span>Listado de Usuarios</span>
+            <span><b>Listado de Usuarios</b></span>
         </div>
         <div class="panel-body">
             <div id="search" class="pull-right">
@@ -10,24 +10,36 @@
                     <i class="glyphicon glyphicon-search"></i>
                 </div>
             </div>
+            <div class="pull-left">
+                <button class="btn btn-primary btn-raised btn-info" ng-click="onCreateClicked()"><span class="glyphicon glyphicon-plus">Nuevo</span></button>
+            </div>
             <div id="tableList">
-                <table ng-table="model.tableParams" class="table table-hover table-responsive">
+                <table ng-table="model.tableParams" class="table table-striped  bordered table-responsive">
                     <thead>
                         <tr>
-                            <td>Nombre</td>
-                            <td>Rol</td>
+                            <td><b>Nombre</b></td>
+                            <td><b>Rol</b></td>
+                            <td><b>Opciones</b></td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in $data">
-                            <td title="'Nombre'">
+                            <td>
                                 {{user.name}}
                             </td>
-                            <td title="'Rol'">
+                            <td>
                                 {{user.role.name}}
                             </td>
+                            <td>
+                                <span>
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </span>
+                            </td>
                         </tr>
-                    </tbody>     
+                    </tbody>
                 </table>
             </div>
         </div>
+    </div>
+</div>

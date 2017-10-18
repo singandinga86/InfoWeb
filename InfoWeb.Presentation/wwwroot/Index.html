@@ -74,22 +74,22 @@
             $scope.currentUser = null;
             $scope.open = false;
 
-            $rootScope.$on("userAuthenticated", function (event,user) {
+            $rootScope.$on("userAuthenticated", function (event, user) {
                 $scope.currentUser = user;
                 $state.go('projectList');
             });
 
             $scope.listUser = function ($event) {
                 $event.stopPropagation();
-                $state.go('userList');               
+                $state.go('userList');
             };
             $scope.listProject = function ($event) {
                 $event.stopPropagation();
-                $state.go('projectList');               
+                $state.go('projectList');
             }
             $scope.asignar = function ($event) {
                 $event.stopPropagation();
-                $state.go('assign');  
+                $state.go('assign');
             };
 
             $scope.delegate = function ($event) {
@@ -97,9 +97,27 @@
                 $state.go('delegateProject');
             };
 
-            $scope.listRoles = function () {              
+            $scope.listRoles = function () {
                 $state.go('roleList');
             };
+
+            $scope.listHourTypes = function ($event)
+            {
+                $event.stopPropagation();
+                $state.go("hourTypeList");
+            }
+
+            $scope.assignHours = function ($event)
+            {
+                $event.stopPropagation();
+                $state.go("assignHoursToDeveloper");
+            }
+
+            $scope.listAssignmentTypes = function ($event)
+            {
+                $event.stopPropagation();
+                $state.go("assignmentTypeList");
+            }
                 
             $scope.toggleMenu = function ($event, open) {
 
@@ -189,13 +207,80 @@
                 <!-- Start: Sidebar Header -->
                 <header class="sidebar-header"></header>
                 <ul class="nav sidebar-menu">
-                    <!--<li class="sidebar-label">Menu</li>-->   
-                    <li>
+                    <!--<li class="sidebar-label">Menu</li>-->
+
+                    <li ng-click="toggleMenu($event,open);">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title" ng-click="asignar($event);">Gestión de Admon</span>
+                            <span class="sidebar-title">Gestión de Admon</span>
+                            <span class="caret"></span>
                         </a>
-                    </li>
+                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                            <li>
+                                <a ng-click="asignar($event);">
+                                    <span class="glyphicon glyphicon-user sidebar-title">Asignar Proyectos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="listUser($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Gestionar Usuarios</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="listHourTypes($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Gestionar tipos de hora</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="listAssignmentTypes($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Gestionar tipos de asignación</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Gestionar Clientes</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    <span class="sidebar-title" ng-click="listRoles();">Gestion de Roles</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Gestionar de Proyectos</span>
+                                </a>
+                            </li>
+                        </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <li ng-click="toggleMenu($event,open);">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
@@ -209,30 +294,25 @@
                                 </a>
                             </li>
                             <li>
-                                <a ng-click="listUser($event);">
-                                    <span class="glyphicon glyphicon-calendar sidebar-title">Ver Usuarios</span>
-                                </a>
-                            </li>                          
-                            <li>
                                 <a ng-click="delegate($event);">
                                     <span class="glyphicon glyphicon-calendar sidebar-title">Delegar</span>
                                 </a>
                             </li>
+                            <li>
+                                <a ng-click="assignHours($event);">
+                                    <span class="glyphicon glyphicon-calendar sidebar-title">Asignar horas</span>
+                                </a>
+                            </li>
                         </ul>
-                    </li>
-                     <li>
-                        <a >
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title" ng-click="ir();">Gestion de Horas</span>
-                            <span class="caret"></span>
-                        </a>                         
                     </li>
                     <li>
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title" ng-click="listRoles();">Gestion de Roles</span>                           
+                            <span class="sidebar-title" ng-click="ir();">Gestion de Horas</span>
+                            <span class="caret"></span>
                         </a>
                     </li>
+
                 </ul>
             </div>
         </aside>

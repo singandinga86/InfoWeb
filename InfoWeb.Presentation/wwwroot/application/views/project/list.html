@@ -1,23 +1,42 @@
-﻿
-<div class="container-fluid">
-    <div id="search" class="pull-right">
-        <input class="form-control" type="text" name="searchProject" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+﻿<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>Listado Proyectos</b></span>
+        </div>
+        <div class="panel-body">
+            <div id="search" class="pull-right">
+                <div class="inner-addon left-addon">
+                    <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+                    <i class="glyphicon glyphicon-search"></i>
+                </div>
+            </div>
+            <div id="tableList">
+                <table ng-table="model.tableParams" class="table table-striped bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td><b>Nombre</b></td>
+                            <td><b>Cliente</b></td>
+                            <td><b>Opciones</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="project in $data">
+                            <td>
+                                {{project.name}}
+                            </td>
+                            <td>
+                                {{project.client.name}}
+                            </td>
+                            <td>
+                                <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(project.id)"></span>
+                                <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project.id)"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
     </div>
- <div id="tableList">
-     <table ng-table="model.tableParams" class="table table-hover table-responsive">
-         <tr ng-repeat="project in $data">
-             <td title="'Nombre'">
-                 {{project.name}}
-             </td>
-             <td title="'Cliente'">
-                 {{project.client.name}}
-             </td>
-             <td title="'Opciones'">
-                 <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(project.id)"></span>
-                 <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project.id)"></span>
-             </td>
-         </tr>
-     </table>
- </div>
- 
 </div>
