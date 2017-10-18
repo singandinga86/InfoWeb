@@ -3,7 +3,7 @@
 app.controller("ProjectAssignController", ['$scope', 'ProjectService', 'AuthenticationService', 'UserListService', function ($scope, ProjectService, AuthenticationService, UserListService) {
 
 
-    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser()).then(function (response) {
+    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
 
         $scope.projects = response.data;       
     },

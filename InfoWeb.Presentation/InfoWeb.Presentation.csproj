@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\application\controllers\assignment-type-list-controller.js" />
+    <Content Include="wwwroot\application\controllers\create-assignment-type-controller.js" />
     <Content Include="wwwroot\application\controllers\create-hour-type-controller.js" />
     <Content Include="wwwroot\application\controllers\create-role-controller.js" />
     <Content Include="wwwroot\application\controllers\assign-controller.js" />
@@ -15,10 +17,12 @@
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
     <Content Include="wwwroot\application\controllers\project-details-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-assignment-type-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-hour-type-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\role-list-controller.js" />
+    <Content Include="wwwroot\application\controllers\update-assignment-type-controller.js" />
     <Content Include="wwwroot\application\controllers\update-hour-type-controller.js" />
     <Content Include="wwwroot\application\controllers\update-role-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
@@ -28,6 +32,7 @@
     <Content Include="wwwroot\application\directives\tree-detail-view\tree.css" />
     <Content Include="wwwroot\application\directives\tree-detail-view\tree.html" />
     <Content Include="wwwroot\application\routes.js" />
+    <Content Include="wwwroot\application\services\assignment-type-service.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
     <Content Include="wwwroot\application\services\hour-type-service.js" />
     <Content Include="wwwroot\application\services\project-service-tmp.js" />
@@ -35,6 +40,10 @@
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
+    <Content Include="wwwroot\application\views\assignment-type\assignment-type-input.html" />
+    <Content Include="wwwroot\application\views\assignment-type\list.html" />
+    <Content Include="wwwroot\application\views\assignment-type\remove-moda.html" />
+    <Content Include="wwwroot\application\views\assignment-type\remove-modal.html" />
     <Content Include="wwwroot\application\views\assignments\single-developer.html" />
     <Content Include="wwwroot\application\views\hour-type\hour-type-input.html" />
     <Content Include="wwwroot\application\views\hour-type\list.html" />

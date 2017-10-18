@@ -97,6 +97,24 @@
         url: "/hourtypes/:id/update"
     }); 
 
+    $stateProvider.state('assignmentTypeList', {
+        templateUrl: "application/views/assignment-type/list.html",
+        controller: 'AssignmentTypeListController',
+        url: "/assignmenttypes"
+    });
+
+    $stateProvider.state('createAssignmentType', {
+        templateUrl: "application/views/assignment-type/assignment-type-input.html",
+        controller: 'CreateAssignmentTypeController',
+        url: "/hourtypes/create"
+    });
+
+    $stateProvider.state('updateAssignmentType', {
+        templateUrl: "application/views/assignment-type/assignment-type-input.html",
+        controller: 'UpdateAssignmentTypeController',
+        url: "/hourtypes/:id/update"
+    }); 
+
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",
         controller: 'SampleController',
