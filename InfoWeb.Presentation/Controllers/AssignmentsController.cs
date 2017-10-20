@@ -100,10 +100,10 @@ namespace InfoWeb.DistributedServices.Controllers
             User assignee = (assignment.User != null) ? userRepository.GetById(assignment.User.Id): null;
             Project project = (assignment.Project != null) ? projectRepository.GetById(assignment.Project.Id) : null;
             HourType hourType = (assignment.HourType != null) ? hourTypeRepository.GetById(assignment.HourType.Id): null;
-            AssignmentType assignmentType = assigmentTypeRepository.GetByName("Asignar hora");
+            AssignmentType assignmentType = assigmentTypeRepository.GetByName("Asignar horas");
             int hours = assignment.Hours;
 
-            if (assignee != null && assignee.Role.Name == "Technician"
+            if (assignee != null && assignee.Role.Name == "TEC"
                 && assignator != null && project != null && hourType != null
                 && assignmentType != null && hours > 0)
             {
@@ -118,7 +118,8 @@ namespace InfoWeb.DistributedServices.Controllers
                         AssignmentType = assignmentType,
                         HourType = hourType,
                         Date = DateTime.Now,
-                        Project = project
+                        Project = project,
+                        Hours = hours
                     };
                     assignmentRepository.Add(targetAssignment);
                     Response.StatusCode = (int)HttpStatusCode.Created;

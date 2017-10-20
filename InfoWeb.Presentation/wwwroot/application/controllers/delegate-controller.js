@@ -1,8 +1,8 @@
 ﻿var module = angular.module("InfoWeb");
 
 app.controller("ProjectDelegateController",
-    ['$scope', 'ProjectService', 'AssignmentService', 'AuthenticationService', 'UserListService',
-        function ($scope, ProjectService, AssignmentService, AuthenticationService, UserListService) {
+    ['$scope', '$state','ProjectService', 'AssignmentService', 'AuthenticationService', 'UserListService',
+        function ($scope, $state, ProjectService, AssignmentService, AuthenticationService, UserListService) {
 
     $scope.showHoras = false;
     $scope.assignment = {};
@@ -55,6 +55,7 @@ app.controller("ProjectDelegateController",
         AssignmentService.createAssigment($scope.assignment).then(function (response) {           
             $scope.assignment = {};
             $scope.showHoras = false;
+            $state.go("projectList");
         }, function (error) {           
         });
 

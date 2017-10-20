@@ -28,6 +28,7 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    {
 
                        AssignmentService.createTechnicianAssignment($scope.assignment).then(function (response) {
+                           $state.go("projectList");
                        }, function (error) {
                        });
                    }

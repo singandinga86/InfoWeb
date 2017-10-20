@@ -245,12 +245,13 @@ td{
 tree {
     margin-left: 20px;
     display: block;
-    background-color: blue
+    background-color: #f0f0f0;
 }
+tree a {
+        color: #000 !important;
+    }
 
-@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
-
-body {
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'); body {
     background: lightgray;
 }
 

@@ -128,6 +128,7 @@ namespace InfoWeb.DistributedServices.Controllers
         {
             var assignments = queryModel.Assignments.
                              Where(a => a.Assignator.Id == userId && a.Project.Id == projectId)
+                             .Include(a => a.HourType)
                              .Include(a => a.Assignee)
                              .ThenInclude(a => a.Role)
                              .GroupBy(a => a.Assignee)
