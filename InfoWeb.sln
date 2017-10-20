@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoWeb.Domain", "InfoWeb.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoWeb.DataAccess", "InfoWeb.DataAccess\InfoWeb.DataAccess.csproj", "{A4D67D1F-888D-4A90-9D86-D3AB3E34A5C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoWeb.DistributedServices", "InfoWeb.DistributedServices\InfoWeb.DistributedServices.csproj", "{B2FB8F81-26E2-4BCC-BBDC-7AC969397CB1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoWeb.Presentation", "InfoWeb.Presentation\InfoWeb.Presentation.csproj", "{B06D8A58-837C-4683-83DF-8AAE29C25427}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{A4D67D1F-888D-4A90-9D86-D3AB3E34A5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4D67D1F-888D-4A90-9D86-D3AB3E34A5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4D67D1F-888D-4A90-9D86-D3AB3E34A5C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2FB8F81-26E2-4BCC-BBDC-7AC969397CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FB8F81-26E2-4BCC-BBDC-7AC969397CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2FB8F81-26E2-4BCC-BBDC-7AC969397CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2FB8F81-26E2-4BCC-BBDC-7AC969397CB1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B06D8A58-837C-4683-83DF-8AAE29C25427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B06D8A58-837C-4683-83DF-8AAE29C25427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B06D8A58-837C-4683-83DF-8AAE29C25427}.Release|Any CPU.ActiveCfg = Release|Any CPU
