@@ -33,11 +33,19 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPost]
         public void Add([FromBody]Client client)
         {
-            if (client != null && client.Name.Trim().Length > 0)
+            if (ModelState.IsValid)
             {
                 client.Projects = null;
-                clientRepository.Add(client);
-                Response.StatusCode = (int)HttpStatusCode.Created;
+                try
+                {
+                    clientRepository.Add(client);
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
+                
             }
             else
             {
@@ -48,13 +56,21 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPut]
         public void Update([FromBody] Client client)
         {
-            if (client != null)
+            if (ModelState.IsValid)
             {
                 var targetClient = clientRepository.GetById(client.Id);
                 if (targetClient != null)
                 {
                     targetClient.Name =client.Name;
-                    clientRepository.Update(targetClient);
+                    try
+                    {
+                        clientRepository.Update(targetClient);
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                    
                 }
                 else
                 {

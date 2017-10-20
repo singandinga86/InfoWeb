@@ -36,10 +36,17 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPost]
         public void Add([FromBody]AssignmentType assignmentType)
         {
-            if (assignmentType != null && assignmentType.Name.Trim().Length > 0)
+            if (ModelState.IsValid)
             {
                 assignmentType.Assignments = null;
-                assignmentTypeRepository.Add(assignmentType);
+                try {
+                    assignmentTypeRepository.Add(assignmentType);
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
+                
                 Response.StatusCode = (int)HttpStatusCode.Created;
             }
             else
@@ -51,13 +58,21 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPut]
         public void Update([FromBody] AssignmentType assignmentType)
         {
-            if (assignmentType != null)
+            if (ModelState.IsValid)
             {
                 var targetHourType = assignmentTypeRepository.GetById(assignmentType.Id);
                 if (targetHourType != null)
                 {
                     targetHourType.Name = assignmentType.Name;
-                    assignmentTypeRepository.Update(targetHourType);
+                    try
+                    {
+                        assignmentTypeRepository.Update(targetHourType);
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                    
                 }
                 else
                 {

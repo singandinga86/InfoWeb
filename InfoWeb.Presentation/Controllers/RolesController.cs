@@ -42,7 +42,7 @@ namespace InfoWeb.DistributedServices.Controllers
                 }
                 catch (Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
                 }
             }
             else
@@ -63,11 +63,10 @@ namespace InfoWeb.DistributedServices.Controllers
                     try
                     {
                         roleRepository.Update(targetRole);
-                        Response.StatusCode = (int)HttpStatusCode.OK;
                     }
                     catch (Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
                     }
                 }
                 else

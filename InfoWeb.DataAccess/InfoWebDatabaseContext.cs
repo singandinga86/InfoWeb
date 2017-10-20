@@ -35,6 +35,7 @@ namespace InfoWeb.DataAccess
             modelBuilder.Entity<ProjectType>().HasIndex(type => type.Name).HasName("IX_PROJECTTYPE_NAME").IsUnique();
             modelBuilder.Entity<HourType>().HasIndex(type => type.Name).HasName("IX_HOURTYPE_NAME").IsUnique();
             modelBuilder.Entity<AssignmentType>().HasIndex(type => type.Name).HasName("IX_ASSIGNMENTTYPE_NAME").IsUnique();
+            modelBuilder.Entity<Client>().HasIndex(type => type.Name).HasName("IX_CLIENT_NAME").IsUnique();
         }
     }
 }

@@ -33,10 +33,17 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPost]
         public void Add([FromBody]HourType hourType)
         {
-            if (hourType != null && hourType.Name.Trim().Length > 0)
+            if(ModelState.IsValid)
             {
                 hourType.ProjectsHoursTypes = null;
-                hourTypeRepository.Add(hourType);
+                try {
+                    hourTypeRepository.Add(hourType);
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
+                
                 Response.StatusCode = (int)HttpStatusCode.Created;
             }
             else
@@ -48,13 +55,20 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPut]
         public void Update([FromBody] HourType hourType)
         {
-            if (hourType != null)
+            if (ModelState.IsValid)
             {
                 var targetHourType = hourTypeRepository.GetById(hourType.Id);
                 if (targetHourType != null)
                 {
                     targetHourType.Name = hourType.Name;
-                    hourTypeRepository.Update(targetHourType);
+                    try
+                    {
+                        hourTypeRepository.Update(targetHourType);
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
                 }
                 else
                 {

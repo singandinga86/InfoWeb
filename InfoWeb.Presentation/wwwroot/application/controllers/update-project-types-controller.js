@@ -8,7 +8,7 @@ app.controller("UpdateProjectTypesController", ['$scope', '$state', '$stateParam
     $scope.acceptButtonCaption = "Actualizar";
     $scope.title = "Actualizar Tipo de Proyecto";
 
-    ProjectTypesService.getProjectTypes(id).then(function (response) {
+    ProjectTypesService.getProjectType(id).then(function (response) {
         $scope.model = response.data;
     }, function (error) { });
 

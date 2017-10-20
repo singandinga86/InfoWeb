@@ -33,11 +33,18 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPost]
         public void Add([FromBody]ProjectType projectType)
         {
-            if (projectType != null && projectType.Name.Trim().Length > 0)
+            if (ModelState.IsValid)
             {
                 projectType.Projects= null;
-                projectTypesRepository.Add(projectType);
-                Response.StatusCode = (int)HttpStatusCode.Created;
+                try
+                {
+                    projectTypesRepository.Add(projectType);
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }                
             }
             else
             {
@@ -48,13 +55,21 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPut]
         public void Update([FromBody] ProjectType projectType)
         {
-            if (projectType != null)
+            if (ModelState.IsValid)
             {
                 var targetProjectType = projectTypesRepository.GetById(projectType.Id);
                 if (targetProjectType != null)
                 {
                     targetProjectType.Name = projectType.Name;
-                    projectTypesRepository.Update(targetProjectType);
+                    try
+                    {
+                        projectTypesRepository.Update(targetProjectType);
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                    
                 }
                 else
                 {
