@@ -235,20 +235,20 @@
                     <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'ADMIN'">
                         <a class="accordion-toggle">
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestión de Admon</span>
+                            <span class="sidebar-title">Gestión de admon</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
                             <li>
                                 <a ng-click="asignar($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Asignar Proyectos</span>
+                                    <span class="sidebar-title">Asignar proyectos</span>
                                 </a>
                             </li>
                             <li>
                                 <a ng-click="listUser($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar Usuarios</span>
+                                    <span class="sidebar-title">Gestionar usuarios</span>
                                 </a>
                             </li>
                             <li>
@@ -266,19 +266,19 @@
                             <li>
                                 <a ng-click="listClient($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar Clientes</span>
+                                    <span class="sidebar-title">Gestionar clientes</span>
                                 </a>
                             </li>
                             <li>
                                 <a ng-click="listRoles($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestion de Roles</span>
+                                    <span class="sidebar-title">Gestionar roles</span>
                                 </a>
                             </li>
                             <li>
                                 <a ng-click="listProjectTypes($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar tipos de Proyectos</span>
+                                    <span class="sidebar-title">Gestionar tipos de proyectos</span>
                                 </a>
                             </li>
                         </ul>
@@ -287,20 +287,20 @@
                     <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'OM'">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestión de Proyectos</span>
+                            <span class="sidebar-title">Gestión de proyectos</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
                             <li>
                                 <a ng-click="listProject($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Ver Proyectos</span>
+                                    <span class="sidebar-title">Ver proyectos</span>
                                 </a>
                             </li>
                             <li>
                                 <a ng-click="delegate($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Delegar</span>
+                                    <span class="sidebar-title">Delegar proyecto</span>
                                 </a>
                             </li>
                             <li>
@@ -314,7 +314,7 @@
                     <li ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title" ng-click="ir();">Gestion de Horas</span>
+                            <span class="sidebar-title" ng-click="ir();">Gestion de horas</span>
                             <span class="caret"></span>
                         </a>
                     </li>

@@ -1,7 +1,7 @@
 ﻿<div class="container-fluid">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span><b>Listado Proyectos</b></span>
+            <span><b>Listado de proyectos</b></span>
         </div>
         <div class="panel-body">
             <div id="search" class="pull-right">
@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div id="tableList">
-                <table ng-table="model.tableParams" class="table table-striped bordered table-responsive">
+                <table ng-table="model.tableParams" class="table table-hover">
                     <thead>
                         <tr>
                             <td><b>Nombre</b></td>
@@ -28,7 +28,7 @@
                                 {{project.client.name}}
                             </td>
                             <td>
-                                <span class="glyphicon glyphicon-list-alt" ng-click="viewDetails(project.id)"></span>
+                                <span class="glyphicon glyphicon-list" ng-click="viewDetails(project.id)"></span>
                                 <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project.id)"></span>
                             </td>
                         </tr>

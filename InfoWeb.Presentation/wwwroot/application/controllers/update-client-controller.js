@@ -14,7 +14,7 @@ app.controller("UpdateClientController", ['$scope', '$state', '$stateParams', 'C
 
     $scope.onButtonClicked = function () {
         ClientService.update($scope.model).then(function (response) {
-            $state.go("ClientList");
+            $state.go("clientList");
         }, function (error) { });
     }
 }]);

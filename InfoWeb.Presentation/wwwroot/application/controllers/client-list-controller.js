@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientService', 'NgTableParams', function ($scope, $state, $uibModal, ClientService, NgTableParams) {
+app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, ClientService, $filter,NgTableParams) {
 
     $scope.model = {};
     $scope.search = { term: '' };

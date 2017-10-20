@@ -6,8 +6,8 @@ app.controller("CreateProjectTypesController", ["$scope", '$state', "ProjectType
     $scope.title = "Crear tipo de proyecto";
 
     $scope.onButtonClicked = function () {
-        HourTypeService.create($scope.model).then(function (response) {
-            $state.go("projectsTypeList");
+        ProjectTypesService.create($scope.model).then(function (response) {
+            $state.go("projectTypesList");
         }, function (error) {
 
         });

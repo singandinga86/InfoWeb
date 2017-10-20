@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', 'NgTableParams', function ($scope, $state, $uibModal, HourTypeService, NgTableParams) {
+app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, HourTypeService, $filter, NgTableParams) {
 
     $scope.model = {};
     $scope.search = { term: '' };

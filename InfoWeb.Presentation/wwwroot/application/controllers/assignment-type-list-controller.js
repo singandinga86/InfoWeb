@@ -1,8 +1,11 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal', 'AssignmentTypeService', 'NgTableParams', function ($scope, $state, $uibModal, AssignmentTypeService, NgTableParams) {
+app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal', 'AssignmentTypeService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, AssignmentTypeService, $filter, NgTableParams) {
 
     $scope.model = {};
+    $scope.search = { term: '' };
+    var orderedData = [];
+
 
     var fillTable = function () {
         AssignmentTypeService.getAssignmentTypes().then(function (response) {

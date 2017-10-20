@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'ProjectTypesService', 'NgTableParams', function ($scope, $state, $uibModal, ProjectTypesService, NgTableParams) {
+app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'ProjectTypesService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, ProjectTypesService, $filter,NgTableParams) {
 
     $scope.model = {};
     $scope.search = { term: '' };
@@ -56,7 +56,7 @@ app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'Proj
 
         dialog.result.then(function (result) {
             if (result == true) {
-                HourTypeService.remove(target.id).then(function (response) {
+                ProjectTypesService.remove(target.id).then(function (response) {
                     fillTable();
                 }, function (error) { });
 
