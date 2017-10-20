@@ -2,7 +2,7 @@
 
 app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService) {
     return {
-        getProjectDetails: function (projectId, userId)
+        getProjectDetails: function (userId, projectId)
         {
             return $http({
                 method: 'GET',
@@ -15,6 +15,13 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 method: 'GET', 
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/"
             });
-        }
+        },
+        getUnassignedProjects: function (userId) {
+            return $http({
+                method: 'GET',
+                url: UrlService.getApiUrlPrefix() + userId + "/projects/getUnassignedProjects"
+            });
+        },
+
     }
 }]);

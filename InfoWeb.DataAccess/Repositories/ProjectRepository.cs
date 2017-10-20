@@ -66,5 +66,14 @@ namespace InfoWeb.DataAccess.Repositories
             return base.GetRange(query, skip, take);
 
         }
+
+        public IEnumerable<Project> GetUnassignedProjects(int skip = 0, int take = 0)
+        {
+            var query = (from p in context.Projects
+                        where !context.Assignments.Any(a => a.ProjectId == p.Id)
+                        select p).Include(p => p.Client);
+
+            return base.GetRange(query,skip, take);
+        }
     }
 }
