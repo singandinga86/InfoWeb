@@ -4,12 +4,30 @@
             <span><b>{{title}}</b></span>
         </div>
         <div class="panel-body">
-            <div class="section row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <input class="form-control" type="text" ng-model="role.name" />
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                        <label>Nombre</label>
+                        <input class="form-control" type="text" ng-model="model.name" />
+                </div>
+                <div class="col-md-6">
+                    <label>Seleccione el rol</label>
+                    <select class="form-control" ng-model="model.role" ng-options="role.name for role in roles">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                   
+                        <label>Contraseña:</label>
+                        <input class="form-control" type="password" ng-model="model.password" />
+                   
+                </div>
+                <div class="col-md-6">
+                   
+                        <label>Confirmar Contraseña</label>
+                        <input class="form-control" type="password" ng-model="model.passwordConfirmation" />
+                   
                 </div>
             </div>
             <button ng-click="onButtonClicked()" class="btn btn-primary btn-raised btn-info pull-right">{{acceptButtonCaption}}</button>

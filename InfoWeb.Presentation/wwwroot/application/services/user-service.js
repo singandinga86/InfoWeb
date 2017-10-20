@@ -10,6 +10,15 @@ module.factory("UserListService", ['$http', '$q', 'UrlService', function ($http,
                 url: url
             });
         },
+        getUserById: function (id)
+        {
+            var url = UrlService.getApiUrlPrefix() + "User/" + id;
+
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         getUserAdmin: function () {
             var url = UrlService.getApiUrlPrefix() + "User/listAdmin";
 
@@ -34,20 +43,20 @@ module.factory("UserListService", ['$http', '$q', 'UrlService', function ($http,
                 url: url
             }); 
         },
-        create: function (user) {
+        create: function (userModel) {
             var url = UrlService.getApiUrlPrefix() + 'User';
             return $http({
                 method: 'POST',
                 url: url,
-                data: user
+                data: userModel
             });
         },
-        update: function (user) {
+        update: function (userModel) {
             var url = UrlService.getApiUrlPrefix() + 'User';
             return $http({
                 method: 'PUT',
                 url: url,
-                data: user
+                data: userModel
             });
         },
         remove: function (id) {
