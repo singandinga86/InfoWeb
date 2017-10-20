@@ -96,7 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfoWeb.DataAccess\InfoWeb.DataAccess.csproj" />
-    <ProjectReference Include="..\InfoWeb.DistributedServices\InfoWeb.DistributedServices.csproj" />
     <ProjectReference Include="..\InfoWeb.Domain\InfoWeb.Domain.csproj" />
   </ItemGroup>
 
