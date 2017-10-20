@@ -13,7 +13,6 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
     var userId = AuthenticationService.getCurrentUser().id;
     var projectId = $stateParams.projectId;
 
-
     ProjectService.getProjectDetails(userId, projectId).then(function (response) {
         var data = response.data;
 

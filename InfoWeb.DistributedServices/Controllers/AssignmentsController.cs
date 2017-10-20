@@ -14,7 +14,7 @@ namespace InfoWeb.DistributedServices.Controllers
     [Route("api/user/{userId}/Assignments")]
     public class AssignmentsController: Controller
     {
-        private readonly IAssignmentRepository assigmentRepository;
+        private readonly IAssignmentRepository assignmentRepository;
         private readonly IAssignmentTypeRepository assigmentTypeRepository;
         private readonly IUserRepository userRepository;
         private readonly IHourTypeRepository hourTypeRepository;
@@ -26,7 +26,7 @@ namespace InfoWeb.DistributedServices.Controllers
                                      IHourTypeRepository hourTypeRepository,
                                      IProjectRepository projectRepository)
         {
-            this.assigmentRepository = assigmentRepository;
+            this.assignmentRepository = assigmentRepository;
             this.assigmentTypeRepository = assigmentTypeRepository;
             this.userRepository = userRepository;
             this.hourTypeRepository = hourTypeRepository;
@@ -36,7 +36,7 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpGet()]
         public IEnumerable<Assignment> GetAssignments([FromRoute]int userId)
         {
-            IEnumerable<Assignment> result = assigmentRepository.GetAssignmentsAssignedTo(userId);
+            IEnumerable<Assignment> result = assignmentRepository.GetAssignmentsAssignedTo(userId);
             return result;
         }
 
@@ -44,7 +44,7 @@ namespace InfoWeb.DistributedServices.Controllers
         public void CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         { 
             User assignator = userRepository.GetById(userId);
-            Assignment assigmentUpdate = assigmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+            Assignment assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
 
             IEnumerable<AssignmentType> typesAssigment = assigmentTypeRepository.GetAll();
             Assignment assigmentAdd = null;
@@ -77,13 +77,13 @@ namespace InfoWeb.DistributedServices.Controllers
                     };
                 }
 
-                assigmentRepository.Add(assigmentAdd);
+                assignmentRepository.Add(assigmentAdd);
             }
             else
             {
                 assigmentUpdate.Hours += assignment.Hours;
 
-                assigmentRepository.Update(assigmentUpdate);
+                assignmentRepository.Update(assigmentUpdate);
             }  
         }
 
@@ -101,7 +101,7 @@ namespace InfoWeb.DistributedServices.Controllers
                 && assignator != null && project != null && hourType != null
                 && assignmentType != null && hours > 0)
             {
-                Assignment targetAssignment = assigmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+                Assignment targetAssignment = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
 
                 if(targetAssignment == null)
                 {
@@ -114,7 +114,7 @@ namespace InfoWeb.DistributedServices.Controllers
                         Date = DateTime.Now,
                         Project = project
                     };
-                    assigmentRepository.Add(targetAssignment);
+                    assignmentRepository.Add(targetAssignment);
                     Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 else
@@ -122,7 +122,7 @@ namespace InfoWeb.DistributedServices.Controllers
                     if(targetAssignment.Assignator.Id == assignator.Id)
                     {
                         targetAssignment.Hours += hours;
-                        assigmentRepository.Update(targetAssignment);
+                        assignmentRepository.Update(targetAssignment);
                         Response.StatusCode = (int)HttpStatusCode.Created;
                     }
                     else
@@ -138,6 +138,36 @@ namespace InfoWeb.DistributedServices.Controllers
 
         }
 
+        [HttpPost("project")]
+        public void AssignProject([FromBody]AssignProjectInputModel model, [FromRoute]int userId)
+        {
+            var assignee = userRepository.GetById(model.AssigneeId);
+            var assignator = userRepository.GetById(userId);
+            var assignmentType = assigmentTypeRepository.GetByName("Delegar proyecto");
+            var project = projectRepository.GetById(model.ProjectId);
+
+            if (assignee != null && assignator != null &&
+                assignee.Role.Name == "OM" && assignator.Role.Name == "Admin"
+                && project != null && assignmentType != null)
+            {
+                var assignment = new Assignment()
+                {
+                    Assignee = assignee,
+                    Assignator = assignator,
+                    HourType = null,
+                    AssignmentType = assignmentType,
+                    Date = DateTime.Now,
+                    Project = project,
+                };
+
+                assignmentRepository.Add(assignment);
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
         //[HttpGet("Hours")]
         //public IEnumerable<Assignment> GetHours(int userId)
         //{
@@ -145,7 +175,7 @@ namespace InfoWeb.DistributedServices.Controllers
         //    return result;
         //}
 
-     
+
 
     }
 }

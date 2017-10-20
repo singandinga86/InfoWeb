@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using InfoWeb.DistributedServices.Models;
-using System.Net.Http;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
+using InfoWeb.DistributedServices.InputModels;
 
 namespace InfoWeb.DistributedServices.Controllers
 {
@@ -19,6 +20,7 @@ namespace InfoWeb.DistributedServices.Controllers
         private IInfoWebQueryModel queryModel;
         public ProjectController(IProjectRepository projectRepository, 
                                     IUserRepository userRepository,
+                                    IAssignmentRepository assignmentRepository,
                                     IInfoWebQueryModel queryModel)
         {
             this.projectRepository = projectRepository;
@@ -29,10 +31,26 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpGet]
         public IEnumerable<Project> GetProjectsForUser([FromRoute]int userId)
         {
-            var projects = projectRepository.GetProjectsAssignedTo(userId);
-            foreach(var p in projects)
+            var user = userRepository.GetById(userId);
+            IEnumerable<Project> projects = null;
+            if (user != null)
             {
-                p.Client.Projects = null;
+                if (user.Role.Name == "Admin")
+                {
+                    projects = projectRepository.GetAll();
+                }
+                else
+                {
+                    projects = projectRepository.GetProjectsAssignedTo(userId);
+                }
+                foreach (var p in projects)
+                {
+                    p.Client.Projects = null;
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             return projects;
         }
@@ -66,8 +84,18 @@ namespace InfoWeb.DistributedServices.Controllers
 
             result.Project.Assignments = null;
 
+            return result;            
+        }
+
+        [HttpGet("getUnassignedProjects")]
+        public IEnumerable<Project> GetUnassignedProjects()
+        {
+            var result = projectRepository.GetUnassignedProjects();
+            foreach(var p in result)
+            {
+                p.Client.Projects = null;
+            }
             return result;
-            
         }
 
         private IEnumerable<ProjectDetailsUserAssigmentViewModel> getProjectDetailsforUser(User user, int projectId)

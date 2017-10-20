@@ -11,5 +11,7 @@ namespace InfoWeb.Domain.Interfaces
         IQueryable<Project> Projects { get; }
         IEnumerable<Project> GetProjectsAssignedBy(int userId, int skip = 0, int take = 0);
         IEnumerable<Project> GetProjectsAssignedTo(int userId, int skip = 0, int take = 0);
+
+        IEnumerable<Project> GetUnassignedProjects(int skip = 0, int take = 0);
     }
 }

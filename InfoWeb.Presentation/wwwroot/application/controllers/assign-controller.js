@@ -1,9 +1,11 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectAssignController", ['$scope', 'ProjectService', 'AuthenticationService', 'UserListService', function ($scope, ProjectService, AuthenticationService, UserListService) {
+app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService', 'AuthenticationService', 'UserListService', 'AssignmentService',
+    function ($scope, $state, ProjectService, AuthenticationService, UserListService, AssignmentService) {
 
+    $scope.model = {}
 
-    ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
+    ProjectService.getUnassignedProjects(AuthenticationService.getCurrentUser().id).then(function (response) {
 
         $scope.projects = response.data;       
     },
@@ -11,7 +13,7 @@ app.controller("ProjectAssignController", ['$scope', 'ProjectService', 'Authenti
 
         });
 
-    UserListService.getUser().then(function (response) {
+    UserListService.getOMUsers().then(function (response) {
         
         $scope.users = response.data;
 
@@ -21,9 +23,9 @@ app.controller("ProjectAssignController", ['$scope', 'ProjectService', 'Authenti
  
 
     $scope.assignProject = function () {
-
-        console.log($scope.selectedProject.id, $scope.selectedUser.id);
-
+        AssignmentService.createProjectAssignment($scope.model).then(function (response) {
+            $state.go('projectList');
+        }, function (error) { });
     };
 
 }]);
