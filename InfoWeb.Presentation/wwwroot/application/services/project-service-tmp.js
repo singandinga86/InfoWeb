@@ -22,6 +22,13 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/getUnassignedProjects"
             });
         },
+        removeProject: function (userId, projectId)
+        {
+            return $http({
+                method: 'DELETE',
+                url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId
+            });
+        }
 
     }
 }]);

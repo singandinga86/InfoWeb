@@ -14,7 +14,7 @@ app.controller("UpdateAssignmentTypeController", ['$scope', '$state', '$statePar
 
     $scope.onButtonClicked = function () {
         AssignmentTypeService.update($scope.model).then(function (response) {
-            $state.go("hourTypeList");
+            $state.go("assignmentTypeList");
         }, function (error) { });
     }
 }]);

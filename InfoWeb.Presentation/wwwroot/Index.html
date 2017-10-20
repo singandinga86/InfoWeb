@@ -310,14 +310,21 @@
                             </li>
                         </ul>
                     </li>
-                    <li ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
+                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
                         <a>
                             <span class="glyphicon glyphicon-home"></span>
                             <span class="sidebar-title" ng-click="ir();">Gestion de horas</span>
                             <span class="caret"></span>
                         </a>
+                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                            <li>
+                                <a ng-click="assignHours($event);">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="sidebar-title">Asignar horas</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-
                 </ul>
             </div>
         </aside>

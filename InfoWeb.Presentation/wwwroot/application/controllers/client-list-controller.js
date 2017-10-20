@@ -8,7 +8,6 @@ app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientServ
 
     var fillTable = function () {
         ClientService.getCliente().then(function (response) {
-            console.log(response);
             $scope.model.tableParams = new NgTableParams({
                 page: 1,
                 count: 6,

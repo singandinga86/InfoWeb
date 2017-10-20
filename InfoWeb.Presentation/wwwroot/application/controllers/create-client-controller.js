@@ -7,7 +7,7 @@ app.controller("CreateClientController", ["$scope", '$state', "ClientService", f
 
     $scope.onButtonClicked = function () {
         ClientService.create($scope.model).then(function (response) {
-            $state.go("ClientList");
+            $state.go("clientList");
         }, function (error) {
 
             });

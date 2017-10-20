@@ -13,12 +13,12 @@ using InfoWeb.DistributedServices.InputModels;
 namespace InfoWeb.DistributedServices.Controllers
 {
     [Route("api/{userId}/Projects")]
-    public class ProjectController: Controller
+    public class ProjectController : Controller
     {
         private IProjectRepository projectRepository;
         private IUserRepository userRepository;
         private IInfoWebQueryModel queryModel;
-        public ProjectController(IProjectRepository projectRepository, 
+        public ProjectController(IProjectRepository projectRepository,
                                     IUserRepository userRepository,
                                     IAssignmentRepository assignmentRepository,
                                     IInfoWebQueryModel queryModel)
@@ -76,7 +76,7 @@ namespace InfoWeb.DistributedServices.Controllers
             result.User = user;
             result.Project = project;
 
-            if(user != null && project != null)
+            if (user != null && project != null)
             {
                 result.Details = getProjectDetailsforUser(user, projectId);
                 result.Assignments = getAssignmentsMadeToUserInProject(userId, projectId);
@@ -84,18 +84,32 @@ namespace InfoWeb.DistributedServices.Controllers
 
             result.Project.Assignments = null;
 
-            return result;            
+            return result;
         }
 
         [HttpGet("getUnassignedProjects")]
         public IEnumerable<Project> GetUnassignedProjects()
         {
             var result = projectRepository.GetUnassignedProjects();
-            foreach(var p in result)
+            foreach (var p in result)
             {
                 p.Client.Projects = null;
             }
             return result;
+        }
+
+        [HttpDelete("{id}")]
+        public void Remove([FromRoute] int id)
+        {
+            var project = projectRepository.GetById(id);
+            if(project != null)
+            {
+                projectRepository.Remove(project);
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
         }
 
         private IEnumerable<ProjectDetailsUserAssigmentViewModel> getProjectDetailsforUser(User user, int projectId)
