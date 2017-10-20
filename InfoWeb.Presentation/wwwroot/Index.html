@@ -77,7 +77,6 @@
             $rootScope.$on("userAuthenticated", function (event, user) {
                 $scope.currentUser = user;
                 $state.go('projectList');
-                console.log(user);
             });
 
             $scope.listUser = function ($event) {

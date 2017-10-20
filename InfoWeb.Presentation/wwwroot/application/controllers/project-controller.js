@@ -5,6 +5,7 @@ app.controller("ProjectController",
         function ($scope, $uibModal,ProjectService, AuthenticationService, $state, $filter, NgTableParams) {
 
 
+            $scope.currentUser = AuthenticationService.getCurrentUser();
     ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
 
         $scope.model = {};
