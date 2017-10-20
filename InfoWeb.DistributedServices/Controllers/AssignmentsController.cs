@@ -20,6 +20,7 @@ namespace InfoWeb.DistributedServices.Controllers
         private readonly IHourTypeRepository hourTypeRepository;
         private readonly IProjectRepository projectRepository;
 
+
         public AssignmentsController(IAssignmentRepository assigmentRepository,
                                      IAssignmentTypeRepository assigmentTypeRepository,
                                      IUserRepository userRepository,
@@ -44,7 +45,12 @@ namespace InfoWeb.DistributedServices.Controllers
         public void CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         { 
             User assignator = userRepository.GetById(userId);
-            Assignment assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+            Assignment assigmentUpdate = null;
+            List<HourType> HourTypes = (List<HourType>)hourTypeRepository.GetAll();
+          
+            if (assignment.HourType != null)
+                 assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+           
 
             IEnumerable<AssignmentType> typesAssigment = assigmentTypeRepository.GetAll();
             Assignment assigmentAdd = null;
