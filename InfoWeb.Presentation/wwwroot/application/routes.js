@@ -38,7 +38,7 @@
         authenticate: true
     });
     $stateProvider.state('updateUser', {
-        templateUrl: "application/views/user/role-input.html",
+        templateUrl: "application/views/user/user-input.html",
         controller: 'UpdateUserController',
         url: "/users/update/:userId",
         authenticate: true

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Interfaces;
 using InfoWeb.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using InfoWeb.Presentation.InputModels;
+using System.Net;
 
 namespace InfoWeb.DistributedServices.Controllers
 {
@@ -14,9 +16,12 @@ namespace InfoWeb.DistributedServices.Controllers
     public class UserController: Controller
     {
         private readonly IUserRepository userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IRoleRepository roleRepository;
+
+        public UserController(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
         }
 
         [HttpPost("login")]
@@ -63,6 +68,104 @@ namespace InfoWeb.DistributedServices.Controllers
         public IEnumerable<User> GetOpManagers()
         {
             return userRepository.getUsersByRoleName("OM");
+        }
+
+        [HttpGet("{id}")]
+        public User GetUserById([FromRoute]int id)
+        {
+            return userRepository.GetById(id);
+        }
+
+        [HttpPost]
+        public void Add([FromBody]UserInputModel userData)
+        {
+            if(ValidateUserInput(userData))
+            {
+                var role = roleRepository.GetById(userData.Role.Id);
+                if(role != null)
+                {
+                    var user = new User()
+                    {
+                        Name = userData.Name,
+                        Password = userData.Password,
+                        Role = userData.Role
+                    };
+
+                    try {
+                        userRepository.Add(user);
+                        Response.StatusCode = (int)HttpStatusCode.Created;
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
+        [HttpPut]
+        public void Update([FromBody]UserInputModel userData)
+        {
+            if (ValidateUserInput(userData))
+            {
+                var role = roleRepository.GetById(userData.Role.Id);
+                var user = userRepository.GetById(userData.Id);
+
+                if(user != null && role != null)
+                {
+                    user.Name = userData.Name;
+                    user.Role = role;
+                    user.Password = userData.Password;
+
+                    try
+                    {
+                        userRepository.Update(user);
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public void Remove([FromRoute]int id)
+        {
+            var user = userRepository.GetById(id);
+            if(user != null)
+            {
+                userRepository.Remove(user);
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
+        private bool ValidateUserInput(UserInputModel userData)
+        {
+            return (userData != null 
+                && userData.Password == userData.PasswordConfirmation
+                && userData.Password.Trim().Length > 0
+                && userData.Name.Trim().Length > 0
+                && userData.Role != null);
         }
 
     }
