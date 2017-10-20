@@ -25,6 +25,30 @@ module.factory("UserListService", ['$http', '$q', 'UrlService', function ($http,
                 method: 'GET',
                 url: url
             }); 
+        },
+        create: function (user) {
+            var url = UrlService.getApiUrlPrefix() + 'User';
+            return $http({
+                method: 'POST',
+                url: url,
+                data: user
+            });
+        },
+        update: function (user) {
+            var url = UrlService.getApiUrlPrefix() + 'User';
+            return $http({
+                method: 'PUT',
+                url: url,
+                data: user
+            });
+        },
+        remove: function (id) {
+            var url = UrlService.getApiUrlPrefix() + 'User/' + id;
+            return $http({
+                method: 'DELETE',
+                url: url,
+                data: id
+            });
         }
     }
 }]);

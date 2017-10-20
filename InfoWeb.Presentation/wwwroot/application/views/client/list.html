@@ -1,0 +1,42 @@
+﻿<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>Listado de clientes</b></span>
+        </div>
+        <div class="panel-body">
+            <div id="search" class="pull-right">
+                <div class="inner-addon left-addon">
+                    <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+                    <i class="glyphicon glyphicon-search"></i>
+                </div>
+            </div>
+            <div class="pull-left">
+                <button class="btn btn-success btn-raised btn-info" ng-click="onCreateClicked()"><span class="glyphicon glyphicon-plus">Nuevo</span></button>
+            </div>
+
+
+            <div id="tableList" class="ng-table-responsive">
+                <table ng-table="model.tableParams" class="table striped bordered" id="rolTable">
+                    <thead>
+                        <tr>
+                            <td><b>Nombre</b></td>
+                            <td><b>Opciones</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="client in $data">
+                            <td>
+                                {{client.name}}
+                            </td>
+                            <td>
+                                <span>
+                                    <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(client.id)"></span>
+                                    <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(client.id)"></span>
+                                </span>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

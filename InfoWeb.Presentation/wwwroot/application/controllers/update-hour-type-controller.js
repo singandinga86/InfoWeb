@@ -6,7 +6,7 @@ app.controller("UpdateHourTypeController", ['$scope', '$state', '$stateParams', 
     $scope.model = {};
 
     $scope.acceptButtonCaption = "Actualizar";
-    $scope.title = "Actualizar Rol";
+    $scope.title = "Actualizar Tipo de Hora";
 
     HourTypeService.getHourType(id).then(function (response) {
         $scope.model = response.data;

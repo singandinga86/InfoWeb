@@ -3,6 +3,8 @@
 app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', 'NgTableParams', function ($scope, $state, $uibModal, HourTypeService, NgTableParams) {
 
     $scope.model = {};
+    $scope.search = { term: '' };
+    var orderedData = [];
 
     var fillTable = function ()
     {

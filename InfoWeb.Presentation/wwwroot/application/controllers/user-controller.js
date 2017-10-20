@@ -14,7 +14,8 @@ app.controller("UserListController", ['$scope', 'UserListService', '$filter', 'N
             count: 6,
 
             filter: $scope.search
-        }, {
+        },
+            {
                 total: response.data.length,
                 getData: function (params) {
 
@@ -32,8 +33,42 @@ app.controller("UserListController", ['$scope', 'UserListService', '$filter', 'N
             }
         );
 
-    }, function (error) {
+    },
+        function (error) {
 
-    });
+            fillTable();
 
+            $scope.onCreateClicked = function () {
+                $state.go("createUser");
+            }
+
+            $scope.onEditClicked = function (id) {
+                $state.go('updateUser', { userId: id })
+            }
+
+            $scope.onRemoveClicked = function (user) {
+                var dialog = $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'application/views/user/remove-modal.html',
+                    controller: "RemoveUserDialogController",
+                    resolve: {
+                        targetRole: function () { return user; }
+                    }
+                });
+
+                dialog.result.then(function (result) {
+                    if (result == true) {
+                        UserListService.remove(user.id).then(function (response) {
+                            fillTable();
+                        }, function (error) { });
+
+                    }
+                }, function () {
+
+                });
+
+            }
+        });
 }]);

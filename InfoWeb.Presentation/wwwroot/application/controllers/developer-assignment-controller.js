@@ -28,7 +28,6 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    {
 
                        AssignmentService.createTechnicianAssignment($scope.assignment).then(function (response) {
-                           console.log("pincha");
                        }, function (error) {
                        });
                    }

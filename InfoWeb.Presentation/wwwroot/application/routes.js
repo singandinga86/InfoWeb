@@ -31,6 +31,19 @@
         authenticate: true
     });
 
+    $stateProvider.state('createUser', {
+        templateUrl: "application/views/user/user-input.html",
+        controller: 'CreateUserController',
+        url: "/users/create",
+        authenticate: true
+    });
+    $stateProvider.state('updateUser', {
+        templateUrl: "application/views/user/role-input.html",
+        controller: 'UpdateUserController',
+        url: "/users/update/:userId",
+        authenticate: true
+    });
+
     $stateProvider.state('assign', {
         templateUrl: "application/views/project/assign.html",
         controller: 'ProjectAssignController',
@@ -82,37 +95,83 @@
     $stateProvider.state('hourTypeList', {
         templateUrl: "application/views/hour-type/list.html",
         controller: 'HourTypesController',
-        url: "/hourtypes"
+        url: "/hourtypes",
+        authenticate: true
     }); 
 
     $stateProvider.state('createHourType', {
         templateUrl: "application/views/hour-type/hour-type-input.html",
         controller: 'CreateHourTypeController',
-        url: "/hourtypes/create"
+        url: "/hourtypes/create",
+        authenticate: true
     }); 
 
     $stateProvider.state('updateHourType', {
         templateUrl: "application/views/hour-type/hour-type-input.html",
         controller: 'UpdateHourTypeController',
-        url: "/hourtypes/:id/update"
+        url: "/hourtypes/:id/update",
+        authenticate: true
     }); 
 
     $stateProvider.state('assignmentTypeList', {
         templateUrl: "application/views/assignment-type/list.html",
         controller: 'AssignmentTypeListController',
-        url: "/assignmenttypes"
+        url: "/assignmenttypes",
+        authenticate: true
     });
 
     $stateProvider.state('createAssignmentType', {
         templateUrl: "application/views/assignment-type/assignment-type-input.html",
         controller: 'CreateAssignmentTypeController',
-        url: "/hourtypes/create"
+        url: "/hourtypes/create",
+        authenticate: true
     });
 
     $stateProvider.state('updateAssignmentType', {
         templateUrl: "application/views/assignment-type/assignment-type-input.html",
         controller: 'UpdateAssignmentTypeController',
-        url: "/hourtypes/:id/update"
+        url: "/hourtypes/:id/update",
+        authenticate: true
+    }); 
+    $stateProvider.state('clientList', {
+        templateUrl: "application/views/client/list.html",
+        controller: 'ClientController',
+        url: "/client",
+        authenticate: true
+    });
+
+    $stateProvider.state('createClient', {
+        templateUrl: "application/views/client/client-input.html",
+        controller: 'CreateClientController',
+        url: "/client/create",
+        authenticate: true
+    });
+
+    $stateProvider.state('updateClient', {
+        templateUrl: "application/views/client/client-input.html",
+        controller: 'UpdateClientController',
+        url: "/client/:id/update",
+        authenticate: true
+    }); 
+    $stateProvider.state('projectTypesList', {
+        templateUrl: "application/views/project-types/list.html",
+        controller: 'ProjectTypesController',
+        url: "/projecttypes",
+        authenticate: true
+    });
+
+    $stateProvider.state('createProjectTypes', {
+        templateUrl: "application/views/project-types/project-types-input.html",
+        controller: 'CreateProjectTypesController',
+        url: "/projecttypes/create",
+        authenticate: true
+    });
+
+    $stateProvider.state('updateProjectTypes', {
+        templateUrl: "application/views/project-types/project-types-input.html",
+        controller: 'UpdateProjectTypesController',
+        url: "/projecttypes/:id/update",
+        authenticate: true
     }); 
 
     /*$stateProvider.state('tree', {

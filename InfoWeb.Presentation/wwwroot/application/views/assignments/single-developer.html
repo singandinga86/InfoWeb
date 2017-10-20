@@ -2,13 +2,13 @@
 <div class="container-fluid">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span>Asignar horas a un desarrollador</span>
+            <span><b>Asignar horas a un desarrollador</b></span>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
                     <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects">
-                        <option value="">Seleccione proycto</option>
+                        <option value="">Seleccione proyecto</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes">
-                        <option value="">Seleccione Hora</option>
+                        <option value="">Seleccione Tipo de Hora</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -29,7 +29,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <button class="btn btn-primary" ng-click="create();">Asignar </button>
+                    <button class="btn btn-primary btn-raised btn-info"  ng-click="create();">Asignar </button>
                 </div>
             </div>
         </div>

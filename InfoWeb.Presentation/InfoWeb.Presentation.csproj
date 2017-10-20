@@ -6,9 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\application\views\hh\**" />
+    <Content Remove="wwwroot\application\views\hh\**" />
+    <EmbeddedResource Remove="wwwroot\application\views\hh\**" />
+    <None Remove="wwwroot\application\views\hh\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\application\controllers\assignment-type-list-controller.js" />
+    <Content Include="wwwroot\application\controllers\client-list-controller.js" />
     <Content Include="wwwroot\application\controllers\create-assignment-type-controller.js" />
+    <Content Include="wwwroot\application\controllers\create-client-controller.js" />
     <Content Include="wwwroot\application\controllers\create-hour-type-controller.js" />
+    <Content Include="wwwroot\application\controllers\create-project-types-controller.js" />
     <Content Include="wwwroot\application\controllers\create-role-controller.js" />
     <Content Include="wwwroot\application\controllers\assign-controller.js" />
     <Content Include="wwwroot\application\controllers\delegate-controller.js" />
@@ -17,14 +27,21 @@
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
     <Content Include="wwwroot\application\controllers\project-details-controller.js" />
+    <Content Include="wwwroot\application\controllers\project-types-list-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-assignment-type-dialog-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-client-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-hour-type-modal-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-project-types-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-user-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\role-list-controller.js" />
     <Content Include="wwwroot\application\controllers\update-assignment-type-controller.js" />
+    <Content Include="wwwroot\application\controllers\update-client-controller.js" />
     <Content Include="wwwroot\application\controllers\update-hour-type-controller.js" />
+    <Content Include="wwwroot\application\controllers\update-project-types-controller.js" />
     <Content Include="wwwroot\application\controllers\update-role-controller.js" />
+    <Content Include="wwwroot\application\controllers\update-user-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
     <Content Include="wwwroot\application\directives\tree-detail-view\details-directive.js" />
     <Content Include="wwwroot\application\directives\tree-detail-view\details.html" />
@@ -34,9 +51,11 @@
     <Content Include="wwwroot\application\routes.js" />
     <Content Include="wwwroot\application\services\assignment-type-service.js" />
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
+    <Content Include="wwwroot\application\services\client-service.js" />
     <Content Include="wwwroot\application\services\hour-type-service.js" />
     <Content Include="wwwroot\application\services\project-service-tmp.js" />
     <Content Include="wwwroot\application\services\project-service.js" />
+    <Content Include="wwwroot\application\services\project-types-service.js" />
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
@@ -48,6 +67,10 @@
     <Content Include="wwwroot\application\views\hour-type\hour-type-input.html" />
     <Content Include="wwwroot\application\views\hour-type\list.html" />
     <Content Include="wwwroot\application\views\hour-type\remove-modal.html" />
+    <Content Include="wwwroot\application\views\project-types\htmlpage.html" />
+    <Content Include="wwwroot\application\views\project-types\list.html" />
+    <Content Include="wwwroot\application\views\project-types\project-types-input.html" />
+    <Content Include="wwwroot\application\views\project-types\remove-modal.html" />
     <Content Include="wwwroot\application\views\project\assign.html" />
     <Content Include="wwwroot\application\views\project\delegate.html" />
     <Content Include="wwwroot\application\views\project\list.html" />
@@ -55,6 +78,7 @@
     <Content Include="wwwroot\application\views\role\list.html" />
     <Content Include="wwwroot\application\views\role\remove-modal.html" />
     <Content Include="wwwroot\application\views\role\role-input.html" />
+    <Content Include="wwwroot\application\views\user\htmlpage.html" />
     <Content Include="wwwroot\application\views\user\list.html" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />
@@ -71,6 +95,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfoWeb.DataAccess\InfoWeb.DataAccess.csproj" />
+    <ProjectReference Include="..\InfoWeb.DistributedServices\InfoWeb.DistributedServices.csproj" />
     <ProjectReference Include="..\InfoWeb.Domain\InfoWeb.Domain.csproj" />
   </ItemGroup>
 
