@@ -50,7 +50,7 @@ app.controller("ProjectDelegateController",
     };
 
     $scope.send = function () {
-        console.log($scope.assignment.project.project);
+        //console.log($scope.assignment.project.project);
         $scope.assignment.project =  $scope.assignment.project;
         AssignmentService.createAssigment($scope.assignment).then(function (response) {           
             $scope.assignment = {};

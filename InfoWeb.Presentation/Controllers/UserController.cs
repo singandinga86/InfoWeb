@@ -79,7 +79,7 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPost]
         public void Add([FromBody]UserInputModel userData)
         {
-            if(ValidateUserInput(userData))
+            if(ModelState.IsValid)
             {
                 var role = roleRepository.GetById(userData.Role.Id);
                 if(role != null)
@@ -114,7 +114,7 @@ namespace InfoWeb.DistributedServices.Controllers
         [HttpPut]
         public void Update([FromBody]UserInputModel userData)
         {
-            if (ValidateUserInput(userData))
+            if (ModelState.IsValid)
             {
                 var role = roleRepository.GetById(userData.Role.Id);
                 var user = userRepository.GetById(userData.Id);
@@ -159,14 +159,14 @@ namespace InfoWeb.DistributedServices.Controllers
             }
         }
 
-        private bool ValidateUserInput(UserInputModel userData)
+       /* private bool ValidateUserInput(UserInputModel userData)
         {
             return (userData != null 
                 && userData.Password == userData.PasswordConfirmation
                 && userData.Password.Trim().Length > 0
                 && userData.Name.Trim().Length > 0
                 && userData.Role != null);
-        }
+        }*/
 
     }
 }
