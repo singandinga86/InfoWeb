@@ -6,17 +6,21 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <label>Proyecto</label>
                     <select class="form-control" ng-model="model.project" ng-options="project.name for project in projects">
                         <option value="">Seleccione Proyecto</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <label>Usuario</label>
                     <select class="form-control" ng-model="model.assignee" ng-options=" user.name for user in users">
                         <option value="">Seleccione Usuario</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <button class="btn btn-primary btn-raised pull-right btn-info" ng-click="assignProject();">Asignar </button>
                 </div>
             </div>
