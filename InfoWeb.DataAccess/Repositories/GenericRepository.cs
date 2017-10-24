@@ -37,7 +37,7 @@ namespace InfoWeb.DataAccess.Repositories
         }
         protected IEnumerable<T> GetRange(IQueryable<T> sourceQuery, int skip = 0, int take = 0)
         {
-            if(skip < 0)
+           /* if(skip < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(skip));
             }
@@ -51,8 +51,8 @@ namespace InfoWeb.DataAccess.Repositories
             if(take > 0)
             {
                 query = query.Take(take);
-            }
-            return query.ToList();
+            }*/
+            return sourceQuery.ToList();
         }
 
         protected void CheckIfEntityIsValid(T entity)

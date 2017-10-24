@@ -7,11 +7,13 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
+                    <label>Proyecto</label>
                     <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects">
                         <option value="">Seleccione proyecto</option>
                     </select>
                 </div>
                 <div class="col-md-6">
+                    <label>Usuario</label>
                     <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in technicians">
                         <option value="">Seleccione usuario</option>
                     </select>
@@ -19,11 +21,13 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
+                    <label>Tipo de hora</label>
                     <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes">
                         <option value="">Seleccione tipo de hora</option>
                     </select>
                 </div>
                 <div class="col-md-6">
+                    <label>Horas</label>
                     <input type="text" class="form-control" ng-model="assignment.hours" />
                 </div>
             </div>
