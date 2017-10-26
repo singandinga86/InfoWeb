@@ -40,7 +40,7 @@
 
                 services.AddDbContext<InfoWebDatabaseContext>(options =>
                 {
-                    options.UseSqlServer(connectionString);
+                    options.UseSqlServer(connectionString,op => op.UseRowNumberForPaging());
                 });
                 services.AddScoped<IUserRepository, UserRepository>();
                 services.AddScoped<IProjectRepository, ProjectRepository>();

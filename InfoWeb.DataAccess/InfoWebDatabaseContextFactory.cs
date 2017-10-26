@@ -20,7 +20,7 @@ namespace InfoWeb.DataAccess
 
             var optionsBuilder = new DbContextOptionsBuilder<InfoWebDatabaseContext>();
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionString, op => op.UseRowNumberForPaging());
 
             return new InfoWebDatabaseContext(optionsBuilder.Options);
 
