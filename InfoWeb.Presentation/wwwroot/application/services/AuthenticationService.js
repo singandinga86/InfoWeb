@@ -1,6 +1,6 @@
 ﻿var module = angular.module("InfoWeb");
 
-module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
+module.factory("AuthenticationService", ['$http', '$q', '$window', 'UrlService', function ($http, $q, $window, UrlService) {
 
     var currentUser = null;
 
@@ -17,6 +17,7 @@ module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function (
                 }
             }).then(function (response) {
                 currentUser = response.data;
+                $window.sessionStorage.setItem("user", JSON.stringify(currentUser));
                 deferred.resolve(response);
             },
             function (error) {
@@ -27,7 +28,22 @@ module.factory("AuthenticationService", ['$http', '$q', 'UrlService', function (
 
         getCurrentUser: function ()
         {
+            if (currentUser == null)
+            {
+                $userString = $window.sessionStorage.getItem("user");
+                $user = JSON.parse($userString);
+
+                if ($user && $user.name && $user.role.name)
+                {
+                    currentUser = $user;
+                }
+            }
             return currentUser;
+        },
+
+        logout: function ()
+        {
+            $window.sessionStorage.removeItem("user");
         }
     }
 }]);
