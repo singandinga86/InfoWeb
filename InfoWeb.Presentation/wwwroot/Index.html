@@ -52,7 +52,7 @@
 
     <script src="application/routes.js"></script>
     <script type="text/javascript">
-        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router','ngTable']);
+        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router','ngTable',]);
         app.config(function ($stateProvider) {
             configureRoutes($stateProvider);
         });
@@ -70,9 +70,12 @@
             });
         });
 
-        app.controller("MainController", ["$scope", '$rootScope', '$state', function ($scope, $rootScope, $state) {
+        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService',
+            function ($scope, $rootScope, $state, AuthenticationService) {
             $scope.currentUser = null;
             $scope.open = false;
+
+            $scope.currentUser = AuthenticationService.getCurrentUser();
 
             $rootScope.$on("userAuthenticated", function (event, user) {
                 $scope.currentUser = user;
@@ -202,7 +205,7 @@
         <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
             <div class="navbar-branding">
                 <h2>
-                    <a href="#" style="margin-left:20px">InfoWeb</a>
+                    <a href="javascript:void(0)" style="margin-left:20px">InfoWeb</a>
                 </h2>
             </div>
             <ul class="nav navbar navbar-right" style="background-color:transparent">
