@@ -250,6 +250,12 @@
                         </a>
                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
                             <li>
+                                <a ng-click="listProject($event);">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="sidebar-title">Ver proyectos</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a ng-click="asignar($event);">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                     <span class="sidebar-title">Asignar proyectos</span>
