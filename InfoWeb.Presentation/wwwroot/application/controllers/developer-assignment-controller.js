@@ -8,11 +8,12 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    var assignator = AuthenticationService.getCurrentUser();
                    
                    ProjectService.getProjectsForUser(assignator.id).then(function (response) {
-                       $scope.projects = response.data;
+                       $scope.projects = response.data;                       
                    }, function (error) { });
 
                    UserListService.getTechnicians().then(function (response) {
-                       $scope.technicians = response.data;
+                       $scope.users = response.data;
+                       $scope.assignment.user = response.data[0].value;
                    }, function (error) { });
 
                    AssignmentService.getHoursType().then(function (response) {
@@ -20,8 +21,7 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    }, function (error) { });
 
                    $scope.assignment = {
-                       user: assignator,
-                       hours : 20
+                       user: assignator                     
                    };
 
                    $scope.create = function ()

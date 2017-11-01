@@ -9,6 +9,7 @@ using InfoWeb.DistributedServices.Models;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using InfoWeb.DistributedServices.InputModels;
+using InfoWeb.Presentation.InputModels;
 
 namespace InfoWeb.DistributedServices.Controllers
 {
@@ -157,7 +158,72 @@ namespace InfoWeb.DistributedServices.Controllers
                 .ToList();
         }
 
+        [HttpGet("search/{searchValue}")]
+        public IEnumerable<Project> searchProject([FromRoute]string searchValue)
+        {
+            return projectRepository.SearchProject(searchValue);
 
+        }
 
+        [HttpPost]
+        public void Create([FromBody]ProjectInputModel projectInputModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Project project = new Project() {
+                       ClientId = projectInputModel.Client.Id,
+                       TypeId = projectInputModel.ProjectType.Id,
+                        Name = projectInputModel.Name
+                    };
+                    projectRepository.Add(project);
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                }
+                catch (Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
+        [HttpPut]
+        public void Update([FromBody]Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                var targetProject = projectRepository.GetById(project.Id);
+                if (targetProject != null)
+                {
+                    targetProject.Name = project.Name;
+                    try
+                    {
+                        projectRepository.Update(targetProject);
+                    }
+                    catch (Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+        }
+
+        [HttpGet("{projectId}/getProject")]
+        public Project GetProject(int projectId)
+        {
+            return projectRepository.GetById(projectId);
+        }
     }
 }

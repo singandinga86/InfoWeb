@@ -25,7 +25,8 @@ body {
 #headerStyle {
     background-color: #3498db !important;
     color: #e1f0fa;
-    border: none
+    border: none;
+    margin-top:-10px;
 }
 .navbar-branding {
     position: relative;
@@ -78,7 +79,7 @@ a:hover {
     /* Navbar shadow option - Only allowed on default white navbar */
 }
 #content {
-    padding: 15px 8px 40px 250px;
+    padding: 15px 8px 40px 15px;
     margin-top:60px;
 }
 
@@ -146,30 +147,6 @@ table{
 #search {
     margin-bottom: 10px !important;
 }
-
-
-/*.menuVisible {
-    width: 0px;
-    height: auto;
-    background-color: #ccc;
-    position: fixed;
-    left: 0;
-    border: none;
-    -webkit-transition: height 0.5s ease-in-out;
-    -moz-transition: height 0.5s ease-in-out;
-    -o-transition: height 0.5s ease-in-out;
-    transition: height 0.5s ease-in-out;
-    overflow: hidden;
-}
-
-    .menuVisible.is-visible {
-        width: auto;
-        -webkit-transition: height 0.5s ease-in-out;
-        -moz-transition: height 0.5s ease-in-out;
-        -o-transition: height 0.5s ease-in-out;
-        transition: height 0.5s ease-in-out;
-    }*/
-
 .toggleOn {
     transition: width 1s;
     -webkit-transition: width 1s;
@@ -250,3 +227,20 @@ tree {
 tree a {
         color: #000 !important;
     }
+/*style pagintaion*/
+a.page-link{
+    color:#000 !important;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    color:#fff !important;
+}
+/*btn salir*/
+.navbar .dropdown-menu li > a, .navbar.navbar-default .dropdown-menu li > a {
+    padding: 4px 16px !important;
+}
+#styleSalir .dropdown-menu{
+    min-width:80px !important;
+}
+th{
+    text-align:center !important;
+}

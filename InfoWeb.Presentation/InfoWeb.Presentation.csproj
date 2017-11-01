@@ -61,13 +61,11 @@
     <Content Include="wwwroot\application\services\user-service.js" />
     <Content Include="wwwroot\application\views\assignment-type\assignment-type-input.html" />
     <Content Include="wwwroot\application\views\assignment-type\list.html" />
-    <Content Include="wwwroot\application\views\assignment-type\remove-moda.html" />
     <Content Include="wwwroot\application\views\assignment-type\remove-modal.html" />
     <Content Include="wwwroot\application\views\assignments\single-developer.html" />
     <Content Include="wwwroot\application\views\hour-type\hour-type-input.html" />
     <Content Include="wwwroot\application\views\hour-type\list.html" />
     <Content Include="wwwroot\application\views\hour-type\remove-modal.html" />
-    <Content Include="wwwroot\application\views\project-types\htmlpage.html" />
     <Content Include="wwwroot\application\views\project-types\list.html" />
     <Content Include="wwwroot\application\views\project-types\project-types-input.html" />
     <Content Include="wwwroot\application\views\project-types\remove-modal.html" />

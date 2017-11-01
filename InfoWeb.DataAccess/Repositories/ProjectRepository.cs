@@ -75,5 +75,12 @@ namespace InfoWeb.DataAccess.Repositories
 
             return base.GetRange(query,skip, take);
         }
+
+        public IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0)
+        {
+            var query = context.Projects.Where(p => p.Name.Contains(search));
+
+            return base.GetRange(query, skip, take);
+        }
     }
 }

@@ -6,7 +6,7 @@
   
     <!-- Bootstrap -->  
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!--<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.min.css" />
    
@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="css/theme.css" />
     <!--Ng-Table-->
     <link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />
+
+    <!--JQuery Bootstrap-->
+    <script src="lib/jquery-3.1.1.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
    
     <!--JQuery Angular-->
     <script src="lib/angular/angular.js"></script>
@@ -35,19 +40,6 @@
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
     <script src="lib/ng-table-bundle/ng-table.min.js"></script>
-
-    <!--JQuery Bootstrap-->
-    <!--<script src="lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
-    <!--<script src="lib/bootstrap-material-design/scripts/material.js"></script>-->
-
-
-    <!--<script src="lib/jquery.min.js"></script>-->
-
-   
-    <!--<script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>-->
-
-
 
 
     <script src="application/routes.js"></script>
@@ -82,15 +74,21 @@
                 $state.go('projectList');
             });
 
+            $scope.logout = function () {
+                AuthenticationService.logout();
+                $scope.currentUser = null;
+                $state.go('login');
+            };
+
             $scope.listUser = function ($event) {
                 $event.stopPropagation();
                 $state.go('userList');
             };
-            $scope.listProject = function ($event) {
+            $scope.listProject = function ($event) {              
                 $event.stopPropagation();
                 $state.go('projectList');
             }
-            $scope.asignar = function ($event) {
+            $scope.asignar = function ($event) {              
                 $event.stopPropagation();
                 $state.go('assign');
             };
@@ -190,6 +188,9 @@
     <script src="application/controllers/create-user-controller.js"></script>
     <script src="application/controllers/remove-user-dialog-controller.js"></script>
     <script src="application/controllers/update-user-controller.js"></script>
+    <script src="application/controllers/create-project-controller.js"></script>
+    <script src="application/controllers/update-project-controller.js"></script>
+
 
 
     <script src="application/directives/tree-detail-view/details-directive.js"></script>
@@ -201,158 +202,153 @@
 <body ng-app="InfoWeb">
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
     <div id="main" ng-controller="MainController" >
-
-        <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
-            <div class="navbar-branding">
-                <h2>
-                    <a href="javascript:void(0)" style="margin-left:20px">InfoWeb</a>
-                </h2>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-md-12 col-xs12">
+                    <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
+                        <div>
+                            <h2 class="pull-left">
+                                <a href="javascript:void(0)" style="margin-left:20px">InfoWeb</a>
+                            </h2>  
+                            <div class="dropdown pull-right" style="display:inline-block;margin-right:13px" id="styleSalir">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding:6px;margin-right:10px;color:#fff !important">
+                                    <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
+                                    {{currentUser.name}}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="margin-top: -9px;left:1px;right:10px">
+                                    <li><a href="#" style="color:#000 !important" ng-click="logout();"><span class="glyphicon glyphicon-log-out" style="margin-right:5px"></span>Salir</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                       
+                    </header>
+                </div>
             </div>
-            <ul class="nav navbar navbar-right" style="background-color:transparent">
-                <li class="dropdown ">
-                    <a href="#" class="dropdown-toggle fw600 p15">
-                        <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
-                        <span>{{currentUser.name}}</span>
-                        <span class="caret"></span>
-                    </a>                   
-                </li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Iasmani Pinazo <span class="glyphicon glyphicon-user pull-right"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Messages <span class="badge pull-right"> 42 </span></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Favourites Snippets <span class="glyphicon glyphicon-heart pull-right"></span></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
-                    </ul>
-                </li>
-            </ul>
-           
-        </header>
-        
-        <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar" ng-show="currentUser != null">
+            <div class="row">
+                <div class="col-md-2 col-lg-2 hidden-sm">
+                    <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar hidden-xs" ng-show="currentUser != null">
 
-            <!-- Start: Sidebar Left Content -->
-            <div class="sidebar-left-content nano-content" style="margin-right: -17px; margin-top: 30px;">
-                <!-- Start: Sidebar Header -->
-                <header class="sidebar-header"></header>
-                <ul class="nav sidebar-menu">
-                    <!--<li class="sidebar-label">Menu</li>-->
+                        <!-- Start: Sidebar Left Content -->
+                        <div class="sidebar-left-content nano-content" style="margin-right: -17px; margin-top: 30px;">
+                            <!-- Start: Sidebar Header -->
+                            <header class="sidebar-header"></header>
+                            <ul class="nav sidebar-menu">
+                                <!--<li class="sidebar-label">Menu</li>-->
 
-                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'ADMIN'">
-                        <a class="accordion-toggle">
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestión de admon</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                            <li>
-                                <a ng-click="listProject($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Ver proyectos</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="asignar($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Asignar proyectos</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listUser($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar usuarios</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listHourTypes($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar tipos de hora</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listAssignmentTypes($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar tipos de asignación</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listClient($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar clientes</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listRoles($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar roles</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="listProjectTypes($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Gestionar tipos de proyectos</span>
-                                </a>
-                            </li>
-                        </ul>
+                                <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'ADMIN'">
+                                    <a class="accordion-toggle">
+                                        <span class="glyphicon glyphicon-home"></span>
+                                        <span class="sidebar-title">Gestión de Admon</span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                                        <li>
+                                            <a ng-click="listProject($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title" ng-show="currentUser.role.name != 'ADMIN'">Ver Proyectos</span>
+                                                <span class="sidebar-title" ng-show="currentUser.role.name == 'ADMIN'">Gestión de Proyectos</span>
 
-                    </li>
-                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'OM'">
-                        <a>
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title">Gestión de proyectos</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                            <li>
-                                <a ng-click="listProject($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Ver proyectos</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="delegate($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Delegar proyecto</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="assignHours($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Asignar horas</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
-                        <a>
-                            <span class="glyphicon glyphicon-home"></span>
-                            <span class="sidebar-title" ng-click="ir();">Gestion de horas</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                            <li>
-                                <a ng-click="assignHours($event);">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    <span class="sidebar-title">Asignar horas</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="asignar($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Asignar Proyectos</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listUser($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Usuarios</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listHourTypes($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Tipos de Hora</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listAssignmentTypes($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Tipos de Asignación</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listClient($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Clientes</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listRoles($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Roles</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="listProjectTypes($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Gestionar Tipos de Proyectos</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'OM'">
+                                    <a>
+                                        <span class="glyphicon glyphicon-home"></span>
+                                        <span class="sidebar-title">Gestión de Proyectos</span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                                        <li>
+                                            <a ng-click="listProject($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Ver Proyectos</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="delegate($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Delegar Proyecto</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="assignHours($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Asignar Horas</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
+                                    <a>
+                                        <span class="glyphicon glyphicon-home"></span>
+                                        <span class="sidebar-title" ng-click="ir();">Gestión de Horas</span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                                        <li>
+                                            <a ng-click="assignHours($event);">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                <span class="sidebar-title">Asignar Horas</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+                <div id="content" class="col-md-10 col-lg-10 -col-sm-12 col-xs-12">
+                   <div ui-view>
+                   </div>
+                </div>
             </div>
-        </aside>
-
-        <section id="content">
-            <div ui-view>
-            </div>
-        </section>
+        </div>
+     
     </div>
 </body>
 </html>

@@ -1,0 +1,32 @@
+﻿<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>{{title}}</b></span>
+        </div>
+        <div class="panel-body">
+            <div class="section row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input class="form-control col-md-6" type="text" ng-model="model.name" />
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Tipo de Proyecto</label>
+                    <select class="form-control" ng-model="model.projectType" ng-options="projectType.name for projectType in projectTypes">
+                        <option value="">Seleccione el tipo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="section row">
+                <div class="col-md-6">
+                    <label>Cliente</label>
+                    <select class="form-control" ng-model="model.client" ng-options="client.name for client in clientes">
+                        <option value="">Seleccione cliente</option>
+                    </select>
+                </div>
+            </div>
+            <button ng-click="onButtonClicked()" class="btn btn-primary btn-info btn-raised pull-right">{{acceptButtonCaption}}</button>
+        </div>
+    </div>
+</div>

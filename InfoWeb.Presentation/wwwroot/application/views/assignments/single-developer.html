@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span><b>Asignar horas</b></span>
+            <span><b>Asignar Horas</b></span>
         </div>
         <div class="panel-body">
             <div class="row">
@@ -14,9 +14,9 @@
                 </div>
                 <div class="col-md-6">
                     <label>Usuario</label>
-                    <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in technicians">
-                        <option value="">Seleccione usuario</option>
-                    </select>
+                    <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in users" >
+                        <option value="" selected>Seleccione usuario</option>
+                    </select> 
                 </div>
             </div>
             <div class="row">
@@ -27,13 +27,13 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label>Horas</label>
+                    <label>Cantidad de horas</label>
                     <input type="text" class="form-control" ng-model="assignment.hours" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <button class="btn btn-primary btn-raised btn-info"  ng-click="create();">Asignar </button>
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-raised btn-info pull-right"  ng-click="create();">Asignar </button>
                 </div>
             </div>
         </div>

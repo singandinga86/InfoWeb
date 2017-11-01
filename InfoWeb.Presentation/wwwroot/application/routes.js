@@ -174,6 +174,19 @@
         authenticate: true
     }); 
 
+    $stateProvider.state('createProject', {
+        templateUrl: "application/views/project/project-input.html",
+        controller: 'CreateProjectController',
+        url: "/project/create",
+        authenticate: true
+    });
+    $stateProvider.state('updateProject', {
+        templateUrl: "application/views/project/project-input.html",
+        controller: 'UpdateProjectController',
+        url: "/project/:projectId/update",
+        authenticate: true
+    }); 
+
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",
         controller: 'SampleController',
