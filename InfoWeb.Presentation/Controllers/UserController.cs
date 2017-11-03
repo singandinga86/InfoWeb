@@ -20,7 +20,7 @@ namespace InfoWeb.DistributedServices.Controllers
         private readonly IUnitOfWork unitOfWork;
 
         public UserController(IUserRepository userRepository, IRoleRepository roleRepository,
-                              IUnitOfWork unitOfwork)
+                              IUnitOfWork unitOfWork)
         {
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
