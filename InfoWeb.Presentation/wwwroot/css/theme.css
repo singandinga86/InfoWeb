@@ -241,6 +241,14 @@ a.page-link{
 #styleSalir .dropdown-menu{
     min-width:80px !important;
 }
+/*tree detail table*/
 th{
     text-align:center !important;
+}
+/*notification*/
+button#notification {
+    color: #fff;
+}
+.btn, .input-group-btn .btn{
+    text-transform:none
 }
