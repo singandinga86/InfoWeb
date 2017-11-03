@@ -21,19 +21,19 @@ namespace InfoWeb.DataAccess.Repositories
         {
             CheckIfEntityIsValid(entity);
             this.entitySet.Add(entity);
-            this.context.SaveChanges();
+            //this.context.SaveChanges();
         }
         public virtual void Update(T entity)
         {
             CheckIfEntityIsValid(entity);
             context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            //context.SaveChanges();
         }
         public virtual void Remove(T entity)
         {
             CheckIfEntityIsValid(entity);
             this.entitySet.Remove(entity);
-            this.context.SaveChanges();
+            //this.context.SaveChanges();
         }
         protected IEnumerable<T> GetRange(IQueryable<T> sourceQuery, int skip = 0, int take = 0)
         {

@@ -14,11 +14,12 @@ namespace InfoWeb.DistributedServices.Controllers
     {
 
         private IAssignmentTypeRepository assignmentTypeRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-
-        public AssignmentTypesController(IAssignmentTypeRepository assignmentTypeRepository)
+        public AssignmentTypesController(IAssignmentTypeRepository assignmentTypeRepository, IUnitOfWork unitOfWork)
         {
             this.assignmentTypeRepository = assignmentTypeRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -39,8 +40,9 @@ namespace InfoWeb.DistributedServices.Controllers
             if (ModelState.IsValid)
             {
                 assignmentType.Assignments = null;
+                assignmentTypeRepository.Add(assignmentType);
                 try {
-                    assignmentTypeRepository.Add(assignmentType);
+                    unitOfWork.Commit();
                 }
                 catch(Exception e)
                 {
@@ -64,9 +66,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if (targetHourType != null)
                 {
                     targetHourType.Name = assignmentType.Name;
+                    assignmentTypeRepository.Update(targetHourType);
                     try
                     {
-                        assignmentTypeRepository.Update(targetHourType);
+                        unitOfWork.Commit();
                     }
                     catch(Exception e)
                     {
@@ -89,9 +92,18 @@ namespace InfoWeb.DistributedServices.Controllers
         public void Remove([FromRoute] int id)
         {
             var target = assignmentTypeRepository.GetById(id);
+
             if (target != null)
             {
                 assignmentTypeRepository.Remove(target);
+                try
+                {
+                    unitOfWork.Commit();
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
             }
             else
             {

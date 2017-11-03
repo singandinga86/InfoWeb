@@ -13,9 +13,11 @@ namespace InfoWeb.DistributedServices.Controllers
     public class ClientController : Controller
     {
         private IClientRepository clientRepository;
-        public ClientController(IClientRepository clientRepository)
+        private IUnitOfWork unitOfwork;
+        public ClientController(IClientRepository clientRepository, IUnitOfWork unitOfwork)
         {
             this.clientRepository = clientRepository;
+            this.unitOfwork = unitOfwork;
         }
 
         [HttpGet]
@@ -36,9 +38,10 @@ namespace InfoWeb.DistributedServices.Controllers
             if (ModelState.IsValid)
             {
                 client.Projects = null;
+                clientRepository.Add(client);
                 try
                 {
-                    clientRepository.Add(client);
+                    unitOfwork.Commit();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch(Exception e)
@@ -62,9 +65,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if (targetClient != null)
                 {
                     targetClient.Name =client.Name;
+                    clientRepository.Update(targetClient);
                     try
                     {
-                        clientRepository.Update(targetClient);
+                        unitOfwork.Commit();
                     }
                     catch(Exception e)
                     {
@@ -91,6 +95,14 @@ namespace InfoWeb.DistributedServices.Controllers
             if (target != null)
             {
                 clientRepository.Remove(target);
+                try
+                {
+                    unitOfwork.Commit();
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
             }
             else
             {

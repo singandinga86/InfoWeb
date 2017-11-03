@@ -13,9 +13,12 @@ namespace InfoWeb.DistributedServices.Controllers
     public class ProjectTypesController : Controller
     {
         private IProjectTypeRepository projectTypesRepository;
-        public ProjectTypesController(IProjectTypeRepository projectTypesRepository)
+        private readonly IUnitOfWork unitOfWork;
+
+        public ProjectTypesController(IProjectTypeRepository projectTypesRepository, IUnitOfWork unitOfWork)
         {
             this.projectTypesRepository = projectTypesRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -36,9 +39,10 @@ namespace InfoWeb.DistributedServices.Controllers
             if (ModelState.IsValid)
             {
                 projectType.Projects= null;
+                projectTypesRepository.Add(projectType);
                 try
                 {
-                    projectTypesRepository.Add(projectType);
+                    unitOfWork.Commit();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch(Exception e)
@@ -61,9 +65,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if (targetProjectType != null)
                 {
                     targetProjectType.Name = projectType.Name;
+                    projectTypesRepository.Update(targetProjectType);
                     try
                     {
-                        projectTypesRepository.Update(targetProjectType);
+                        unitOfWork.Commit();
                     }
                     catch(Exception e)
                     {
@@ -90,6 +95,13 @@ namespace InfoWeb.DistributedServices.Controllers
             if (target != null)
             {
                 projectTypesRepository.Remove(target);
+                try {
+                    unitOfWork.Commit();
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
             }
             else
             {

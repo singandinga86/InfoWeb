@@ -27,6 +27,7 @@ namespace InfoWeb.DataAccess
         public DbSet<Client> Clients { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<AssignmentType> AssignmentTypes { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

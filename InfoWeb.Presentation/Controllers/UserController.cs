@@ -17,11 +17,14 @@ namespace InfoWeb.DistributedServices.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly IRoleRepository roleRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UserController(IUserRepository userRepository, IRoleRepository roleRepository)
+        public UserController(IUserRepository userRepository, IRoleRepository roleRepository,
+                              IUnitOfWork unitOfwork)
         {
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost("login")]
@@ -90,9 +93,10 @@ namespace InfoWeb.DistributedServices.Controllers
                         Password = userData.Password,
                         Role = userData.Role
                     };
+                    userRepository.Add(user);
 
                     try {
-                        userRepository.Add(user);
+                        unitOfWork.Commit();    
                         Response.StatusCode = (int)HttpStatusCode.Created;
                     }
                     catch(Exception e)
@@ -125,9 +129,10 @@ namespace InfoWeb.DistributedServices.Controllers
                     user.Role = role;
                     user.Password = userData.Password;
 
+                    userRepository.Update(user);
                     try
                     {
-                        userRepository.Update(user);
+                        unitOfWork.Commit();
                     }
                     catch(Exception e)
                     {
@@ -152,6 +157,14 @@ namespace InfoWeb.DistributedServices.Controllers
             if(user != null)
             {
                 userRepository.Remove(user);
+                try
+                {
+                    unitOfWork.Commit();
+                }
+                 catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
             }
             else
             {

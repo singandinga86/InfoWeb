@@ -19,19 +19,22 @@ namespace InfoWeb.DistributedServices.Controllers
         private readonly IUserRepository userRepository;
         private readonly IHourTypeRepository hourTypeRepository;
         private readonly IProjectRepository projectRepository;
+        private readonly IUnitOfWork unitOfWork;
 
 
         public AssignmentsController(IAssignmentRepository assigmentRepository,
                                      IAssignmentTypeRepository assigmentTypeRepository,
                                      IUserRepository userRepository,
                                      IHourTypeRepository hourTypeRepository,
-                                     IProjectRepository projectRepository)
+                                     IProjectRepository projectRepository,
+                                     IUnitOfWork unitOfWork)
         {
             this.assignmentRepository = assigmentRepository;
             this.assigmentTypeRepository = assigmentTypeRepository;
             this.userRepository = userRepository;
             this.hourTypeRepository = hourTypeRepository;
             this.projectRepository = projectRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet()]
@@ -93,6 +96,17 @@ namespace InfoWeb.DistributedServices.Controllers
 
                     assignmentRepository.Update(assigmentUpdate);
                 }
+
+                try
+                {
+                    unitOfWork.Commit();
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
+
             }
             else
             {
@@ -144,7 +158,19 @@ namespace InfoWeb.DistributedServices.Controllers
                     {
                         Response.StatusCode = (int)HttpStatusCode.Conflict;
                     }                    
-                }                
+                }
+                
+                if(Response.StatusCode != (int)HttpStatusCode.Conflict)
+                {
+                    try
+                    {
+                        unitOfWork.Commit();
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    }
+                }
             }
             else
             {
@@ -178,6 +204,16 @@ namespace InfoWeb.DistributedServices.Controllers
                     };
 
                     assignmentRepository.Add(assignment);
+
+                    try
+                    {
+                        unitOfWork.Commit();
+                        Response.StatusCode = (int)HttpStatusCode.Created;
+                    }
+                    catch(Exception e)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    }
                 }
                 else
                 {

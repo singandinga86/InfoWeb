@@ -13,9 +13,11 @@ namespace InfoWeb.DistributedServices.Controllers
     public class HourTypesController : Controller
     {
         private IHourTypeRepository hourTypeRepository;
-        public HourTypesController(IHourTypeRepository hourTypeRepository)
+        private readonly IUnitOfWork unitOfWork;
+        public HourTypesController(IHourTypeRepository hourTypeRepository, IUnitOfWork unitOfWork)
         {
             this.hourTypeRepository = hourTypeRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -36,8 +38,9 @@ namespace InfoWeb.DistributedServices.Controllers
             if(ModelState.IsValid)
             {
                 hourType.ProjectsHoursTypes = null;
+                hourTypeRepository.Add(hourType);
                 try {
-                    hourTypeRepository.Add(hourType);
+                    unitOfWork.Commit();
                 }
                 catch(Exception e)
                 {
@@ -61,9 +64,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if (targetHourType != null)
                 {
                     targetHourType.Name = hourType.Name;
+                    hourTypeRepository.Update(targetHourType);
                     try
                     {
-                        hourTypeRepository.Update(targetHourType);
+                        unitOfWork.Commit();
                     }
                     catch(Exception e)
                     {
@@ -89,6 +93,13 @@ namespace InfoWeb.DistributedServices.Controllers
             if(target != null)
             {
                 hourTypeRepository.Remove(target);
+                try {
+                    unitOfWork.Commit();
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
             }
             else
             {

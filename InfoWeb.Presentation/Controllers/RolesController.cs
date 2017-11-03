@@ -13,9 +13,11 @@ namespace InfoWeb.DistributedServices.Controllers
     public class RolesController: Controller
     {
         private readonly IRoleRepository roleRepository;
-        public RolesController(IRoleRepository roleRepository)
+        private readonly IUnitOfWork unitOfWork;
+        public RolesController(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
         {
             this.roleRepository = roleRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -35,9 +37,10 @@ namespace InfoWeb.DistributedServices.Controllers
         {
             if(ModelState.IsValid)
             {
+                roleRepository.Add(role);
                 try
                 {
-                    roleRepository.Add(role);
+                    unitOfWork.Commit();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch (Exception e)
@@ -60,9 +63,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if(targetRole != null)
                 {
                     targetRole.Name = role.Name;
+                    roleRepository.Update(targetRole);
                     try
                     {
-                        roleRepository.Update(targetRole);
+                        unitOfWork.Commit();
                     }
                     catch (Exception e)
                     {
@@ -86,10 +90,10 @@ namespace InfoWeb.DistributedServices.Controllers
             if(id > 0)
             {
                 Role targetRole = roleRepository.GetById(id);
+                roleRepository.Remove(targetRole);
 
                 try {
-                    roleRepository.Remove(targetRole);
-                    Response.StatusCode = (int)HttpStatusCode.OK;
+                    unitOfWork.Commit();
                 }
                 catch(Exception e)
                 {

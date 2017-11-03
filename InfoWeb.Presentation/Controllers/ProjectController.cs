@@ -19,14 +19,16 @@ namespace InfoWeb.DistributedServices.Controllers
         private IProjectRepository projectRepository;
         private IUserRepository userRepository;
         private IInfoWebQueryModel queryModel;
+        private readonly IUnitOfWork unitOfwork;
         public ProjectController(IProjectRepository projectRepository,
                                     IUserRepository userRepository,
-                                    IAssignmentRepository assignmentRepository,
+                                    IUnitOfWork unitOfwork,
                                     IInfoWebQueryModel queryModel)
         {
             this.projectRepository = projectRepository;
             this.userRepository = userRepository;
             this.queryModel = queryModel;
+            this.unitOfwork = unitOfwork;
         }
 
         [HttpGet]
@@ -106,6 +108,14 @@ namespace InfoWeb.DistributedServices.Controllers
             if(project != null)
             {
                 projectRepository.Remove(project);
+
+                try {
+                    unitOfwork.Commit();
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }                
             }
             else
             {
@@ -170,14 +180,16 @@ namespace InfoWeb.DistributedServices.Controllers
         {
             if (ModelState.IsValid)
             {
+                Project project = new Project()
+                {
+                    ClientId = projectInputModel.Client.Id,
+                    TypeId = projectInputModel.ProjectType.Id,
+                    Name = projectInputModel.Name
+                };
+                projectRepository.Add(project);
                 try
                 {
-                    Project project = new Project() {
-                       ClientId = projectInputModel.Client.Id,
-                       TypeId = projectInputModel.ProjectType.Id,
-                        Name = projectInputModel.Name
-                    };
-                    projectRepository.Add(project);
+                    unitOfwork.Commit();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch (Exception e)
@@ -200,9 +212,10 @@ namespace InfoWeb.DistributedServices.Controllers
                 if (targetProject != null)
                 {
                     targetProject.Name = project.Name;
+                    projectRepository.Update(targetProject);
                     try
                     {
-                        projectRepository.Update(targetProject);
+                        unitOfwork.Commit();
                     }
                     catch (Exception e)
                     {
