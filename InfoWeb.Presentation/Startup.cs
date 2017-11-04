@@ -54,6 +54,7 @@
                 services.AddScoped<IUserRepository, UserRepository>();
                 services.AddScoped<IInfoWebQueryModel, InfoWebQueryModel>();
                 services.AddScoped<IUnitOfWork, EntityFrameworkUnitOfWork>();
+                services.AddScoped<INotificationRepository, NotificationRepository>();
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

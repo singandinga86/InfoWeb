@@ -8,9 +8,10 @@ using InfoWeb.DataAccess;
 namespace InfoWeb.DataAccess.Migrations
 {
     [DbContext(typeof(InfoWebDatabaseContext))]
-    partial class HoursManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20171103053654_CreatingNotificationsTable")]
+    partial class CreatingNotificationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -108,13 +109,14 @@ namespace InfoWeb.DataAccess.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .IsRequired();
 
                     b.Property<bool>("Seen");
 
-                    b.Property<int?>("SenderId");
+                    b.Property<int>("SenderId");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("Id");
 
@@ -254,12 +256,12 @@ namespace InfoWeb.DataAccess.Migrations
                 {
                     b.HasOne("InfoWeb.Domain.Entities.User", "Sender")
                         .WithMany()
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("InfoWeb.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("InfoWeb.Domain.Entities.Project", b =>

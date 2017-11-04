@@ -8,9 +8,10 @@ using InfoWeb.DataAccess;
 namespace InfoWeb.DataAccess.Migrations
 {
     [DbContext(typeof(InfoWebDatabaseContext))]
-    partial class HoursManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20171104013126_UpdateNotificationTable")]
+    partial class UpdateNotificationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

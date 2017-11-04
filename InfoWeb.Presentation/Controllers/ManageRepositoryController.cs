@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InfoWeb.DistributedServices.Controllers
+namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/manager")]
     public class ManageRepositoryController : Controller

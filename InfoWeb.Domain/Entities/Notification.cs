@@ -8,22 +8,21 @@ namespace InfoWeb.Domain.Entities
     public class Notification
     {
         public int Id { get; set; }
-
+        
         public User User { get; set; }
-
-        [Required]
+        [Range(1, int.MaxValue)]
         public int UserId { get; set; }
 
-        [Required]
         public String Message { get; set; }
 
         public bool Seen { get; set; }
 
         public User Sender { get; set; }
 
-        public int SenderId { get; set; }
+        [Range(1, int.MaxValue)]
+        public int? SenderId { get; set; }
 
-        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
     }
 }

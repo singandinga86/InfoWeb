@@ -80,8 +80,6 @@
     <Content Include="wwwroot\application\views\user\list.html" />
     <Content Include="wwwroot\css\theme.css" />
     <Content Include="wwwroot\Index.html" />
-    <Content Include="wwwroot\lib\jquery-3.2.1.slim.min.js" />
-    <Content Include="wwwroot\lib\jquery.min.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

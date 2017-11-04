@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using InfoWeb.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace InfoWeb.DistributedServices.InputModels
+namespace InfoWeb.Presentation.InputModels
 {
     public class CreateAssignmentInputModel
     {

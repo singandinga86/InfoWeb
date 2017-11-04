@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using InfoWeb.DistributedServices.InputModels;
+using InfoWeb.Presentation.InputModels;
 using System.Net;
 
-namespace InfoWeb.DistributedServices.Controllers
+namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/user/{userId}/Assignments")]
     public class AssignmentsController: Controller
@@ -20,6 +20,8 @@ namespace InfoWeb.DistributedServices.Controllers
         private readonly IHourTypeRepository hourTypeRepository;
         private readonly IProjectRepository projectRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly INotificationRepository notificationRepository;
+
 
 
         public AssignmentsController(IAssignmentRepository assigmentRepository,
@@ -27,7 +29,8 @@ namespace InfoWeb.DistributedServices.Controllers
                                      IUserRepository userRepository,
                                      IHourTypeRepository hourTypeRepository,
                                      IProjectRepository projectRepository,
-                                     IUnitOfWork unitOfWork)
+                                     IUnitOfWork unitOfWork,
+                                     INotificationRepository notificationRepository)
         {
             this.assignmentRepository = assigmentRepository;
             this.assigmentTypeRepository = assigmentTypeRepository;
@@ -35,16 +38,17 @@ namespace InfoWeb.DistributedServices.Controllers
             this.hourTypeRepository = hourTypeRepository;
             this.projectRepository = projectRepository;
             this.unitOfWork = unitOfWork;
+            this.notificationRepository = notificationRepository;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IEnumerable<Assignment> GetAssignments([FromRoute]int userId)
         {
             IEnumerable<Assignment> result = assignmentRepository.GetAssignmentsAssignedTo(userId);
             return result;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public void CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         { 
             if(ModelState.IsValid)
@@ -52,6 +56,7 @@ namespace InfoWeb.DistributedServices.Controllers
                 User assignator = userRepository.GetById(userId);
                 Assignment assigmentUpdate = null;
                 List<HourType> HourTypes = (List<HourType>)hourTypeRepository.GetAll();
+                Notification notification = null;
 
                 if (assignment.HourType != null)
                     assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
@@ -87,7 +92,18 @@ namespace InfoWeb.DistributedServices.Controllers
                             Date = DateTime.Now
                         };
                     }
+                    notification = new Notification()
+                    {
+                        Date = DateTime.Now,
+                        Message = "Se le ha asignado el proyecto :" + assignment.Project.Name,
+                        Seen = false,
+                        UserId = assignment.User.Id,
+                        SenderId = assignator.Id
 
+
+                    };
+
+                    notificationRepository.Add(notification);
                     assignmentRepository.Add(assigmentAdd);
                 }
                 else

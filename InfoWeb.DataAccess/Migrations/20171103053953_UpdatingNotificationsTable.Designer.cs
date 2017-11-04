@@ -8,9 +8,10 @@ using InfoWeb.DataAccess;
 namespace InfoWeb.DataAccess.Migrations
 {
     [DbContext(typeof(InfoWebDatabaseContext))]
-    partial class HoursManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20171103053953_UpdatingNotificationsTable")]
+    partial class UpdatingNotificationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -108,7 +109,8 @@ namespace InfoWeb.DataAccess.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .IsRequired();
 
                     b.Property<bool>("Seen");
 

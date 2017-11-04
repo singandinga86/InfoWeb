@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
-using InfoWeb.DistributedServices.Models;
+using InfoWeb.Presentation.Models;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
-using InfoWeb.DistributedServices.InputModels;
 using InfoWeb.Presentation.InputModels;
 
-namespace InfoWeb.DistributedServices.Controllers
+namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/{userId}/Projects")]
     public class ProjectController : Controller

@@ -7,7 +7,7 @@ using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using System.Net;
 
-namespace InfoWeb.DistributedServices.Controllers
+namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/ProjectTypes")]
     public class ProjectTypesController : Controller

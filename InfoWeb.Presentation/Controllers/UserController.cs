@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using InfoWeb.Presentation.InputModels;
 using System.Net;
 
-namespace InfoWeb.DistributedServices.Controllers
+namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/[controller]")]
     public class UserController: Controller
