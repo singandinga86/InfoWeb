@@ -4,15 +4,18 @@
             <span><b>{{title}}</b></span>
         </div>
         <div class="panel-body">
-            <div class="section row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <input class="form-control" type="text" ng-model="role.name" />
+            <form name="roleInput" novalidate ng-submit="onButtonClicked()">
+                <div class="section row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input class="form-control" type="text" ng-model="role.name" 
+                                   required name="roleName"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button ng-click="onButtonClicked()" class="btn btn-primary btn-raised btn-info pull-right">{{acceptButtonCaption}}</button>
+                <button type="submit" class="btn btn-primary btn-raised btn-info pull-right" ng-disabled="roleInput.$invalid">{{acceptButtonCaption}}</button>
+            </form>
         </div>
     </div>
 </div>

@@ -1,48 +1,59 @@
-﻿<form name="myForm" novalidate>
-    <div class="container-fluid">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span><b>Delegar Proyectos</b></span>
-            </div>
-            <div class="panel-body">
+﻿<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>Delegar Proyectos</b></span>
+        </div>
+        <div class="panel-body">
+            <form name="delegateProject" novalidate ng-submit="send()">
                 <div class="section row">
                     <div class="col-md-4">
                         <label>Seleccione el proyecto</label>
-                        <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects">
+                        <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects"
+                                required name="projectName">
                             <option value="">Seleccione proyecto</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label>Seleccione el usuario</label>
-                        <select class="form-control" ng-model="assignment.user" ng-options=" user.name for user in users">
+                        <select class="form-control" ng-model="assignment.user" ng-options=" user.name for user in users"
+                                required name="user">
                             <option value="">Seleccione usuario</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label style="width:100%">Delegar por horas</label>
                         <label class="big-checkbox">
-                            <input type="checkbox" value="" ng-model="selectedItem" ng-checked="changeValue();" />
+                            <input type="checkbox" value="" ng-model="selectedItem" ng-checked="changeValue();"
+                                   name="hoursDelegation"/>
                         </label>
                     </div>
                 </div>
                 <div class="section row" style="margin-top:25px" ng-show="selectedItem">
                     <div class="col-md-4">
                         <label>Seleccione el tipo de hora</label>
-                        <select class="form-control" ng-model="assignment.hourType" ng-options="HoursType.name for HoursType in HoursTypes" ng-change="changeValue();">
+                        <select class="form-control" ng-model="assignment.hourType" ng-options="HoursType.name for HoursType in HoursTypes" ng-change="changeValue();"
+                                ng-required="selectedItem==true" name="hourType">
                             <option value="">Seleccione tipo de hora</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label>Total de horas</label>
-                        <input type="text" name="hours" ng-model="assignment.hours" class="form-control"/>                       
+                        <input type="number" name="hours" ng-model="assignment.hours" class="form-control" 
+                               ng-min="1" ng-required="selectedItem==true" ng-if="selectedItem"/>
+                        <div class="text-danger">
+                            <span ng-show="delegateProject.hours.$error.min">
+                                El número de horas debe ser mayor que cero
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="pull-right" style="margin-top:25px">
                     <label>
-                        <input type="button" class="btn btn-primary btn-raised btn-info" ng-click="send();" value="Delegar"/>
+                        <button type="submit" class="btn btn-primary btn-raised btn-info" ng-disabled="delegateProject.$invalid">Delegar</button>
                     </label>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
+
