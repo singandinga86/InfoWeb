@@ -31,6 +31,15 @@ namespace InfoWeb.DataAccess.Repositories
                              .FirstOrDefault();
         }
 
+        public IEnumerable<Notification> GetNotificationByUserId(int id)
+        {
+
+            return entitySet.Where(p => p.UserId == id)
+                             .Include(p => p.User)
+                             // .Include(p => p.Sender)
+                             .ToList();
+        }
+
         public IEnumerable<Notification> GetRange(int skip, int take)
         {
             return base.GetRange(entitySet.Include(p => p.User), skip, take);

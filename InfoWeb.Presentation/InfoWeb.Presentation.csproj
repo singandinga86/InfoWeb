@@ -53,6 +53,7 @@
     <Content Include="wwwroot\application\services\AuthenticationService.js" />
     <Content Include="wwwroot\application\services\client-service.js" />
     <Content Include="wwwroot\application\services\hour-type-service.js" />
+    <Content Include="wwwroot\application\services\notification-service.js" />
     <Content Include="wwwroot\application\services\project-service-tmp.js" />
     <Content Include="wwwroot\application\services\project-service.js" />
     <Content Include="wwwroot\application\services\project-types-service.js" />

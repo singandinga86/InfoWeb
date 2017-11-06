@@ -78,6 +78,14 @@ namespace InfoWeb.Presentation.Controllers
                             Hours = assignment.Hours,
                             Date = DateTime.Now
                         };
+                        notification = new Notification()
+                        {
+                            Date = DateTime.Now,
+                            Message = "Se le ha delegado el proyecto " + assignment.Project.Name,
+                            Seen = false,
+                            UserId = assignment.User.Id,
+                            SenderId = assignator.Id
+                        };
                     }
                     else
                     {
@@ -86,22 +94,21 @@ namespace InfoWeb.Presentation.Controllers
                             ProjectId = assignment.Project.Id,
                             AssigneeId = assignment.User.Id,
                             Assignator = assignator,
-                            AssignmentTypeId = typesAssigment.First(t => t.Name == "Delegar proyecto").Id,
+                            AssignmentTypeId = typesAssigment.First(t => t.Name == "Asignar horas").Id,
                             HourTypeId = assignment.HourType.Id,
                             Hours = assignment.Hours,
                             Date = DateTime.Now
                         };
+                        notification = new Notification()
+                        {
+                            Date = DateTime.Now,
+                            Message = "Se le ha delegado el proyecto " + assignment.Project.Name + " con "+ assignment.Hours + " horas de "+ assignment.HourType.Name,
+                            Seen = false,
+                            UserId = assignment.User.Id,
+                            SenderId = assignator.Id
+                        };
                     }
-                    notification = new Notification()
-                    {
-                        Date = DateTime.Now,
-                        Message = "Se le ha asignado el proyecto :" + assignment.Project.Name,
-                        Seen = false,
-                        UserId = assignment.User.Id,
-                        SenderId = assignator.Id
-
-
-                    };
+                   
 
                     notificationRepository.Add(notification);
                     assignmentRepository.Add(assigmentAdd);

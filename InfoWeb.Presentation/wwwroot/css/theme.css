@@ -69,7 +69,7 @@ a:hover {
 .navbar {
     z-index: 1030;
     margin-bottom: 0;
-    height: 60px;
+    height: 53px;
     color: #666;
     background-color: #FFF;
     border-radius: 0;
@@ -78,9 +78,13 @@ a:hover {
     box-shadow: 0 1px 0 0 #e0e0e0;
     /* Navbar shadow option - Only allowed on default white navbar */
 }
+/*title*/
+#titleSite:hover {
+    cursor:pointer
+}
 #content {
     padding: 15px 8px 40px 15px;
-    margin-top:60px;
+    margin-top: 60px;
 }
 
 #sidebar_left.nano.affix {
@@ -251,4 +255,62 @@ button#notification {
 }
 .btn, .input-group-btn .btn{
     text-transform:none
+}
+/*notifications*/
+#contentNotifications {
+    width: 300px;
+    left: 193px;
+    float: left;
+    position: relative;
+    top: 54px;
+    padding-top: 0px;
+}
+#contentNotifications li{
+    color:#000;
+    left:-25px;
+}
+ #contentNotifications ul {
+    text-align:left;
+    padding-top:5px;
+ }
+ #contentNotifications div.panel-heading{
+     padding:4px 15px;
+ }
+.arrow-top:before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 200px;
+    width: 0;
+    height: 0;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #fff;
+}
+#listNotifications{
+    overflow-y:auto;
+    height:auto;
+    max-height:200px;
+}
+    #listNotifications::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
+
+    #listNotifications::-webkit-scrollbar {
+        width: 8px;
+        background-color: #F5F5F5;
+    }
+
+    #listNotifications::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #C0C0C0;
+    }
+.vl {
+    border-left: 2px solid #A9A9A9;
+    height: 45px;
+}
+#listNotifications td{
+    height:50px
 }

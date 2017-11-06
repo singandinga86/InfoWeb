@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-  
-    <!-- Bootstrap -->  
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
     <!--<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.min.css" />
-   
+
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-     <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
     <!--<link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.css">
     <link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.min.css">
@@ -22,7 +22,6 @@
     <script src="lib/material/bootstrap-material-design/js/bootstrap-material-design.min.js"></script>-->
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">
     <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.min.css">-->
-
     <!--Theme-->
     <link rel="stylesheet" href="css/theme.css" />
     <!--Ng-Table-->
@@ -32,7 +31,7 @@
     <script src="lib/jquery-3.1.1.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-   
+
     <!--JQuery Angular-->
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
@@ -44,7 +43,7 @@
 
     <script src="application/routes.js"></script>
     <script type="text/javascript">
-        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router','ngTable',]);
+        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router', 'ngTable',]);
         app.config(function ($stateProvider) {
             configureRoutes($stateProvider);
         });
@@ -54,92 +53,107 @@
                 var targetState = transition.to();
                 var user = AuthenticationService.getCurrentUser();
 
-                if (targetState.authenticate == true && (user == null || user == undefined))
-                {
+                if (targetState.authenticate == true && (user == null || user == undefined)) {
                     $state.go('login');
                     return true;
                 }
+
             });
         });
 
-        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService',
-            function ($scope, $rootScope, $state, AuthenticationService) {
-            $scope.currentUser = null;
-            $scope.open = false;
-
-            $scope.currentUser = AuthenticationService.getCurrentUser();
-
-            $rootScope.$on("userAuthenticated", function (event, user) {
-                $scope.currentUser = user;
-                $state.go('projectList');
-            });
-
-            $scope.logout = function () {
-                AuthenticationService.logout();
+        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService',
+            function ($scope, $rootScope, $state, AuthenticationService, NotificationService) {
                 $scope.currentUser = null;
-                $state.go('login');
-            };
+                $scope.open = false;
+                $scope.notifications = {};
 
-            $scope.listUser = function ($event) {
-                $event.stopPropagation();
-                $state.go('userList');
-            };
-            $scope.listProject = function ($event) {              
-                $event.stopPropagation();
-                $state.go('projectList');
-            }
-            $scope.asignar = function ($event) {              
-                $event.stopPropagation();
-                $state.go('assign');
-            };
+                $scope.currentUser = AuthenticationService.getCurrentUser();
 
-            $scope.delegate = function ($event) {
-                $event.stopPropagation();
-                $state.go('delegateProject');
-            };
+                var populateNotifications = function (user) {
+                    if (user) {
+                        NotificationService.getNotifications(user.id).then(function (response) {
+                            var notifications = response.data;
+                            $scope.notifications = notifications;
+                        }, function (error) {
+                        });
+                    }
+                }
 
-            $scope.listRoles = function ($event) {
-                $event.stopPropagation();
-                $state.go('roleList');
-            };
+                populateNotifications($scope.currentUser);
 
-            $scope.listHourTypes = function ($event) {
-                $event.stopPropagation();
-                $state.go("hourTypeList");
-            };
 
-            $scope.listClient = function ($event) {
-                $event.stopPropagation();
-                $state.go("clientList");
-            };
+                $rootScope.$on("userAuthenticated", function (event, user) {
+                    $scope.currentUser = user;
+                    populateNotifications(user);
+                    $state.go('projectList');
+                });
 
-            $scope.listProjectTypes = function ($event) {
-                $event.stopPropagation();
-                $state.go("projectTypesList");
-            };
+                $scope.logout = function () {
+                    AuthenticationService.logout();
+                    $scope.currentUser = null;
+                    $state.go('login');
+                };
 
-            $scope.assignHours = function ($event) {
-                $event.stopPropagation();
-                $state.go("assignHoursToDeveloper");
-            };
+                $scope.listUser = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('userList');
+                };
+                $scope.listProject = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('projectList');
+                }
+                $scope.asignar = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('assign');
+                };
 
-            $scope.listAssignmentTypes = function ($event) {
-                $event.stopPropagation();
-                $state.go("assignmentTypeList");
-            };
+                $scope.delegate = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('delegateProject');
+                };
 
-                
-            $scope.toggleMenu = function ($event, open) {
+                $scope.listRoles = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('roleList');
+                };
 
-                //if (open && item == $scope.item)
-                //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
-                //else
-                //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
+                $scope.listHourTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("hourTypeList");
+                };
 
-                $scope.open = !open;
-                //$scope.item = item;
+                $scope.listClient = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("clientList");
+                };
 
-            };
+                $scope.listProjectTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("projectTypesList");
+                };
+
+                $scope.assignHours = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignHoursToDeveloper");
+                };
+
+                $scope.listAssignmentTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignmentTypeList");
+                };
+
+
+                $scope.toggleMenu = function ($event, open) {
+
+                    //if (open && item == $scope.item)
+                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
+                    //else
+                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
+
+                    $scope.open = !open;
+                    //$scope.item = item;
+
+                };
 
 
             }
@@ -156,6 +170,8 @@
     <script src="application/services/client-service.js"></script>
     <script src="application/services/project-types-service.js"></script>
     <script src="application/services/assignment-type-service.js"></script>
+    <script src="application/services/notification-service.js"></script>
+
 
     <script src="application/controllers/login-controller.js"></script>
     <script src="application/controllers/project-controller.js"></script>
@@ -166,7 +182,7 @@
     <script src="application/controllers/remove-role-dialog-controller.js"></script>
     <script src="application/controllers/assign-controller.js"></script>
     <script src="application/controllers/delegate-controller.js"></script>
-    <script src="application/controllers/project-details-controller.js"></script>   
+    <script src="application/controllers/project-details-controller.js"></script>
     <script src="application/controllers/developer-assignment-controller.js"></script>
     <script src="application/controllers/hour-types-list-controller.js"></script>
     <script src="application/controllers/client-list-controller.js"></script>
@@ -201,7 +217,7 @@
 </head>
 <body ng-app="InfoWeb">
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
-    <div id="main" ng-controller="MainController" >
+    <div id="main" ng-controller="MainController">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-md-12 col-xs12">
@@ -209,24 +225,55 @@
                         <div class="row">
                             <div>
                                 <h2 class="pull-left">
-                                    <a href="javascript:void(0)" style="margin-left:20px">InfoWeb</a>
-                                </h2>  
-                            </div>                            
-                            
-                            <div class="dropdown pull-right" style="display:inline-block;margin-right:13px" id="styleSalir">
-                                <button type="button" id="notification" class="btn btn-primary">Mensajes <span class="badge">0</span></button>
-
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding:6px;margin-right:10px;color:#fff !important">
-                                    <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
-                                    {{currentUser.name}}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="margin-top: -9px;left:1px;right:10px">
-                                    <li><a href="#" style="color:#000 !important" ng-click="logout();"><span class="glyphicon glyphicon-log-out" style="margin-right:5px"></span>Salir</a></li>
-                                </ul>
+                                    <span id="titleSite" style="margin-left:20px;color:#fff">InfoWeb</span>
+                                </h2>
                             </div>
+                            <div class="pull-right">
+                                <div class="dropdown" style="display:inline-block">
+                                    <button type="button" id="notification" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="glyphicon glyphicon-bell" style="margin-right:5px"></span>Notificaciones <span class="badge">{{notifications.length}}</span></button>
+                                    <div class="dropdown-menu arrow-top" id="contentNotifications">
+                                        <div class="panel-heading" style="text-align:left;">
+                                            <span style="color:#000">Recientes</span>
+
+                                        </div>
+                                        <hr style="margin-bottom:-2px !important"/>
+                                        <div id="listNotifications">
+                                            <table class="table table-hover" ng-show="notifications.length != 0">
+                                                <tr ng-repeat="notification in notifications" style="cursor:pointer">
+                                                    <td>
+                                                        <div style="text-align:left;font-size:13px" class="pull-left">
+                                                            <span style="color:#696969"><span class="glyphicon glyphicon-tag" style="margin-right:5px"></span>{{notification.message}}</span>
+                                                        </div>                                                       
+                                                    </td>
+                                                    <!--<td>
+                                                        <div class="pull-right vl" style="color:#C0C0C0;padding-top:10px;padding-left:5px">
+                                                            <span style="padding:10px 10px">x</span>
+                                                        </div>
+                                                    </td>-->
+                                                </tr>
+                                            </table>
+                                            <div ng-show="notifications.length == 0" style="margin-top:10px">
+                                                <span style="color:#1d2129;margin-left:15px">No tiene notificaciones recientes</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="dropdown" style="display:inline-block;margin-right:13px" id="styleSalir">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding:6px;margin-right:10px;color:#fff !important">
+                                        <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
+                                        {{currentUser.name}}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="margin-top: -9px;left:1px;right:10px">
+                                        <li><a href="#" style="color:#000 !important" ng-click="logout();"><span class="glyphicon glyphicon-log-out" style="margin-right:5px"></span>Salir</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
                         </div>
-                       
+
                     </header>
                 </div>
             </div>
@@ -348,12 +395,12 @@
                     </aside>
                 </div>
                 <div id="content" class="col-md-10 col-lg-10 -col-sm-12 col-xs-12">
-                   <div ui-view>
-                   </div>
+                    <div ui-view>
+                    </div>
                 </div>
             </div>
         </div>
-     
+
     </div>
 </body>
 </html>

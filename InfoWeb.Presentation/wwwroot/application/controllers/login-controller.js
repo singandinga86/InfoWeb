@@ -1,6 +1,6 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("LoginController", ['$scope','$rootScope','AuthenticationService',  function ($scope, $rootScope, AuthenticationService) {
+app.controller("LoginController", ['$scope', '$rootScope', 'AuthenticationService', 'NotificationService', function ($scope, $rootScope, AuthenticationService, NotificationService) {
 
     $scope.userName = "";
     $scope.password = "";

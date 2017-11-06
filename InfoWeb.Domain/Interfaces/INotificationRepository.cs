@@ -9,5 +9,7 @@ namespace InfoWeb.Domain.Interfaces
     public interface INotificationRepository: IGenericRepository<Notification,int>
     {
         IQueryable<Notification> Notifications { get; }
+
+        IEnumerable<Notification> GetNotificationByUserId(int id);
     }
 }
