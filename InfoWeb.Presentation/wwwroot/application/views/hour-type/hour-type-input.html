@@ -4,15 +4,18 @@
             <span><b>{{title}}</b></span>
         </div>
         <div class="panel-body">
-            <div class="section row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <input class="form-control" type="text" ng-model="model.name" />
+            <form name="hourTypeInput" novalidate ng-submit="onButtonClicked()">
+                <div class="section row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input class="form-control" type="text" ng-model="model.name" 
+                                   name="hourTypeName" required/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button ng-click="onButtonClicked()" class="btn btn-primary btn-info btn-raised pull-right">{{acceptButtonCaption}}</button>
+                <button class="btn btn-primary btn-info btn-raised pull-right" ng-disabled="hourTypeInput.$invalid">{{acceptButtonCaption}}</button>
+            </form>
         </div>
     </div>
 </div>

@@ -13,7 +13,7 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
 
                    UserListService.getTechnicians().then(function (response) {
                        $scope.users = response.data;
-                       $scope.assignment.user = response.data[0].value;
+                       //$scope.assignment.user = response.data[0].value;
                    }, function (error) { });
 
                    AssignmentService.getHoursType().then(function (response) {

@@ -5,37 +5,49 @@
             <span><b>Asignar Horas</b></span>
         </div>
         <div class="panel-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Proyecto</label>
-                    <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects">
-                        <option value="">Seleccione proyecto</option>
-                    </select>
+            <form name="assignHoursToSingleDeveloper" novalidate ng-submit="create()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Proyecto</label>
+                        <select class="form-control" ng-model="assignment.project" ng-options="project.name for project in projects"
+                                required name="projectName">
+                            <option value="">Seleccione proyecto</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Usuario</label>
+                        <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in users"
+                                required name="user">
+                            <option value="" selected>Seleccione usuario</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label>Usuario</label>
-                    <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in users" >
-                        <option value="" selected>Seleccione usuario</option>
-                    </select> 
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Tipo de hora</label>
+                        <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes"
+                                required name="hourType">
+                            <option value="">Seleccione tipo de hora</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Cantidad de horas</label>
+                        <input type="number" class="form-control" ng-model="assignment.hours" 
+                               required name="hourCount" ng-min="0"/>
+                        <div class="text-danger">
+                            <span class="error" ng-show="assignHoursToSingleDeveloper.hourCount.$error.min">
+                                El número de horas debe ser mayor que cero
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Tipo de hora</label>
-                    <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes">
-                        <option value="">Seleccione tipo de hora</option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary btn-raised btn-info pull-right"
+                                ng-disabled="assignHoursToSingleDeveloper.$invalid">Asignar</button>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label>Cantidad de horas</label>
-                    <input type="text" class="form-control" ng-model="assignment.hours" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button class="btn btn-primary btn-raised btn-info pull-right"  ng-click="create();">Asignar </button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 

@@ -42,7 +42,6 @@ app.controller("ProjectDelegateController",
         });
 
     $scope.changeValue = function () {
-
         if ($scope.selectedItem == true)
             $scope.showHoras = true;
         else

@@ -123,7 +123,7 @@
     $stateProvider.state('createAssignmentType', {
         templateUrl: "application/views/assignment-type/assignment-type-input.html",
         controller: 'CreateAssignmentTypeController',
-        url: "/hourtypes/create",
+        url: "/assignmenttypes/create",
         authenticate: true
     });
 
