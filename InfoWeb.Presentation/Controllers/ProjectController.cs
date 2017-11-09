@@ -31,7 +31,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Project> GetProjectsForUser([FromRoute]int userId)
+        public IActionResult GetProjectsForUser([FromRoute]int userId)
         {
             var user = userRepository.GetById(userId);
             IEnumerable<Project> projects = null;
@@ -52,9 +52,9 @@ namespace InfoWeb.Presentation.Controllers
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Usuario no válido"));
             }
-            return projects;
+            return Ok(projects);
         }
 
         [HttpGet("AssignedBy")]
@@ -101,7 +101,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Remove([FromRoute] int id)
+        public IActionResult Remove([FromRoute] int id)
         {
             var project = projectRepository.GetById(id);
             if(project != null)
@@ -113,13 +113,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }                
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         private IEnumerable<ProjectDetailsUserAssigmentViewModel> getProjectDetailsforUser(User user, int projectId)
@@ -175,7 +177,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Create([FromBody]ProjectInputModel projectInputModel)
+        public IActionResult Create([FromBody]ProjectInputModel projectInputModel)
         {
             if (ModelState.IsValid)
             {
@@ -189,21 +191,22 @@ namespace InfoWeb.Presentation.Controllers
                 try
                 {
                     unitOfwork.Commit();
-                    Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch (Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpPut]
-        public void Update([FromBody]Project project)
+        public IActionResult Update([FromBody]Project project)
         {
             if (ModelState.IsValid)
             {
@@ -218,18 +221,20 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch (Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Proyecto no encontrado."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpGet("{projectId}/getProject")]

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -33,7 +34,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Create([FromBody]Role role)
+        public IActionResult Create([FromBody]Role role)
         {
             if(ModelState.IsValid)
             {
@@ -41,26 +42,27 @@ namespace InfoWeb.Presentation.Controllers
                 try
                 {
                     unitOfWork.Commit();
-                    Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch (Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }                      
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
+            }
+
+            return Ok();
         }
 
         [HttpPut()]
-        public void Update([FromBody]Role role)
+        public IActionResult Update([FromBody]Role role)
         {
             if (ModelState.IsValid)
             {
                 var targetRole = roleRepository.GetById(role.Id);
-                if(targetRole != null)
+                if (targetRole != null)
                 {
                     targetRole.Name = role.Name;
                     roleRepository.Update(targetRole);
@@ -70,22 +72,24 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch (Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Rol no encontrado."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Remove(int id)
+        public IActionResult Remove(int id)
         {
             if(id > 0)
             {
@@ -97,13 +101,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }            
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
+            }
+
+            return Ok();
         }
     }
 }

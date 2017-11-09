@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -34,7 +35,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Add([FromBody]ProjectType projectType)
+        public IActionResult Add([FromBody]ProjectType projectType)
         {
             if (ModelState.IsValid)
             {
@@ -43,21 +44,22 @@ namespace InfoWeb.Presentation.Controllers
                 try
                 {
                     unitOfWork.Commit();
-                    Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }                
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpPut]
-        public void Update([FromBody] ProjectType projectType)
+        public IActionResult Update([FromBody] ProjectType projectType)
         {
             if (ModelState.IsValid)
             {
@@ -72,24 +74,26 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch(Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                     
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    return BadRequest(new ValidationResult("Tipo de proyecto no encontrado."));
                 }
 
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Remove([FromRoute] int id)
+        public IActionResult Remove([FromRoute] int id)
         {
             var target = projectTypesRepository.GetById(id);
             if (target != null)
@@ -100,13 +104,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
     }
 }

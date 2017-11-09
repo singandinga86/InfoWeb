@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -33,7 +34,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Add([FromBody]Client client)
+        public IActionResult Add([FromBody]Client client)
         {
             if (ModelState.IsValid)
             {
@@ -42,22 +43,23 @@ namespace InfoWeb.Presentation.Controllers
                 try
                 {
                     unitOfwork.Commit();
-                    Response.StatusCode = (int)HttpStatusCode.Created;
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
                 
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpPut]
-        public void Update([FromBody] Client client)
+        public IActionResult Update([FromBody] Client client)
         {
             if (ModelState.IsValid)
             {
@@ -72,24 +74,26 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch(Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                     
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    return BadRequest(new ValidationResult("Cliente no encontrado."));
                 }
 
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Remove([FromRoute] int id)
+        public IActionResult Remove([FromRoute] int id)
         {
             var target = clientRepository.GetById(id);
             if (target != null)
@@ -101,13 +105,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Cliente no encontrado."));
             }
+
+            return Ok();
         }
     }
 }

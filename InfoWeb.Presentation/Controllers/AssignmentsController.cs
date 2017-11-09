@@ -8,6 +8,7 @@ using InfoWeb.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using InfoWeb.Presentation.InputModels;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -49,97 +50,118 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
+        public IActionResult CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         { 
             if(ModelState.IsValid)
             {
                 User assignator = userRepository.GetById(userId);
                 Assignment assigmentUpdate = null;
-                List<HourType> HourTypes = (List<HourType>)hourTypeRepository.GetAll();
-                Notification notification = null;
+                HourType hourType = hourTypeRepository.GetById(assignment.HourType.Id);
+                AssignmentType assignmentType = assigmentTypeRepository.GetByName("Delegar proyecto");
+                User assignee = userRepository.GetById(assignment.User.Id);
+                Project project = projectRepository.GetById(assignment.Project.Id);                
 
-                if (assignment.HourType != null)
-                    assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
-
-
-                IEnumerable<AssignmentType> typesAssigment = assigmentTypeRepository.GetAll();
-                Assignment assigmentAdd = null;
-
-                if (assigmentUpdate == null)
+                if (assignator != null && assignee != null && assignmentType != null && project != null && assignment.Hours > 0)
                 {
-                    if (assignment.HourType == null)
+                    Notification notification = null;
+
+                    var validationResult = CanProjectDelegationBeDone(assignment, assignmentType, project, assignment.Hours);
+
+                    if (validationResult.IsValid)
                     {
-                        assigmentAdd = new Assignment
+
+                        if (assignment.HourType != null)
+                            assigmentUpdate = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
+
+                        Assignment assigmentAdd = null;
+
+                        if (assigmentUpdate == null)
                         {
-                            ProjectId = assignment.Project.Id,
-                            AssigneeId = assignment.User.Id,
-                            Assignator = assignator,
-                            AssignmentTypeId = typesAssigment.First(t => t.Name == "Delegar proyecto").Id,
-                            Hours = assignment.Hours,
-                            Date = DateTime.Now
-                        };
-                        notification = new Notification()
+                            if (assignment.HourType == null)
+                            {
+                                assigmentAdd = new Assignment
+                                {
+                                    ProjectId = assignment.Project.Id,
+                                    AssigneeId = assignment.User.Id,
+                                    Assignator = assignator,
+                                    AssignmentType = assignmentType,
+                                    Hours = assignment.Hours,
+                                    Date = DateTime.Now
+                                };
+                                notification = new Notification()
+                                {
+                                    Date = DateTime.Now,
+                                    Message = "Se le ha delegado el proyecto " + assignment.Project.Name,
+                                    Seen = false,
+                                    UserId = assignment.User.Id,
+                                    SenderId = assignator.Id
+                                };
+
+                                assignmentRepository.removeAssigmentsAssignedTo(assignee.Id, project.Id, hourType.Id, assignmentType.Id);
+                            }
+                            else
+                            {
+                                assigmentAdd = new Assignment
+                                {
+                                    ProjectId = assignment.Project.Id,
+                                    AssigneeId = assignment.User.Id,
+                                    Assignator = assignator,
+                                    AssignmentType = assignmentType,
+                                    HourTypeId = assignment.HourType.Id,
+                                    Hours = assignment.Hours,
+                                    Date = DateTime.Now
+                                };
+                                notification = new Notification()
+                                {
+                                    Date = DateTime.Now,
+                                    Message = "Se le ha delegado el proyecto " + assignment.Project.Name + " con " + assignment.Hours + " horas de " + assignment.HourType.Name,
+                                    Seen = false,
+                                    UserId = assignment.User.Id,
+                                    SenderId = assignator.Id
+                                };
+                            }
+                            notificationRepository.Add(notification);
+                            assignmentRepository.Add(assigmentAdd);
+                        }
+                        else
                         {
-                            Date = DateTime.Now,
-                            Message = "Se le ha delegado el proyecto " + assignment.Project.Name,
-                            Seen = false,
-                            UserId = assignment.User.Id,
-                            SenderId = assignator.Id
-                        };
+                            assigmentUpdate.Hours += assignment.Hours;
+
+                            assignmentRepository.Update(assigmentUpdate);
+                        }
+
+                        try
+                        {
+                            unitOfWork.Commit();
+                            Response.StatusCode = (int)HttpStatusCode.Created;
+
+                        }
+                        catch (Exception e)
+                        {
+                            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        }
                     }
                     else
                     {
-                        assigmentAdd = new Assignment
-                        {
-                            ProjectId = assignment.Project.Id,
-                            AssigneeId = assignment.User.Id,
-                            Assignator = assignator,
-                            AssignmentTypeId = typesAssigment.First(t => t.Name == "Asignar horas").Id,
-                            HourTypeId = assignment.HourType.Id,
-                            Hours = assignment.Hours,
-                            Date = DateTime.Now
-                        };
-                        notification = new Notification()
-                        {
-                            Date = DateTime.Now,
-                            Message = "Se le ha delegado el proyecto " + assignment.Project.Name + " con "+ assignment.Hours + " horas de "+ assignment.HourType.Name,
-                            Seen = false,
-                            UserId = assignment.User.Id,
-                            SenderId = assignator.Id
-                        };
+                        return BadRequest(validationResult);
                     }
-                   
-
-                    notificationRepository.Add(notification);
-                    assignmentRepository.Add(assigmentAdd);
                 }
                 else
                 {
-                    assigmentUpdate.Hours += assignment.Hours;
-
-                    assignmentRepository.Update(assigmentUpdate);
-                }
-
-                try
-                {
-                    unitOfWork.Commit();
-                    Response.StatusCode = (int)HttpStatusCode.Created;
-                }
-                catch(Exception e)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Datos de entrada no válidos."));
                 }
 
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Datos de entrada no válidos."));
             }
-            
+
+            return Ok();            
         }
 
         [HttpPost("technician")]
-        public void CreateTechnicianAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
+        public IActionResult CreateTechnicianAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         {
             var assignator = userRepository.GetById(userId);
             User assignee = (assignment.User != null) ? userRepository.GetById(assignment.User.Id): null;
@@ -152,101 +174,148 @@ namespace InfoWeb.Presentation.Controllers
                 && assignator != null && project != null && hourType != null
                 && assignmentType != null && hours > 0)
             {
+
                 Assignment targetAssignment = assignmentRepository.GetAssigmentExist(assignment.User.Id, assignment.HourType.Id, assignment.Project.Id);
 
-                if(targetAssignment == null)
+                var validationResult = CanTechnicianAssignationBeDone(assignator, project, hourType, hours);
+
+                if (validationResult.IsValid)
                 {
-                    targetAssignment = new Assignment
+
+                    if (targetAssignment == null)
                     {
-                        Assignee = assignee,
-                        Assignator = assignator,
-                        AssignmentType = assignmentType,
-                        HourType = hourType,
-                        Date = DateTime.Now,
-                        Project = project,
-                        Hours = hours
-                    };
-                    assignmentRepository.Add(targetAssignment);
-                    Response.StatusCode = (int)HttpStatusCode.Created;
-                }
-                else
-                {
-                    if(targetAssignment.Assignator.Id == assignator.Id)
-                    {
-                        targetAssignment.Hours += hours;
-                        assignmentRepository.Update(targetAssignment);
+                        targetAssignment = new Assignment
+                        {
+                            Assignee = assignee,
+                            Assignator = assignator,
+                            AssignmentType = assignmentType,
+                            HourType = hourType,
+                            Date = DateTime.Now,
+                            Project = project,
+                            Hours = hours
+                        };
+                        assignmentRepository.Add(targetAssignment);
                         Response.StatusCode = (int)HttpStatusCode.Created;
                     }
                     else
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
-                    }                    
+                        if (targetAssignment.Assignator.Id == assignator.Id)
+                        {
+                            targetAssignment.Hours += hours;
+                            assignmentRepository.Update(targetAssignment);
+                            Response.StatusCode = (int)HttpStatusCode.Created;
+                        }
+                        else
+                        {
+                            return BadRequest(new ValidationResult("Otro usuario ya efectuó esta asignación."));
+                        }
+                    }
+
+                    if (Response.StatusCode != (int)HttpStatusCode.Conflict)
+                    {
+                        Notification notification = new Notification() {
+                            Date = DateTime.Now,
+                            Message = "Se le han asignado " + assignment.Hours + " horas de " + hourType.Name +" en el proyecto " + project.Name,
+                            Seen = false,
+                            UserId = assignee.Id,
+                            SenderId = assignator.Id
+                        };
+
+                        notificationRepository.Add(notification);
+
+                        try
+                        {
+                            unitOfWork.Commit();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
+                    }
                 }
-                
-                if(Response.StatusCode != (int)HttpStatusCode.Conflict)
+                else
                 {
-                    try
-                    {
-                        unitOfWork.Commit();
-                    }
-                    catch(Exception e)
-                    {
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    }
+                    return BadRequest(validationResult);
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
 
         }
 
         [HttpPost("project")]
-        public void AssignProject([FromBody]AssignProjectInputModel model, [FromRoute]int userId)
+        public IActionResult AssignProject([FromBody]AssignProjectInputModel model, [FromRoute]int userId)
         {
             if (model != null)
             {
                 var assignee = userRepository.GetById(model.AssigneeId);
                 var assignator = userRepository.GetById(userId);
-                var assignmentType = assigmentTypeRepository.GetByName("Delegar proyecto");
+                var assignmentType = assigmentTypeRepository.GetByName("Asignar proyecto");
                 var project = projectRepository.GetById(model.ProjectId);
 
                 if (assignee != null && assignator != null &&
                     assignee.Role.Name == "OM" && assignator.Role.Name == "ADMIN"
                     && project != null && assignmentType != null)
                 {
-                    var assignment = new Assignment()
-                    {
-                        Assignee = assignee,
-                        Assignator = assignator,
-                        HourType = null,
-                        AssignmentType = assignmentType,
-                        Date = DateTime.Now,
-                        Project = project,
-                    };
+                    var targetAssignment = assignmentRepository.Assignments
+                    .Where(a =>/* a.Assignee.Id == assignee.Id && */a.Project.Id == project.Id
+                           && a.AssignmentType.Id == assignmentType.Id && a.HourType == null)
+                    .FirstOrDefault();
 
-                    assignmentRepository.Add(assignment);
-
-                    try
+                    if (targetAssignment == null)
                     {
-                        unitOfWork.Commit();
-                        Response.StatusCode = (int)HttpStatusCode.Created;
+                        var assignment = new Assignment()
+                        {
+                            Assignee = assignee,
+                            Assignator = assignator,
+                            HourType = null,
+                            AssignmentType = assignmentType,
+                            Date = DateTime.Now,
+                            Project = project,
+                        };
+
+                        assignmentRepository.Add(assignment);
+
+                        Notification notification = new Notification()
+                        {
+                            Date = DateTime.Now,
+                            Message = "Se le ha asignado el proyecto " + project.Name,
+                            Seen = false,
+                            UserId = assignee.Id,
+                            SenderId = assignator.Id
+                        };
+                        notificationRepository.Add(notification);
+
+                        try
+                        {
+                            unitOfWork.Commit();
+                            Response.StatusCode = (int)HttpStatusCode.Created;
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return BadRequest(new ValidationResult("Este proyecto ya fue asignado."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error en los datos de entrada."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));   
             }
+
+            return Ok();
         }
 
         //[HttpGet("Hours")]
@@ -255,6 +324,95 @@ namespace InfoWeb.Presentation.Controllers
         //    IEnumerable<Assignment> result = assigmentRepository.GetAssignments(userId, AssignmentType.AssignmentTypeHours);
         //    return result;
         //}
+
+        private ValidationResult CanProjectDelegationBeDone(CreateAssignmentInputModel assignment, AssignmentType assignmentType, Project project, int hours)
+        {
+            var result = new ValidationResult();
+            if(assignment.HourType == null)
+            {
+                var otherAdministratorsCount = assignmentRepository.Assignments
+                    .Where(a => a.AssigneeId != assignment.User.Id && a.ProjectId == project.Id &&
+                           a.AssignmentType.Id == assignmentType.Id)
+                    .Count();
+                if(otherAdministratorsCount > 0)
+                {
+                    result.Messages.Add("Ya se le han delegado horas de este proyecto a otros usuarios.");
+                }
+            }
+            else
+            {
+                var hourType = project.ProjectsHoursTypes.Where(pht => pht.Id == assignment.HourType.Id).FirstOrDefault();
+                if(hourType == null)
+                {
+                    result.Messages.Add("Este proyecto no cuenta con horas de este tipo.");
+                }
+
+                var totalHours = hourType.Hours;
+
+                var currentHours = assignmentRepository.Assignments
+                            .Where(a => a.AssignmentType.Id == assignmentType.Id && a.ProjectId == project.Id &&
+                                     a.HourTypeId == hourType.Id)
+                            .Sum(a => a.Hours);
+
+                if((currentHours + hours) > totalHours)
+                {
+                    result.Messages.Add("La cantidad de horas seleccionada excecde el total de horas del proyecto.");
+                }
+                
+            }
+
+            return result;
+        }
+
+        private ValidationResult CanTechnicianAssignationBeDone(User assignator, Project project, HourType hourType, int hours)
+        {
+            var result = new ValidationResult();
+            var parentAssignments = assignmentRepository.Assignments
+                                   .Where(a => a.Assignee.Id == assignator.Id && a.ProjectId == project.Id /*&&
+                                          a.AssignmentTypeId == 1*/)
+                                   .ToList();
+            int parentAssignmentCount = parentAssignments.Count;
+
+            if(parentAssignmentCount > 0)
+            {
+                var assignments = assignmentRepository.Assignments
+                                        .Where(a => a.Assignator.Id == assignator.Id && a.HourTypeId == hourType.Id 
+                                               && a.ProjectId == project.Id && a.AssignmentTypeId == 2)
+                                        .ToList();
+                int assignmentCount = assignments.Count();
+                int totalHours = 0;
+                int hourCount = assignments.Sum(a => a.Hours);
+
+                if (parentAssignmentCount == 1 && parentAssignments.First().HourType == null)
+                {
+                    totalHours = project.ProjectsHoursTypes.Where(pht => pht.Id == hourType.Id).First().Hours;
+                }
+                else
+                {
+                    var parentAuthorizationAssignment = parentAssignments
+                                                        .Where(a => a.HourTypeId == hourType.Id)
+                                                        .FirstOrDefault();
+
+                    if(parentAuthorizationAssignment == null)
+                    {
+                        result.Messages.Add("No tiene permitido asignar este tipo de horas en este proyecto.");
+                    }
+
+                    totalHours = parentAuthorizationAssignment.Hours;
+                }
+
+                if ((hourCount + hours) > totalHours)
+                {
+                    result.Messages.Add("La cantidad de horas seleccionada excecde el total de horas del proyecto.");
+                }
+            }
+            else
+            {
+                result.Messages.Add("No tiene permitido asignar horas en este proyecto.");
+            }
+
+            return result;
+        }
 
 
 

@@ -21,6 +21,7 @@ namespace InfoWeb.DataAccess.Repositories
         {
             return entitySet.Include(p => p.Client)
                   .Include(p => p.ProjectsHoursTypes)
+                  .Include(p => p.Client)
                   .Include(p => p.Type)
                   .ToList();
         }

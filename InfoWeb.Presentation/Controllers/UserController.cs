@@ -9,6 +9,7 @@ using InfoWeb.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using InfoWeb.Presentation.InputModels;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -80,7 +81,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Add([FromBody]UserInputModel userData)
+        public IActionResult Add([FromBody]UserInputModel userData)
         {
             if(ModelState.IsValid)
             {
@@ -97,26 +98,27 @@ namespace InfoWeb.Presentation.Controllers
 
                     try {
                         unitOfWork.Commit();    
-                        Response.StatusCode = (int)HttpStatusCode.Created;
                     }
                     catch(Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error en los datos de entrada."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpPut]
-        public void Update([FromBody]UserInputModel userData)
+        public IActionResult Update([FromBody]UserInputModel userData)
         {
             if (ModelState.IsValid)
             {
@@ -136,22 +138,24 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch(Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Usuario no encontrado."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Remove([FromRoute]int id)
+        public IActionResult Remove([FromRoute]int id)
         {
             var user = userRepository.GetById(id);
             if(user != null)
@@ -163,13 +167,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                  catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
        /* private bool ValidateUserInput(UserInputModel userData)

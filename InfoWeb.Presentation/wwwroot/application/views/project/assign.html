@@ -5,7 +5,7 @@
             <span><b>Asignar Proyectos</b></span>
         </div>
         <div class="panel-body">
-            <form name="assignProject" novalidate ng-submit="assignProject()">
+            <form name="assignProjectForm" novalidate ng-submit="assignProject()">
                 <div class="row">
                     <div class="col-md-6">
                         <label>Proyecto</label>
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary btn-raised pull-right btn-info"
-                                ng-disabled="assignProject.$invalid">Asignar</button>
+                                ng-disabled="assignProjectForm.$invalid">Asignar</button>
                     </div>
                 </div>
             </form>

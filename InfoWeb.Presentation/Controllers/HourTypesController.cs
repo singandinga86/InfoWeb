@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using System.Net;
+using InfoWeb.Presentation.Models;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -33,7 +34,7 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpPost]
-        public void Add([FromBody]HourType hourType)
+        public IActionResult Add([FromBody]HourType hourType)
         {
             if(ModelState.IsValid)
             {
@@ -44,19 +45,19 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
-                
-                Response.StatusCode = (int)HttpStatusCode.Created;
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpPut]
-        public void Update([FromBody] HourType hourType)
+        public IActionResult Update([FromBody] HourType hourType)
         {
             if (ModelState.IsValid)
             {
@@ -71,23 +72,25 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     catch(Exception e)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Conflict;
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
                     }
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    return BadRequest(new ValidationResult("Tipo de hora no encontrado."));
                 }
 
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Remove([FromRoute] int id)
+        public IActionResult Remove([FromRoute] int id)
         {
             var target = hourTypeRepository.GetById(id);
             if(target != null)
@@ -98,13 +101,15 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 catch(Exception e)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return BadRequest(new ValidationResult("Tipo de hora no encontrado."));
             }
+
+            return Ok();
         }
     }
 }
