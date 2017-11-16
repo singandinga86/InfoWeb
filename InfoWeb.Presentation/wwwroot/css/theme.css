@@ -129,8 +129,8 @@ a:hover {
 }
 /*style login*/
 #panelLogin {
-    width: 40%;
-    margin: 11% 20%;
+    vertical-align: middle;
+    top: 15vh;
 }
 #panelContent {
     padding-left: 17%;

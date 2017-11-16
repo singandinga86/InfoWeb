@@ -1,0 +1,50 @@
+﻿
+/* Dispositivos pequeños (tablets, anchura mayor o igual a 768px) */
+@media (min-width: 768px) {
+    /*div.container-fluid {
+        width: 97%;
+        max-width: 97%;
+        font-size: small;
+        margin-left: 21px;
+        padding-right: 0px;
+        padding-left: 11px;
+    }
+
+    #panelLogin {
+        width: 60%;
+        max-width: 60%;
+        margin-top: 83px;
+        margin-left: 101px;
+    }
+
+    .modal-footer .btn + .btn {
+        margin-right: 19px;
+    }*/
+}
+
+/* Dispositivos medianos (ordenadores, anchura mayor o igual a 992px) */
+@media (min-width: 992px) {
+    .tableStyle {
+        margin-left: 80px;
+    }
+}
+@media (min-width: 1100px) {
+    .tableStyle {
+        margin-left: 70px;
+    }
+}
+
+/* Dispositivos grandes (ordenadores, anchura mayor o igual a 1200px) */
+@media (min-width: 1200px) {
+
+    .tableStyle {
+        margin-left: 50px;
+    }
+}
+/* Dispositivos grandes (ordenadores, anchura mayor o igual a 1300px) */
+@media (min-width: 1300px) {
+
+    .tableStyle {
+        margin-left: 30px;
+    }
+}
