@@ -14,16 +14,17 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label>Tipo de Proyecto</label>
-                        <select class="form-control" ng-model="model.projectType" ng-options="projectType.name for projectType in projectTypes"
-                                name="projectType" required>
+                        <select class="form-control" ng-model="model.type" ng-options="projectType.name for projectType in projectTypes track by projectType.id"
+                                name="projectType"  required>
                             <option value="">Seleccione el tipo</option>
+                            
                         </select>
                     </div>
                 </div>
                 <div class="section row">
                     <div class="col-md-6">
                         <label>Cliente</label>
-                        <select class="form-control" ng-model="model.client" ng-options="client.name for client in clientes"
+                        <select class="form-control" ng-model="model.client" ng-options="client.name for client in clientes track by client.id"
                                 name="client" required>
                             <option value="">Seleccione cliente</option>
                         </select>

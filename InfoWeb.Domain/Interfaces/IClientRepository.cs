@@ -6,7 +6,7 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IClientRepository: IGenericRepository<Client, int>
+    public interface IClientRepository: IGenericRepository<Client, int>, INamedObjectRepository<Client>
     {
         IQueryable<Client> Clients { get; }
     }

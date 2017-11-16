@@ -104,17 +104,17 @@ namespace InfoWeb.Presentation.Controllers
         public IActionResult Remove([FromRoute] int id)
         {
             var project = projectRepository.GetById(id);
-            if(project != null)
+            if (project != null)
             {
                 projectRepository.Remove(project);
 
                 try {
                     unitOfwork.Commit();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return BadRequest(new ValidationResult("Error interno del servidor."));
-                }                
+                }
             }
             else
             {
@@ -131,7 +131,7 @@ namespace InfoWeb.Presentation.Controllers
 
             var assignmentsByUser = getAssignmentsMadeByUserInProject(user.Id, projectId);
 
-            foreach(var assingmentCollection in assignmentsByUser)
+            foreach (var assingmentCollection in assignmentsByUser)
             {
                 var details = new ProjectDetailsUserAssigmentViewModel();
                 details.User = assingmentCollection.Key;
@@ -150,7 +150,7 @@ namespace InfoWeb.Presentation.Controllers
             return result;
         }
 
-        private IDictionary<User,List<Assignment>> getAssignmentsMadeByUserInProject(int userId, int projectId)
+        private IDictionary<User, List<Assignment>> getAssignmentsMadeByUserInProject(int userId, int projectId)
         {
             var assignments = queryModel.Assignments.
                              Where(a => a.Assignator.Id == userId && a.Project.Id == projectId)
@@ -158,7 +158,7 @@ namespace InfoWeb.Presentation.Controllers
                              .Include(a => a.Assignee)
                              .ThenInclude(a => a.Role)
                              .GroupBy(a => a.Assignee)
-                             .ToDictionary(a => a.Key, a => a.ToList()) ;
+                             .ToDictionary(a => a.Key, a => a.ToList());
 
             return assignments;
         }
@@ -181,28 +181,42 @@ namespace InfoWeb.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                Project project = new Project()
-                {
-                    ClientId = projectInputModel.Client.Id,
-                    TypeId = projectInputModel.ProjectType.Id,
-                    Name = projectInputModel.Name
-                };
-                projectRepository.Add(project);
-                try
-                {
-                    unitOfwork.Commit();
+                var clientId = projectInputModel.Client.Id;
+                var projectTypeId = projectInputModel.Type.Id;
+
+
+                var projectType = queryModel.ProjectType.Where(p => p.Id == projectTypeId).FirstOrDefault();
+                var client = queryModel.Clients.Where(c => c.Id == clientId);
+
+                if (projectType != null && client != null)
+                {                   
+                    if (isProjectAlreadyInserted(projectInputModel.Name, projectTypeId,clientId) == false)
+                    {
+                        Project project = new Project()
+                        {
+                            ClientId = projectInputModel.Client.Id,
+                            TypeId = projectInputModel.Type.Id,
+                            Name = projectInputModel.Name
+                        };
+                        projectRepository.Add(project);
+                        try
+                        {
+                            unitOfwork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new ValidationResult("Este proyecto ya existe."));
+                    }
                 }
-                catch (Exception e)
-                {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
-                }
-            }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -211,9 +225,14 @@ namespace InfoWeb.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 var targetProject = projectRepository.GetById(project.Id);
-                if (targetProject != null)
+
+                if (targetProject != null && isProjectAlreadyInserted(project.Name,
+                    project.Type.Id, project.Client.Id) == false)
                 {
                     targetProject.Name = project.Name;
+                    targetProject.TypeId = project.Type.Id;
+                    targetProject.ClientId = project.Client.Id;
+
                     projectRepository.Update(targetProject);
                     try
                     {
@@ -241,6 +260,18 @@ namespace InfoWeb.Presentation.Controllers
         public Project GetProject(int projectId)
         {
             return projectRepository.GetById(projectId);
+        }
+
+        private bool isProjectAlreadyInserted(string name, int projectTypeId, int clientId)
+        {
+            var targetProject = queryModel.Projects.Where(p => p.Name.ToLower() == name
+                                                            && p.ClientId == clientId
+                                                            && p.TypeId == projectTypeId).FirstOrDefault();
+            if(targetProject != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -40,22 +40,25 @@ namespace InfoWeb.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 projectType.Projects= null;
-                projectTypesRepository.Add(projectType);
-                try
+                if (isProjectTypeTaken(projectType.Name, -1) == false)
                 {
-                    unitOfWork.Commit();
+                    projectTypesRepository.Add(projectType);
+                    try
+                    {
+                        unitOfWork.Commit();
+                        return Ok();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                catch(Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
-                }                
+                    return BadRequest(new ValidationResult("El tipo de proyecto ya existe."));
+                }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -66,17 +69,24 @@ namespace InfoWeb.Presentation.Controllers
                 var targetProjectType = projectTypesRepository.GetById(projectType.Id);
                 if (targetProjectType != null)
                 {
-                    targetProjectType.Name = projectType.Name;
-                    projectTypesRepository.Update(targetProjectType);
-                    try
+                    if (isProjectTypeTaken(projectType.Name, projectType.Id) == false)
                     {
-                        unitOfWork.Commit();
+                        targetProjectType.Name = projectType.Name;
+                        projectTypesRepository.Update(targetProjectType);
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
-                    }
-                    
+                        return BadRequest(new ValidationResult("El tipo de proyecto ya existe."));
+                    }                    
                 }
                 else
                 {
@@ -84,12 +94,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
 
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpDelete("{id}")]
@@ -113,6 +118,18 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isProjectTypeTaken(string userName, int id)
+        {
+            var user = this.projectTypesRepository.GetByName(userName);
+
+            if (user == null || (user != null && id > 0 && user.Id == id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

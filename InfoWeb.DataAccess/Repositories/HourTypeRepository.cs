@@ -28,7 +28,7 @@ namespace InfoWeb.DataAccess.Repositories
 
         public HourType GetByName(string name)
         {
-            return entitySet.Where(h => h.Name == name).FirstOrDefault();
+            return entitySet.Where(h => h.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
 
         public IEnumerable<HourType> GetRange(int skip = 0, int take = 0)

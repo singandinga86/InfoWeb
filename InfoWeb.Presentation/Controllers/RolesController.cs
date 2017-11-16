@@ -38,22 +38,26 @@ namespace InfoWeb.Presentation.Controllers
         {
             if(ModelState.IsValid)
             {
-                roleRepository.Add(role);
-                try
+                if (isRoleTaken(role.Name, -1) == false)
                 {
-                    unitOfWork.Commit();
+                    roleRepository.Add(role);
+                    try
+                    {
+                        unitOfWork.Commit();
+                        return Ok();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    return BadRequest(new ValidationResult("El rol ya existe."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+          
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut()]
@@ -64,15 +68,23 @@ namespace InfoWeb.Presentation.Controllers
                 var targetRole = roleRepository.GetById(role.Id);
                 if (targetRole != null)
                 {
-                    targetRole.Name = role.Name;
-                    roleRepository.Update(targetRole);
-                    try
+                    if (isRoleTaken(role.Name, role.Id) == false)
                     {
-                        unitOfWork.Commit();
+                        targetRole.Name = role.Name;
+                        roleRepository.Update(targetRole);
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El rol ya existe."));
                     }
                 }
                 else
@@ -80,12 +92,7 @@ namespace InfoWeb.Presentation.Controllers
                     return BadRequest(new ValidationResult("Rol no encontrado."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+           return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpDelete("{id}")]
@@ -110,6 +117,18 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isRoleTaken(string userName, int id)
+        {
+            var user = this.roleRepository.GetByName(userName);
+
+            if (user == null || (user != null && id > 0 && user.Id == id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -38,22 +38,27 @@ namespace InfoWeb.Presentation.Controllers
         {
             if(ModelState.IsValid)
             {
-                hourType.ProjectsHoursTypes = null;
-                hourTypeRepository.Add(hourType);
-                try {
-                    unitOfWork.Commit();
-                }
-                catch(Exception e)
+                if (isHourTypeTaken(hourType.Name, -1) == false)
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    hourType.ProjectsHoursTypes = null;
+                    hourTypeRepository.Add(hourType);
+                    try
+                    {
+                        unitOfWork.Commit();
+                        return Ok();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
+                }
+                else
+                {
+                    return BadRequest(new ValidationResult("El tipo de hora ya existe."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+           
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -64,15 +69,23 @@ namespace InfoWeb.Presentation.Controllers
                 var targetHourType = hourTypeRepository.GetById(hourType.Id);
                 if (targetHourType != null)
                 {
-                    targetHourType.Name = hourType.Name;
-                    hourTypeRepository.Update(targetHourType);
-                    try
+                    if (isHourTypeTaken(hourType.Name, hourType.Id) == false)
                     {
-                        unitOfWork.Commit();
+                        targetHourType.Name = hourType.Name;
+                        hourTypeRepository.Update(targetHourType);
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El tipo de hora ya existe."));
                     }
                 }
                 else
@@ -81,12 +94,10 @@ namespace InfoWeb.Presentation.Controllers
                 }
 
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
 
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
+
+            
         }
 
         [HttpDelete("{id}")]
@@ -110,6 +121,18 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isHourTypeTaken(string name, int id)
+        {
+            var target = hourTypeRepository.GetByName(name);
+
+            if (target == null || (target != null && id > 0 && target.Id == id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

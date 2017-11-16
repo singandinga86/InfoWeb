@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6">
                         <label>Rol</label>
-                        <select class="form-control" ng-model="model.role" ng-options="role.name for role in roles"
+                        <select class="form-control" ng-model="model.role" ng-options="role.name for role in roles track by role.id"
                                  required name="role">
                             <option value="">Seleccione rol</option>
                         </select>

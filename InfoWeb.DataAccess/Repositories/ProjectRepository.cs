@@ -49,7 +49,9 @@ namespace InfoWeb.DataAccess.Repositories
                         join a in this.context.Assignments
                         on p.Id equals a.Project.Id
                         where a.Assignator.Id == userId
-                        select p).Include(p => p.Client).AsNoTracking().Distinct();
+                        select p).Include(p => p.Client)
+                        .Include(p => p.ProjectsHoursTypes)
+                        .Include(p => p.Type).AsNoTracking().Distinct();
             return base.GetRange(query, skip, take);
                         
         }
@@ -62,17 +64,20 @@ namespace InfoWeb.DataAccess.Repositories
                          where a.Assignee.Id == userId
                          select p)
                          .Include(p => p.Client)
+                         .Include(p => p.ProjectsHoursTypes)
+                         .Include(p => p.Type)
                          .GroupBy(p => p)
                          .Select(p => p.First());
             return base.GetRange(query, skip, take);
-
         }
 
         public IEnumerable<Project> GetUnassignedProjects(int skip = 0, int take = 0)
         {
             var query = (from p in context.Projects
                         where !context.Assignments.Any(a => a.ProjectId == p.Id)
-                        select p).Include(p => p.Client);
+                        select p).Include(p => p.Client)
+                        .Include(p => p.ProjectsHoursTypes)
+                        .Include(p => p.Type);
 
             return base.GetRange(query,skip, take);
         }

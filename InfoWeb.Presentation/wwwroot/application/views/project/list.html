@@ -19,6 +19,7 @@
                         <tr>
                             <td><b>Nombre</b></td>
                             <td><b>Cliente</b></td>
+                            <td><b>Tipo de Proyecto</b></td>
                             <td><b>Opciones</b></td>
                         </tr>
                     </thead>
@@ -29,6 +30,9 @@
                             </td>
                             <td title="'Cliente'">
                                 {{project.client.name}}
+                            </td>
+                            <td title="'Tipo'">
+                                {{project.type.name}}
                             </td>
                             <td>
                                 <span class="glyphicon glyphicon-list" ng-click="viewDetails(project.id)" title="Ver"></span>
