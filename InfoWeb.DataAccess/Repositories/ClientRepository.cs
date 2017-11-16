@@ -26,6 +26,11 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.Where(c => c.Id == id).FirstOrDefault();
         }
 
+        public Client GetByName(string name)
+        {
+            return context.Clients.Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefault();
+        }
+
         public IEnumerable<Client> GetRange(int skip = 0, int take = 0)
         {
             return base.GetRange(entitySet, skip, take);

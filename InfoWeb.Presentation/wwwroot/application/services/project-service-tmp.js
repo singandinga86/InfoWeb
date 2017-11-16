@@ -53,7 +53,6 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
             });
         },
         getProject: function (projectId, userId) {
-            console.log(projectId, userId);
             return $http({
                 method: 'GET',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId + "/getProject"

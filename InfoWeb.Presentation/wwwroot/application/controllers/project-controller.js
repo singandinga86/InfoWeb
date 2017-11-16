@@ -46,7 +46,6 @@ app.controller("ProjectController",['$scope','$uibModal' ,'ProjectService', 'Aut
                             } else {
                                 orderedData = response.data;
                             }
-
                             //$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 
                             params.total(orderedData.length);

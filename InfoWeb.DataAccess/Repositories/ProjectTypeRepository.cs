@@ -25,6 +25,11 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.Where(pt => pt.Id == id).FirstOrDefault();
         }
 
+        public ProjectType GetByName(string name)
+        {
+            return entitySet.Where(pt => pt.Name.ToLower() == name.ToLower()).FirstOrDefault();
+        }
+
         public IEnumerable<ProjectType> GetRange(int skip, int take)
         {
             return base.GetRange(entitySet, skip, take);

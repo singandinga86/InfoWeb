@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IProjectTypeRepository: IGenericRepository<ProjectType, int>
+    public interface IProjectTypeRepository: IGenericRepository<ProjectType, int>, INamedObjectRepository<ProjectType>
     {
         IQueryable<ProjectType> ProjectTypes { get; }
     }

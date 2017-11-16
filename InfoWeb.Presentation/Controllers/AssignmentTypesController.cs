@@ -41,21 +41,26 @@ namespace InfoWeb.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 assignmentType.Assignments = null;
-                assignmentTypeRepository.Add(assignmentType);
-                try {
-                    unitOfWork.Commit();
-                }
-                catch(Exception e)
+                if (isAssignmentTypeTaken(assignmentType.Name, -1) == false)
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    assignmentTypeRepository.Add(assignmentType);
+                    try
+                    {
+                        unitOfWork.Commit();
+                        return Ok();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
+                }
+                else
+                {
+                    return BadRequest(new ValidationResult("El tipo de asignación ya existe."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+           
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -66,29 +71,32 @@ namespace InfoWeb.Presentation.Controllers
                 var targetHourType = assignmentTypeRepository.GetById(assignmentType.Id);
                 if (targetHourType != null)
                 {
-                    targetHourType.Name = assignmentType.Name;
-                    assignmentTypeRepository.Update(targetHourType);
-                    try
+                    if (isAssignmentTypeTaken(assignmentType.Name, assignmentType.Id) == false)
                     {
-                        unitOfWork.Commit();
+                        targetHourType.Name = assignmentType.Name;
+                        assignmentTypeRepository.Update(targetHourType);
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El tipo de asignación ya existe."));
                     }
-                    
                 }
                 else
                 {
                     return BadRequest(new ValidationResult("Tipo de asignación no encontrado."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));    
         }
 
         [HttpDelete("{id}")]
@@ -114,6 +122,18 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isAssignmentTypeTaken(string name, int id)
+        {
+            var target = assignmentTypeRepository.GetByName(name);
+
+            if (target == null || (target != null && id > 0 && target.Id == id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

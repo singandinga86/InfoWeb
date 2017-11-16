@@ -38,24 +38,28 @@ namespace InfoWeb.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                client.Projects = null;
-                clientRepository.Add(client);
-                try
+                if (isClientNameTaken(client.Name, -1) == false)
                 {
-                    unitOfwork.Commit();
+                    client.Projects = null;
+                    clientRepository.Add(client);
+                    try
+                    {
+                        unitOfwork.Commit();
+                        return Ok();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                catch(Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    return BadRequest(new ValidationResult("El cliente ya existe."));
                 }
                 
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -66,15 +70,23 @@ namespace InfoWeb.Presentation.Controllers
                 var targetClient = clientRepository.GetById(client.Id);
                 if (targetClient != null)
                 {
-                    targetClient.Name =client.Name;
-                    clientRepository.Update(targetClient);
-                    try
+                    if (isClientNameTaken(client.Name, client.Id) == false)
                     {
-                        unitOfwork.Commit();
+                        targetClient.Name = client.Name;
+                        clientRepository.Update(targetClient);
+                        try
+                        {
+                            unitOfwork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El cliente ya existe."));
                     }
                     
                 }
@@ -84,12 +96,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
 
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpDelete("{id}")]
@@ -114,6 +121,19 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isClientNameTaken(string name, int id)
+        {
+            var target = clientRepository.GetByName(name);
+        
+            if (target == null || (target != null && id > 0 && target.Id == id))
+            {
+                return false;
+            }
+
+            return true;
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace InfoWeb.Presentation.InputModels
     public class ProjectInputModel
     {
         [Required]
-        public ProjectType ProjectType { get; set; }
+        public ProjectType Type { get; set; }
         [Required]
         public Client Client { get; set; }
         [Required]

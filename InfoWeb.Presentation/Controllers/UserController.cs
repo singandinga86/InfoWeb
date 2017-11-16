@@ -88,33 +88,34 @@ namespace InfoWeb.Presentation.Controllers
                 var role = roleRepository.GetById(userData.Role.Id);
                 if(role != null)
                 {
-                    var user = new User()
+                    if (isUsernameTaken(userData.Name, -1) == false)
                     {
-                        Name = userData.Name,
-                        Password = userData.Password,
-                        Role = userData.Role
-                    };
-                    userRepository.Add(user);
+                        var user = new User()
+                        {
+                            Name = userData.Name,
+                            Password = userData.Password,
+                            Role = userData.Role
+                        };
+                        userRepository.Add(user);
 
-                    try {
-                        unitOfWork.Commit();    
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El usuario " + userData.Name + " ya existe."));
                     }
                 }
-                else
-                {
-                    return BadRequest(new ValidationResult("Error en los datos de entrada."));
-                }
-            }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         [HttpPut]
@@ -125,33 +126,32 @@ namespace InfoWeb.Presentation.Controllers
                 var role = roleRepository.GetById(userData.Role.Id);
                 var user = userRepository.GetById(userData.Id);
 
-                if(user != null && role != null)
+                if (user != null && role != null)
                 {
-                    user.Name = userData.Name;
-                    user.Role = role;
-                    user.Password = userData.Password;
+                    if (isUsernameTaken(userData.Name.ToLower(), userData.Id) == false)
+                    {
+                        user.Name = userData.Name;
+                        user.Role = role;
+                        user.Password = userData.Password;
 
-                    userRepository.Update(user);
-                    try
-                    {
-                        unitOfWork.Commit();
+                        userRepository.Update(user);
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
                     }
-                    catch(Exception e)
+                    else
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        return BadRequest(new ValidationResult("El usuario " + userData.Name + " ya existe."));
                     }
                 }
-                else
-                {
-                    return BadRequest(new ValidationResult("Usuario no encontrado."));
-                }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));            
         }
 
         [HttpDelete("{id}")]
@@ -176,6 +176,18 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return Ok();
+        }
+
+        private bool isUsernameTaken(string userName, int id)
+        {
+            var user = this.userRepository.GetByName(userName);
+
+            if (user == null || (user != null && id > 0 && user.Id == id))
+            {
+                return false;
+            }
+
+            return true;
         }
 
        /* private bool ValidateUserInput(UserInputModel userData)

@@ -27,7 +27,7 @@ namespace InfoWeb.DataAccess.Repositories
 
         public AssignmentType GetByName(string name)
         {
-            return entitySet.Where(at => at.Name == name).FirstOrDefault();
+            return entitySet.Where(at => at.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
 
         public IEnumerable<AssignmentType> GetRange(int skip = 0, int take = 0)

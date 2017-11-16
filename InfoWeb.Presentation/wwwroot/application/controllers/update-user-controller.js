@@ -1,7 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateUserController", ['$scope', '$state', '$stateParams', 'UserListService', 'RoleService',
-    function ($scope, $state, $stateParams, UserListService, RoleService) {
+app.controller("UpdateUserController", ['$q','$scope', '$state', '$stateParams', 'UserListService', 'RoleService',
+    function ($q,$scope, $state, $stateParams, UserListService, RoleService) {
 
     var id = $stateParams.userId;
     $scope.model = {};
@@ -9,7 +9,7 @@ app.controller("UpdateUserController", ['$scope', '$state', '$stateParams', 'Use
     $scope.acceptButtonCaption = "Actualizar";
     $scope.title = "Actualizar usuario";
 
-    UserListService.getUserById(id).then(function (response) {
+    var userPromise = UserListService.getUserById(id);/*.then(function (response) {
         var data = response.data;
         $scope.model.id = data.id;
         $scope.model.name = data.name;
@@ -17,10 +17,21 @@ app.controller("UpdateUserController", ['$scope', '$state', '$stateParams', 'Use
         $scope.model.password = data.password;
         $scope.model.passwordConfirmation = data.password;
         
-    }, function (error) { });
+    }, function (error) { });*/
 
-    RoleService.getRoles().then(function (response) {
+    var rolePromise = RoleService.getRoles();/*.then(function (response) {
         $scope.roles = response.data;
+    }, function (error) { });*/
+
+    $q.all([userPromise, rolePromise]).then(function (response) {
+        $scope.roles = response[1].data
+
+        var userData = response[0].data;
+        $scope.model.id = userData.id;
+        $scope.model.name = userData.name;
+        $scope.model.role = userData.role;
+        $scope.model.password = userData.password;
+        $scope.model.passwordConfirmation = userData.password;
     }, function (error) { });
 
 

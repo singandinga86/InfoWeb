@@ -28,6 +28,11 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.Where(u => u.Id == id).Include(u => u.Role).FirstOrDefault();
         }
 
+        public User GetByName(string name)
+        {
+            return context.Users.Where(u => u.Name.ToLower() == name.ToLower()).FirstOrDefault();
+        }
+
         public IEnumerable<User> GetRange(int skip, int take)
         {
             return base.GetRange(entitySet.Include(u => u.Role), skip, take);
