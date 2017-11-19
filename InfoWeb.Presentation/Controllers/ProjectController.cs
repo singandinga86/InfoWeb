@@ -205,14 +205,25 @@ namespace InfoWeb.Presentation.Controllers
 
                 if (projectType != null && client != null)
                 {                   
-                    if (isProjectAlreadyInserted(projectInputModel.Name, projectTypeId,clientId) == false)
+                    if (isProjectAlreadyInserted(projectInputModel.Name, projectTypeId,clientId) == false &&
+                        projectContainsValidHourTypes(projectInputModel.ProjectsHoursTypes) == true)
                     {
                         Project project = new Project()
                         {
                             ClientId = projectInputModel.Client.Id,
                             TypeId = projectInputModel.Type.Id,
-                            Name = projectInputModel.Name
+                            Name = projectInputModel.Name,
+                            ProjectsHoursTypes = new List<ProjectsHoursTypes>()
                         };
+
+                        foreach(var pht in projectInputModel.ProjectsHoursTypes)
+                        {
+                            project.ProjectsHoursTypes.Add(new ProjectsHoursTypes() {
+                                HourTypeId = pht.HourType.Id,
+                                Hours = pht.Hours
+                            });
+                        }
+
                         projectRepository.Add(project);
                         try
                         {
@@ -241,21 +252,58 @@ namespace InfoWeb.Presentation.Controllers
             {
                 var targetProject = projectRepository.GetById(project.Id);
 
-                if (targetProject != null && isProjectAlreadyInserted(project.Name,
-                    project.Type.Id, project.Client.Id) == false)
+                if (targetProject != null)
                 {
-                    targetProject.Name = project.Name;
-                    targetProject.TypeId = project.Type.Id;
-                    targetProject.ClientId = project.Client.Id;
-
-                    projectRepository.Update(targetProject);
-                    try
+                    bool isProjectNameValid = true;
+                    if (targetProject.Name.Trim().ToLower() != project.Name.Trim().ToLower())
                     {
-                        unitOfwork.Commit();
+                        isProjectNameValid = isProjectAlreadyInserted(project.Name, targetProject.TypeId, targetProject.ClientId);
                     }
-                    catch (Exception e)
+
+                    if (isProjectNameValid)
                     {
-                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                        if (projectContainsValidHourTypes(project.ProjectsHoursTypes) == true)
+                        {
+                            if (hourTypesContainValidHourAmounts(targetProject, project.ProjectsHoursTypes).IsValid)
+                            {
+                                targetProject.Name = project.Name;
+                                targetProject.TypeId = project.Type.Id;
+                                targetProject.ClientId = project.Client.Id;
+
+                                targetProject.ProjectsHoursTypes.Clear();
+
+                                foreach (var pht in project.ProjectsHoursTypes)
+                                {
+                                    targetProject.ProjectsHoursTypes.Add(new ProjectsHoursTypes
+                                    {
+                                        HourTypeId = pht.HourType.Id,
+                                        Hours = pht.Hours
+                                    });
+                                }
+
+                                projectRepository.Update(targetProject);
+                                try
+                                {
+                                    unitOfwork.Commit();
+                                }
+                                catch (Exception e)
+                                {
+                                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                                }
+                            }
+                            else
+                            {
+                                return BadRequest(new ValidationResult("Cantidades de hora no válidos."));
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest(new ValidationResult("Tipos de hora no válidos."));
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new ValidationResult("Este nombre de proyecto con el tipo seleccionado ya existe para este cliente."));
                     }
                 }
                 else
@@ -287,6 +335,60 @@ namespace InfoWeb.Presentation.Controllers
                 return true;
             }
             return false;
+        }
+
+        private bool projectContainsValidHourTypes(IEnumerable<ProjectsHoursTypes> projectHourTypes)
+        {
+            if (projectHourTypes.Count() > 0)
+            {
+                var ids = projectHourTypes.Select(pht => pht.HourType.Id).Distinct().ToList();
+                var hourTypeCount = projectHourTypes.Count();
+
+                if (ids.Count() == hourTypeCount)
+                {
+                    var items = queryModel.HourTypes.Where(ht => ids.Contains(ht.Id)).Count();
+                    if (items == hourTypeCount)
+                    {
+                        var invalidHours = projectHourTypes.Any(pht => pht.Hours < 1);
+                        if (invalidHours == false)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            return false;
+        }
+
+        private ValidationResult hourTypesContainValidHourAmounts(Project project, IEnumerable<ProjectsHoursTypes> newHourTypes)
+        {
+            var result = new ValidationResult();
+            foreach(var pht in project.ProjectsHoursTypes)
+            {
+                var targetHourType = newHourTypes.Where(ht => ht.HourType.Id == pht.HourTypeId).FirstOrDefault();
+                if(targetHourType == null)
+                {
+                    var firstAssignment = queryModel.Assignments.Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId).FirstOrDefault();
+                    if(firstAssignment != null)
+                    {
+                        result.Messages.Add("El tipo de hora " + pht.HourType.Name + " no puede ser eliminado.");
+                    }
+                }
+                else
+                {
+                    var targetHourTypeAssignmentCount = queryModel.Assignments
+                                                   .Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId)
+                                                   .Count();
+
+                    if (targetHourTypeAssignmentCount > pht.Hours)
+                    {
+                        result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

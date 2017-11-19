@@ -1,10 +1,15 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$stateParams', 'ProjectService', 'AuthenticationService', 'ProjectTypesService', 'ClientService', 'ngToast', function ($q, $scope, $state, $stateParams, ProjectService, AuthenticationService, ProjectTypesService, ClientService, ngToast) {
+app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$stateParams',
+    'ProjectService', 'AuthenticationService', 'ProjectTypesService', 'ClientService','HourTypeService',
+    function ($q, $scope, $state, $stateParams, ProjectService, AuthenticationService,
+              ProjectTypesService, ClientService, HourTypeService) {
    
     var id = $stateParams.projectId;
     var userId = AuthenticationService.getCurrentUser().id;
-    $scope.model = {};
+    $scope.model = {
+        projectsHoursTypes: []
+    };
 
     $scope.acceptButtonCaption = "Actualizar";
     $scope.title = "Actualizar Proyecto";
@@ -22,11 +27,15 @@ app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$statePara
         $scope.clientes = response.data;
     }, function (error) { });*/
 
-    $q.all([projectPromise, projectTypePromise, clientPromise]).then(function (response) {
+    var hourtypePromise = HourTypeService.getHourTypes();
 
+    $q.all([projectPromise, projectTypePromise, clientPromise, hourtypePromise]).then(function (response) {
+
+        $scope.hourTypes = response[3].data;
         $scope.clientes = response[2].data;
         $scope.projectTypes = response[1].data;
         $scope.model = response[0].data;
+        console.log($scope.model);
 
     }, function (error) { });
 

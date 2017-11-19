@@ -11,12 +11,12 @@ namespace InfoWeb.Domain.Entities
 
         public HourType HourType { get; set; }
 
-        [Range(1, int.MaxValue)]
+        //[Range(1, int.MaxValue)]
         public int HourTypeId { get; set; }
 
         public Project Project { get; set; }
 
-        [Range(1, int.MaxValue)]
+        //[Range(1, int.MaxValue)]
         public int ProjectId { get; set; }
 
         [Range(1, int.MaxValue)]
