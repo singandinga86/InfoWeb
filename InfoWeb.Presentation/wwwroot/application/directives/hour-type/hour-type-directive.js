@@ -62,9 +62,7 @@ app.directive("hourType", function ($compile) {
                 });   
                 return false;
                
-            });    
-
-
+            }); 
         }
     }
 });

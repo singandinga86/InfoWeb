@@ -3,7 +3,7 @@
 app.controller("CreateProjectController", ['$q', "$scope", '$state', "ProjectService", 'AuthenticationService', 'ProjectTypesService', 'ClientService','HourTypeService',
     function ($q, $scope, $state, ProjectService, AuthenticationService, ProjectTypesService, ClientService, HourTypeService) {
         $scope.model = {
-            projectHourTypes:[]
+            projectsHoursTypes:[]
         };
     $scope.acceptButtonCaption = "Crear";
     $scope.title = "Crear Proyecto";

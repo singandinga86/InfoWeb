@@ -28,11 +28,19 @@ namespace InfoWeb.DataAccess.Repositories
 
         public override Project GetById(int id)
         {
-            return entitySet.Where(p => p.Id == id)
+            var project = entitySet.Where(p => p.Id == id)
                   .Include(p => p.Client)
-                  .Include(p => p.ProjectsHoursTypes)
                   .Include(p => p.Type)
                   .FirstOrDefault();
+            if(project != null)
+            {
+                project.ProjectsHoursTypes = context.ProjectsHoursTypes
+                       .Where(pht => pht.ProjectId == project.Id)
+                       .Include(pht => pht.HourType)
+                       .ToList();
+            }
+
+            return project;
         }
 
         public IEnumerable<Project> GetRange(int skip, int take)

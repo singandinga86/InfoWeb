@@ -31,11 +31,12 @@
                     </div>
                 </div>
                 <div class="section row">
-                    <div class="col-md-12" hour-type hour-types="hourTypes" project-hour-types="model.projectHourTypes" target-form="projectInput">
+                    <div class="col-md-12" hour-type hour-types="hourTypes" project-hour-types="model.projectsHoursTypes" target-form="projectInput">
 
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-info btn-raised pull-right" ng-disabled="projectInput.$invalid || model.projectHourTypes.length == 0">{{acceptButtonCaption}}</button>
+                <input type="hidden" name="id" value="model.id" ng-if="model.id" />
+                <button type="submit" class="btn btn-primary btn-info btn-raised pull-right" ng-disabled="projectInput.$invalid || model.projectsHoursTypes.length == 0">{{acceptButtonCaption}}</button>
             </form>
         </div>
     </div>

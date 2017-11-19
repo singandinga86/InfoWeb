@@ -12,6 +12,7 @@ app.directive("hourTypeRow", function ($compile) {
         require: '^hourType',
         controller: function ($scope, $element)
         {
+            $scope.currentHourType = "";
             var parentController = $element.controller('hourType');
             
             $scope.hourTypeChanged = function ()
@@ -81,6 +82,7 @@ app.directive("hourTypeRow", function ($compile) {
                /* $scope.container.remove();
                 parentController.notifyHourTypeRemoved($scope, $scope.index);*/
             }
+
         },
         link: function (scope, element, attributes, hourTypeController)
         {

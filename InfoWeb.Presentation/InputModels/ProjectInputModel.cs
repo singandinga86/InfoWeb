@@ -16,6 +16,6 @@ namespace InfoWeb.Presentation.InputModels
         [Required]
         public string Name { get; set; }
         [Required]
-        public List<ProjectsHoursTypes> ProjectHourTypes { get; set; }
+        public List<ProjectsHoursTypes> ProjectsHoursTypes { get; set; }
     }
 }
