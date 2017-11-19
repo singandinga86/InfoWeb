@@ -1,6 +1,6 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectController",['$scope','$uibModal' ,'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams',function ($scope, $uibModal,ProjectService, AuthenticationService, $state, $filter, NgTableParams) {
+app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'AuthenticationService', '$state', '$filter', 'NgTableParams', 'ngToast', function ($scope, $uibModal, ProjectService, AuthenticationService, $state, $filter, NgTableParams, ngToast) {
 
         $scope.acceptButtonCaption = "Nuevo";
         $scope.currentUser = AuthenticationService.getCurrentUser();
@@ -84,11 +84,25 @@ app.controller("ProjectController",['$scope','$uibModal' ,'ProjectService', 'Aut
                 if (result == true) {
                     ProjectService.removeProject($scope.currentUser.id,project.id).then(function (response) {
                         fillTable();
-                    }, function (error) { });
+                        ngToast.create({
+                            dismissButton: true,
+                            content: 'El proyecto fue eliminado satisfactoriamente.'
+                        });
+                    }, function (error) {
+                        ngToast.create({
+                            className: "danger",
+                            dismissButton: true,
+                            content: error.data.messages[0]
+                        });
+                        });
 
                 }
-            }, function () {
-
+            }, function (error) {
+                ngToast.create({
+                    className: "danger",
+                    dismissButton: true,
+                    content:"Ocurrió un error al eliminar."
+                });
             });
 
 

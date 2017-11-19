@@ -1,8 +1,8 @@
 ﻿var module = angular.module("InfoWeb");
 
 app.controller("ProjectDelegateController",
-    ['$scope', '$state','ProjectService', 'AssignmentService', 'AuthenticationService', 'UserListService',
-        function ($scope, $state, ProjectService, AssignmentService, AuthenticationService, UserListService) {
+    ['$scope', '$state', 'ProjectService', 'AssignmentService', 'AuthenticationService', 'UserListService','ngToast',
+        function ($scope, $state, ProjectService, AssignmentService, AuthenticationService, UserListService, ngToast) {
 
     $scope.showHoras = false;
     $scope.assignment = {};
@@ -45,7 +45,12 @@ app.controller("ProjectDelegateController",
         if ($scope.selectedItem == true)
             $scope.showHoras = true;
         else
+        {
             $scope.showHoras = false;
+            $scope.assignment.hourType = null;
+            $scope.assignment.hours = null;
+        }
+           
     };
 
     $scope.send = function () {
@@ -55,7 +60,28 @@ app.controller("ProjectDelegateController",
             $scope.assignment = {};
             $scope.showHoras = false;
             $state.go("projectList");
-        }, function (error) {           
+            ngToast.create({
+                dismissButton: true,
+                content: 'El proyecto fue delegado satisfactoriamente.'
+            });
+        }, function (error) {
+            console.log(error);
+            if (error.data.messages != null && error.data.messages != undefined)
+            {
+                ngToast.create({
+                    className: "danger",
+                    dismissButton: true,
+                    content: error.data.messages[0]
+                });
+            } else
+            {
+                ngToast.create({
+                    className: "danger",
+                    dismissButton: true,
+                    content: "Ocurrió un error."
+                });
+            }
+          
         });
 
     };

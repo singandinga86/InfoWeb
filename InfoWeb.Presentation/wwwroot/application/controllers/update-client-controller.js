@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateClientController", ['$scope', '$state', '$stateParams', 'ClientService', function ($scope, $state, $stateParams, ClientService) {
+app.controller("UpdateClientController", ['$scope', '$state', '$stateParams', 'ClientService', 'ngToast', function ($scope, $state, $stateParams, ClientService, ngToast) {
 
     var id = $stateParams.id;
     $scope.model = {};
@@ -15,6 +15,16 @@ app.controller("UpdateClientController", ['$scope', '$state', '$stateParams', 'C
     $scope.onButtonClicked = function () {
         ClientService.update($scope.model).then(function (response) {
             $state.go("clientList");
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El cliente fue actualizado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+            });
     }
 }]);

@@ -30,6 +30,14 @@ namespace InfoWeb.DataAccess.Repositories
                    .FirstOrDefault();
         }
 
+        public IEnumerable<ProjectsHoursTypes> GetListById(int id)
+        {
+            return entitySet.Where(pht => pht.ProjectId == id)
+                   .Include(p => p.Project)
+                   .Include(p => p.HourType)
+                   .ToList();
+        }
+
         public IEnumerable<ProjectsHoursTypes> GetRange(int skip = 0, int take = 0)
         {
             return base.GetRange(entitySet

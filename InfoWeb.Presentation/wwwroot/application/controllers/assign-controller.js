@@ -1,7 +1,7 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService', 'AuthenticationService', 'UserListService', 'AssignmentService',
-    function ($scope, $state, ProjectService, AuthenticationService, UserListService, AssignmentService) {
+app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService', 'AuthenticationService', 'UserListService', 'AssignmentService','ngToast',
+    function ($scope, $state, ProjectService, AuthenticationService, UserListService, AssignmentService, ngToast) {
 
     $scope.model = {}
 
@@ -15,7 +15,7 @@ app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService',
 
     UserListService.getOMUsers().then(function (response) {
         
-        $scope.users = response.data;
+        $scope.users = response.data;      
 
     }, function (error) {
 
@@ -25,7 +25,17 @@ app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService',
     $scope.assignProject = function () {
         AssignmentService.createProjectAssignment($scope.model).then(function (response) {
             $state.go('projectList');
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El proyecto fue asignado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+            });
     };
 
 }]);

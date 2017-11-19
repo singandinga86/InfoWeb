@@ -17,15 +17,18 @@ namespace InfoWeb.Presentation.Controllers
     {
         private IProjectRepository projectRepository;
         private IUserRepository userRepository;
+        private IProjectHourTypeRepository projectHourTypeRepository;
         private IInfoWebQueryModel queryModel;
         private readonly IUnitOfWork unitOfwork;
         public ProjectController(IProjectRepository projectRepository,
                                     IUserRepository userRepository,
                                     IUnitOfWork unitOfwork,
-                                    IInfoWebQueryModel queryModel)
+                                    IInfoWebQueryModel queryModel,
+                                    IProjectHourTypeRepository projectHourTypeRepository)
         {
             this.projectRepository = projectRepository;
             this.userRepository = userRepository;
+            this.projectHourTypeRepository = projectHourTypeRepository;
             this.queryModel = queryModel;
             this.unitOfwork = unitOfwork;
         }
@@ -75,6 +78,7 @@ namespace InfoWeb.Presentation.Controllers
             ProjectDetailsViewModel result = new ProjectDetailsViewModel();
             var user = userRepository.GetById(userId);
             var project = projectRepository.GetById(projectId);
+            var projectHoursTypes = (List<ProjectsHoursTypes>)projectHourTypeRepository.GetListById(projectId);
             result.User = user;
             result.Project = project;
 
@@ -83,7 +87,18 @@ namespace InfoWeb.Presentation.Controllers
                 result.Details = getProjectDetailsforUser(user, projectId);
                 result.Assignments = getAssignmentsMadeToUserInProject(userId, projectId);
             }
+            List<ProjectHourDetailsViewModel> detailsHours = new List<ProjectHourDetailsViewModel>();
+            foreach(var projectHourType in projectHoursTypes)
+            {
+                detailsHours.Add(new ProjectHourDetailsViewModel
+                {
+                    HourTypeName = projectHourType.HourType.Name,
+                    ProjectName = projectHourType.Project.Name,
+                    TotalHours = projectHourType.Hours
+                });
+            }
 
+            result.HoursDetails = detailsHours;
             result.Project.Assignments = null;
 
             return result;

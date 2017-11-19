@@ -95,11 +95,11 @@ namespace InfoWeb.DataAccess.Repositories
             return base.GetRange(query, skip, take);
         }
 
-        public void removeAssigmentsAssignedTo(int userId, int projectId, int hourTypeId, int assignmentTypeId)
+        public void removeAssigmentsAssignedTo(int userId, int projectId, int assignmentTypeId)
         {
             context.Assignments.RemoveRange(context.Assignments
                                              .Where(a => a.AssigneeId == userId && a.ProjectId == projectId 
-                                                    && a.HourTypeId == hourTypeId && a.AssignmentTypeId == assignmentTypeId)
+                                                   && a.AssignmentTypeId == assignmentTypeId)
                                            .ToList());
         }
     }

@@ -18,5 +18,6 @@ namespace InfoWeb.Presentation.Models
         public IEnumerable<ProjectDetailsUserAssigmentViewModel> Details { get; set; }
 
         public IEnumerable<Assignment> Assignments { get; set; }
+        public IEnumerable<ProjectHourDetailsViewModel> HoursDetails { get; set; }
     }
 }

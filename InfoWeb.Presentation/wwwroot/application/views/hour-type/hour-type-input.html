@@ -6,7 +6,7 @@
         <div class="panel-body">
             <form name="hourTypeInput" novalidate ng-submit="onButtonClicked()">
                 <div class="section row">
-                    <div class="col-md-12">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label>Nombre:</label>
                             <input class="form-control" type="text" ng-model="model.name" 
@@ -14,7 +14,11 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-info btn-raised pull-right" ng-disabled="hourTypeInput.$invalid">{{acceptButtonCaption}}</button>
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 pull-right">
+                        <button class="btn btn-primary btn-info btn-block " ng-disabled="hourTypeInput.$invalid">{{acceptButtonCaption}}</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

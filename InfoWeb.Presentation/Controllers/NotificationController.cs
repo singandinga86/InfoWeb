@@ -27,5 +27,12 @@ namespace InfoWeb.Presentation.Controllers
         {
             return notificationRepository.GetNotificationByUserId(id);
         }
+
+        [HttpPost("{id}")]
+        public void SetNotificationsVisibility([FromRoute]int id)
+        {
+            notificationRepository.SetVisibilityNotification(id);
+            unitOfWork.Commit();
+        }
     }
 }

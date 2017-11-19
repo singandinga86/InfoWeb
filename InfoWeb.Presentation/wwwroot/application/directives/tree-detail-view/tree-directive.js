@@ -79,6 +79,15 @@ angular
                     $rootScope.$broadcast("assignmentsDetailsChanged", { assignments });
                 }
 
+                $scope.onClick = function ($event)
+                {
+                    //var target = $event.currentTarget.children["0"].children["0"];
+                    //console.log(target);
+                    //angular.element(target).addClass("activeMenu");
+
+                    return $event.stopPropagation();
+                }
+
 
             }
         };

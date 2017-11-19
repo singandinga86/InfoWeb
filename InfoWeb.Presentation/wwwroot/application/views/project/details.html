@@ -5,29 +5,57 @@
             <span><b>Detalles del proyecto</b></span>
         </div>
         <div class="panel-body">
-            <div class="panel">
+           <fieldset>              
+               <div class="panel panel-default">
+                   <div class="panel-body">
+                       <div class="row">
+                           <div class="col-md-4">
+                               <label>Nombre: </label> {{innerAssignments.project.name}}
+                           </div>
+                           <div class="col-md-4">
+                               <label>Cliente: </label> {{innerAssignments.project.client.name}}
+                           </div>
+                       </div>
+
+                   </div>
+               </div>              
+           </fieldset>
+           <fieldset>
+               <legend>Detalles de las asignaciones</legend>
+               <div class="row">
+                   <div class="col-md-4">
+                       <!-- <button class="btn btn-default" ng-click="vm.expandAll(assignments)">Expand All</button>-->
+                       <tree branch="innerAssignments"></tree>
+                   </div>
+                   <div class="col-md-8">
+                       <div tree-details>
+
+                       </div>
+                   </div>
+               </div>
+           </fieldset>
+
+            <fieldset style="margin-top:25px">
+                <legend>Detalles de las horas del proyecto</legend>
                 <div class="row">
-                    <div class="col-md-6">
-                        <label>Nombre: </label>{{innerAssignments.project.name}}
-                    </div>
-                    <div class="col-md-6">
-                        <label>Cliente: </label>{{innerAssignments.project.client.name}}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <!-- <button class="btn btn-default" ng-click="vm.expandAll(assignments)">Expand All</button>-->
-                    <tree branch="innerAssignments"></tree>
-                </div>
-
-                <div class="col-md-8">
-                    <div tree-details>
-
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <td><label>Tipos de horas</label></td>
+                                    <td><label>Total</label></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="hd in HoursDetails">
+                                    <td>{{hd.hourTypeName}}</td>
+                                    <td>{{hd.totalHours}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-
+            </fieldset>
         </div>
     </div>
 </div>

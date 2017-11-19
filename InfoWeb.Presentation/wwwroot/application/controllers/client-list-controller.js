@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, ClientService, $filter,NgTableParams) {
+app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientService', '$filter', 'NgTableParams', 'ngToast', function ($scope, $state, $uibModal, ClientService, $filter, NgTableParams, ngToast) {
 
     $scope.model = {};
     $scope.search = { term: '' };
@@ -59,11 +59,25 @@ app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientServ
                 ClientService.remove(target.id).then(function (response) {
                     fillTable();
                     $state.go("clientList");
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El cliente fue eliminado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
-
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: "Ocurrió un error."
+            });
         });
     }
 

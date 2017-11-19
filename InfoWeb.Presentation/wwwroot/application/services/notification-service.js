@@ -11,6 +11,13 @@ module.factory("NotificationService", ['$http', 'UrlService', function ($http, U
                 method: 'GET',
                 url: url
             });
+        },
+        setNotifications: function (id) {
+            var url = UrlService.getApiUrlPrefix() + 'Notification/' + id;
+            return $http({
+                method: 'POST',
+                url: url
+            });
         }
     }
 }]);

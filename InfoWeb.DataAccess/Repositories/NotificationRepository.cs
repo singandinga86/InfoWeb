@@ -34,7 +34,7 @@ namespace InfoWeb.DataAccess.Repositories
         public IEnumerable<Notification> GetNotificationByUserId(int id)
         {
 
-            return entitySet.Where(p => p.UserId == id)
+            return entitySet.Where(p => p.UserId == id && !p.Seen)
                              .Include(p => p.User)
                              // .Include(p => p.Sender)
                              .ToList();
@@ -43,6 +43,16 @@ namespace InfoWeb.DataAccess.Repositories
         public IEnumerable<Notification> GetRange(int skip, int take)
         {
             return base.GetRange(entitySet.Include(p => p.User), skip, take);
+        }
+
+        public void SetVisibilityNotification(int id)
+        {
+            entitySet.Where(n => n.UserId == id && !n.Seen).ToList().ForEach(item =>
+            {
+                item.Seen = true;
+                entitySet.Update(item);
+            });
+            
         }
     }
 }

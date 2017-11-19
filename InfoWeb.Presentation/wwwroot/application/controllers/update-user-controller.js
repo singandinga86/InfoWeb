@@ -1,7 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateUserController", ['$q','$scope', '$state', '$stateParams', 'UserListService', 'RoleService',
-    function ($q,$scope, $state, $stateParams, UserListService, RoleService) {
+app.controller("UpdateUserController", ['$q','$scope', '$state', '$stateParams', 'UserListService', 'RoleService','ngToast',
+    function ($q, $scope, $state, $stateParams, UserListService, RoleService, ngToast) {
 
     var id = $stateParams.userId;
     $scope.model = {};
@@ -38,6 +38,16 @@ app.controller("UpdateUserController", ['$q','$scope', '$state', '$stateParams',
     $scope.onButtonClicked = function () {
         UserListService.update($scope.model).then(function (response) {
             $state.go("userList");
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El usuario fue actualizado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+            });
     }
 }]);

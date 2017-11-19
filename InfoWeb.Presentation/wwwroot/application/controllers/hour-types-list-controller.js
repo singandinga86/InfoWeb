@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, HourTypeService, $filter, NgTableParams) {
+app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', '$filter', 'NgTableParams','ngToast',
+    function ($scope, $state, $uibModal, HourTypeService, $filter, NgTableParams, ngToast) {
 
     $scope.model = {};
     $scope.search = { term: '' };
@@ -59,11 +60,25 @@ app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTyp
             if (result == true) {
                 HourTypeService.remove(target.id).then(function (response) {
                     fillTable();
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El tipo de hora fue eliminado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
-
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: "Ocurrióun error."
+            });
         });
     }
 

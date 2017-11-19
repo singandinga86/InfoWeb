@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateProjectController", ['$q','$scope', '$state', '$stateParams', 'ProjectService', 'AuthenticationService', 'ProjectTypesService','ClientService', function ($q, $scope, $state, $stateParams, ProjectService, AuthenticationService, ProjectTypesService, ClientService) {
+app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$stateParams', 'ProjectService', 'AuthenticationService', 'ProjectTypesService', 'ClientService', 'ngToast', function ($q, $scope, $state, $stateParams, ProjectService, AuthenticationService, ProjectTypesService, ClientService, ngToast) {
    
     var id = $stateParams.projectId;
     var userId = AuthenticationService.getCurrentUser().id;
@@ -33,6 +33,17 @@ app.controller("UpdateProjectController", ['$q','$scope', '$state', '$stateParam
     $scope.onButtonClicked = function () {
         ProjectService.update(userId,$scope.model).then(function (response) {
             $state.go("projectList");
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El proyecto fue actualizado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+
+            });
     }
 }]);

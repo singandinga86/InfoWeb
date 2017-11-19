@@ -65,7 +65,7 @@ namespace InfoWeb.Presentation.Controllers
         [HttpGet("listTechnicians")]
         public IEnumerable<User> GetTechnicians()
         {
-            return userRepository.getUsersByRoleName("TEC");
+            return userRepository.getUsersByRoleName("TEC"); ;
         }
 
         [HttpGet("listOpManagers")]

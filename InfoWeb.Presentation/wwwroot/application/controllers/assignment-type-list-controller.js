@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal', 'AssignmentTypeService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, AssignmentTypeService, $filter, NgTableParams) {
+app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal', 'AssignmentTypeService', '$filter', 'NgTableParams','ngToast',
+    function ($scope, $state, $uibModal, AssignmentTypeService, $filter, NgTableParams, ngToast) {
 
     $scope.model = {};
     $scope.search = { term: '' };
@@ -59,11 +60,25 @@ app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal',
             if (result == true) {
                 AssignmentTypeService.remove(target.id).then(function (response) {
                     fillTable();
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El tipo de asignación fue eliminado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
-
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: "Ocurrió un error."
+            });
         });
     }
 

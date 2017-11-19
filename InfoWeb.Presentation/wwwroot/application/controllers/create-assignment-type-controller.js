@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("CreateAssignmentTypeController", ["$scope", '$state', "AssignmentTypeService", function ($scope, $state, AssignmentTypeService) {
+app.controller("CreateAssignmentTypeController", ["$scope", '$state', "AssignmentTypeService",'ngToast',
+    function ($scope, $state, AssignmentTypeService, ngToast) {
     $scope.model = {};
     $scope.acceptButtonCaption = "Crear";
     $scope.title = "Crear Tipo de Asignación";
@@ -8,8 +9,16 @@ app.controller("CreateAssignmentTypeController", ["$scope", '$state', "Assignmen
     $scope.onButtonClicked = function () {
         AssignmentTypeService.create($scope.model).then(function (response) {
             $state.go("assignmentTypeList");
+            ngToast.create({
+                dismissButton: true,
+                content: 'El tipo de asignación fue creado satisfactoriamente.'
+            });
         }, function (error) {
-
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
         });
     }
 }]);

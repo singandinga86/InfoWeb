@@ -1,6 +1,6 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateHourTypeController", ['$scope', '$state', '$stateParams', 'HourTypeService', function ($scope, $state, $stateParams, HourTypeService) {
+app.controller("UpdateHourTypeController", ['$scope', '$state', '$stateParams', 'HourTypeService', 'ngToast', function ($scope, $state, $stateParams, HourTypeService, ngToast) {
 
     var id = $stateParams.id;
     $scope.model = {};
@@ -15,6 +15,16 @@ app.controller("UpdateHourTypeController", ['$scope', '$state', '$stateParams', 
     $scope.onButtonClicked = function () {
         HourTypeService.update($scope.model).then(function (response) {
             $state.go("hourTypeList");
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El tipo de hora fue actualizado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+            });
     }
 }]);

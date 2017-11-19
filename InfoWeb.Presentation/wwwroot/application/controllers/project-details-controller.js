@@ -31,11 +31,12 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
         }
 
         var details = data.details;
+       
         var root = {
             user: data.user,
             project: data.project,
             innerAssignments: null,
-            assignments: data.assignments,
+            assignments: data.assignments,           
             isExpanded: true,
             isSelected: false,
         }
@@ -48,6 +49,7 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
 
         vm.innerAssignments = root;
         $scope.innerAssignments = root;
+        $scope.HoursDetails = data.hoursDetails;
 
     },
         function (error) { });

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>InfoWeb</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
@@ -12,7 +12,7 @@
 
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
+   <!-- <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">-->
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
     <!--<link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.css">
     <link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.min.css">
@@ -27,10 +27,14 @@
     <link rel="stylesheet" href="css/responsive.css" />
     <!--Ng-Table-->
     <link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />
+    <!--NgToast-->
+    <link rel="stylesheet" href="lib/ng-toast/ngToast.min.css" />
+
 
     <!--JQuery Bootstrap-->
     <script src="lib/jquery-3.1.1.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
 
 
     <!--JQuery Angular-->
@@ -41,10 +45,14 @@
     <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
     <script src="lib/ng-table-bundle/ng-table.min.js"></script>
 
+    <!--JQuery NgToast-->
+    <script src="lib/ng-toast/angular-sanitize.js"></script>
+    <script src="lib/ng-toast/ngToast.min.js"></script>
+
 
     <script src="application/routes.js"></script>
     <script type="text/javascript">
-        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router', 'ngTable',]);
+        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router', 'ngTable','ngToast']);
         app.config(function ($stateProvider) {
             configureRoutes($stateProvider);
         });
@@ -67,7 +75,7 @@
                 $scope.currentUser = null;
                 $scope.open = false;
                 $scope.notifications = {};
-
+               
                 $scope.currentUser = AuthenticationService.getCurrentUser();
 
                 var populateNotifications = function (user) {
@@ -93,56 +101,109 @@
                     AuthenticationService.logout();
                     $scope.currentUser = null;
                     $state.go('login');
+                    angular.element('li a').removeClass('activeMenu');
                 };
 
                 $scope.listUser = function ($event) {
                     $event.stopPropagation();
                     $state.go('userList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass(); 
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
                 $scope.listProject = function ($event) {
                     $event.stopPropagation();
                     $state.go('projectList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 }
                 $scope.asignar = function ($event) {
                     $event.stopPropagation();
                     $state.go('assign');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.delegate = function ($event) {
                     $event.stopPropagation();
                     $state.go('delegateProject');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.listRoles = function ($event) {
                     $event.stopPropagation();
                     $state.go('roleList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.listHourTypes = function ($event) {
                     $event.stopPropagation();
                     $state.go("hourTypeList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.listClient = function ($event) {
                     $event.stopPropagation();
                     $state.go("clientList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.listProjectTypes = function ($event) {
                     $event.stopPropagation();
                     $state.go("projectTypesList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.assignHours = function ($event) {
                     $event.stopPropagation();
                     $state.go("assignHoursToDeveloper");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
                 $scope.listAssignmentTypes = function ($event) {
                     $event.stopPropagation();
                     $state.go("assignmentTypeList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
                 };
 
+                $scope.notificationState = function ($event) {
+                   // $event.stopPropagation();
+                  // alert('asdasd');
+                    NotificationService.setNotifications($scope.currentUser.id).then(function (response) {
+                       // populateNotifications($scope.currentUser);
+                    }, function (error) {
+                    });
+                };
+
+                $scope.uploadHours = function ($event) {
+                    $event.stopPropagation();
+                };
 
                 $scope.toggleMenu = function ($event, open) {
 
@@ -218,6 +279,7 @@
 
 </head>
 <body ng-app="InfoWeb">
+    <toast></toast>
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
     <div id="main" ng-controller="MainController">
         <div class="container-fluid">
@@ -230,9 +292,9 @@
                                     <span id="titleSite" style="margin-left:20px;color:#fff">InfoWeb</span>
                                 </h2>
                             </div>
-                            <div class="pull-right">
+                            <div class="pull-right" style="margin-top:15px" id="regionInfo">
                                 <div class="dropdown" style="display:inline-block">
-                                    <button type="button" id="notification" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="glyphicon glyphicon-bell" style="margin-right:5px"></span>Notificaciones <span class="badge">{{notifications.length}}</span></button>
+                                    <span type="button" id="notification" data-toggle="dropdown" class="dropdown-toggle" ng-click="notificationState($event)"><span class="glyphicon glyphicon-bell" style="margin-right:5px"></span>Notificaciones <span class="badge" style="background-color:#fff;color:#3498db ">{{notifications.length}}</span></span>
                                     <div class="dropdown-menu arrow-top" id="contentNotifications">
                                         <div class="panel-heading" style="text-align:left;">
                                             <span style="color:#000">Recientes</span>
@@ -263,12 +325,12 @@
                                 </div>
 
                                 <div class="dropdown" style="display:inline-block;margin-right:13px" id="styleSalir">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding:6px;margin-right:10px;color:#fff !important">
+                                    <span class="dropdown-toggle" type="button" data-toggle="dropdown" style="padding:6px;margin-right:10px;color:#fff !important">
                                         <img src="images/nophoto.jpg" alt="avatar" class="mw30 br64">
                                         {{currentUser.name}}
                                         <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" style="margin-top: -9px;left:1px;right:10px">
+                                    </span>
+                                    <ul class="dropdown-menu" style="margin-top: 7px;left:1px;right:10px">
                                         <li><a href="#" style="color:#000 !important" ng-click="logout();"><span class="glyphicon glyphicon-log-out" style="margin-right:5px"></span>Salir</a></li>
                                     </ul>
                                 </div>
@@ -306,7 +368,6 @@
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title" ng-show="currentUser.role.name != 'ADMIN'">Ver Proyectos</span>
                                                     <span class="sidebar-title" ng-show="currentUser.role.name == 'ADMIN'">Gestión de Proyectos</span>
-
                                                 </a>
                                             </li>
                                             <li>
@@ -392,6 +453,33 @@
                                                 <a ng-click="assignHours($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Asignar Horas</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="listProject($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Ver Proyectos</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'TEC'">
+                                        <a>
+                                            <span class="glyphicon glyphicon-home"></span>
+                                            <span class="sidebar-title" ng-click="ir();">Gestión de Horas</span>
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
+                                            <li>
+                                                <a ng-click="uploadHours($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Subir Horas</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="listProject($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Ver Proyectos</span>
                                                 </a>
                                             </li>
                                         </ul>

@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
         IQueryable<Notification> Notifications { get; }
 
         IEnumerable<Notification> GetNotificationByUserId(int id);
+        void SetVisibilityNotification(int id);
     }
 }

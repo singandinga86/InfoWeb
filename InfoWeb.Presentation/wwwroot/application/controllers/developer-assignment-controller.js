@@ -1,9 +1,9 @@
 ﻿var app = angular.module("InfoWeb");
 
 app.controller("DeveloperAssignmentController",["$scope", '$state','AuthenticationService',
-    'ProjectService', 'AssignmentService', 'UserListService',
+    'ProjectService', 'AssignmentService', 'UserListService','ngToast',
                 function ($scope, $state, AuthenticationService, ProjectService,
-                    AssignmentService, UserListService) {
+                    AssignmentService, UserListService, ngToast) {
 
                    var assignator = AuthenticationService.getCurrentUser();
                    
@@ -12,8 +12,8 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    }, function (error) { });
 
                    UserListService.getTechnicians().then(function (response) {
-                       $scope.users = response.data;
-                       //$scope.assignment.user = response.data[0].value;
+                       $scope.users = response.data;                       
+                       $scope.assignment.user = response.data[0].value;
                    }, function (error) { });
 
                    AssignmentService.getHoursType().then(function (response) {
@@ -29,7 +29,16 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
 
                        AssignmentService.createTechnicianAssignment($scope.assignment).then(function (response) {
                            $state.go("projectList");
+                           ngToast.create({
+                               dismissButton: true,
+                               content: 'El proyecto fue asignado satisfactoriamente.'
+                           });
                        }, function (error) {
+                           ngToast.create({
+                               className: "danger",
+                               dismissButton: true,
+                               content: error.data.messages[0]
+                           });
                        });
                    }
 

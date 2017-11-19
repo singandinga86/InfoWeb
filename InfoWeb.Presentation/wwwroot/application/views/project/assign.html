@@ -7,14 +7,14 @@
         <div class="panel-body">
             <form name="assignProjectForm" novalidate ng-submit="assignProject()">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-lg-4">
                         <label>Proyecto</label>
                         <select class="form-control" ng-model="model.project" ng-options="project.name for project in projects"
                                 required name="projectName">
                             <option value="">Seleccione proyecto</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-lg-4">
                         <label>Usuario</label>
                         <select class="form-control" ng-model="model.assignee" ng-options=" user.name for user in users"
                                 required name="assigneeUser">
@@ -23,8 +23,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary btn-raised pull-right btn-info"
+                    <div class="col-md-2 col-lg-2  col-sm-12 col-xs-12 pull-right ">
+                        <button type="submit" class="btn btn-primary btn-block btn-info"
                                 ng-disabled="assignProjectForm.$invalid">Asignar</button>
                     </div>
                 </div>

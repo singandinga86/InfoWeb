@@ -6,25 +6,23 @@
         <div class="panel-body">
             <form name="userInput" novalidate ng-submit="onButtonClicked()">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Nombre</label>
                         <input class="form-control" type="text" ng-model="model.name" 
                                required name="username"/>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Rol</label>
                         <select class="form-control" ng-model="model.role" ng-options="role.name for role in roles track by role.id"
                                  required name="role">
                             <option value="">Seleccione rol</option>
                         </select>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
 
-                        <label>Contraseña:</label>
-                        <input class="form-control" type="password" ng-model="model.password" 
-                                required name="password" ng-minlength="6"/>
+                        <label>Contraseña</label>
+                        <input class="form-control" type="password" ng-model="model.password"
+                               required name="password" ng-minlength="6" />
                         <div class="text-danger" ng-show="userInput.password.$error">
                             <span ng-show="userInput.password.$error.minlength">
                                 La contraseña debe tener un mínimo de 6 caracteres
@@ -32,7 +30,10 @@
                         </div>
 
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row" style="margin-top:10px">
+                   
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Confirmar contraseña</label>
                         <input class="form-control" type="password" ng-model="model.passwordConfirmation" 
                                required name="passwordConfirmation" ng-minlength="6"/>
@@ -43,8 +44,15 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-raised btn-info pull-right"
-                        ng-disabled="userInput.$invalid">{{acceptButtonCaption}}</button>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-2 col-lg-2 pull-right">
+                        <button type="submit" class="btn btn-primary btn-block btn-info"
+                                ng-disabled="userInput.$invalid">
+                            {{acceptButtonCaption}}
+                        </button>
+                    </div>
+                </div>
+                
             </form>
         </div>
     </div>

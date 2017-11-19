@@ -9,5 +9,6 @@ namespace InfoWeb.Domain.Interfaces
     public interface IProjectHourTypeRepository: IGenericRepository<ProjectsHoursTypes, int>
     {
         IQueryable<ProjectsHoursTypes> ProjectHourTypes { get; }
+        IEnumerable<ProjectsHoursTypes> GetListById(int id);
     }
 }

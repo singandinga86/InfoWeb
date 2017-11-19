@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal', 'RoleService', 'NgTableParams', function ($scope, $state, $filter, $uibModal, RoleService, NgTableParams) {
+app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal', 'RoleService', 'NgTableParams','ngToast',
+    function ($scope, $state, $filter, $uibModal, RoleService, NgTableParams, ngToast) {
 
     $scope.search = { term: '' };
     $scope.model = {};
@@ -62,11 +63,25 @@ app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal'
             {
                 RoleService.removeRole(role.id).then(function (response) {
                     fillTable();
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El rol fue eliminado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
-            
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: "Ocurrió un error."
+            });
         });
 
 

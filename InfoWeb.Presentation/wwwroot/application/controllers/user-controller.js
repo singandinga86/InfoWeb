@@ -1,7 +1,7 @@
 ﻿var module = angular.module("InfoWeb");
 
-app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal', 'UserListService', 'NgTableParams',
-    function ($scope, $filter, $state, $uibModal, UserListService, NgTableParams) {
+app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal', 'UserListService', 'NgTableParams','ngToast',
+    function ($scope, $filter, $state, $uibModal, UserListService, NgTableParams, ngToast) {
 
 
     $scope.onCreateClicked = function () {
@@ -28,10 +28,25 @@ app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal'
             if (result == true) {
                 UserListService.remove(user.id).then(function (response) {
                     fillTable();
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El usuario fue elimado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: "Ocurrió un error."
+            });
 
         });
 

@@ -259,10 +259,10 @@ button#notification {
 /*notifications*/
 #contentNotifications {
     width: 300px;
-    left: 193px;
+    left: 135px;
     float: left;
     position: relative;
-    top: 54px;
+    top: 40px;
     padding-top: 0px;
 }
 #contentNotifications li{
@@ -313,4 +313,42 @@ button#notification {
 }
 #listNotifications td{
     height:50px
+}
+/*select,input, label style*/
+.panel-body select {
+    color: #999;
+}
+.panel-body label{
+    color:#555;
+}
+.panel-body input {
+    color: #999;
+}
+/*border control*/
+.form-control{
+    border-radius:0;
+}
+.modal-content{
+    width:80%;
+}
+/*legend fieldset*/
+legend{
+    font-size:15px;
+}
+/*style notifications and logout*/
+#regionInfo{
+    cursor:pointer;
+    color:#fff;
+}
+/*notifications*/
+.ng-toast {    
+    margin-top: 3px !important;
+   right:-11px;
+}
+/*active menu*/
+.activeMenu {
+    color: #fff !important;
+    text-decoration: none;
+    background-color: #2489cc !important;
+    box-shadow: inset 3px 0px 0px 0px #f2ab00
 }

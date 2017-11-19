@@ -13,6 +13,6 @@ namespace InfoWeb.Domain.Interfaces
         IEnumerable<Assignment> GetAssignmentsAssignedBy(int userId, int skip = 0, int take = 0);
         IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0);
         Assignment GetAssigmentExist(int idUser, int idHourType, int idProject);
-        void removeAssigmentsAssignedTo(int userId, int projectId, int hourTypeId, int assignmentTypeId);
+        void removeAssigmentsAssignedTo(int userId, int projectId, int assignmentTypeId);
     }
 }
