@@ -14,8 +14,8 @@ app.directive("treeDetails", function ($rootScope) {
             scope.$watch('assignments', function (newValue, oldValue) {
                 if (scope.assignments)
                 {
-                    var table = element.find("<table>");
-                    var body = table.find("<tbody>");
+                    var table = element.find("table");
+                    var body = table.find("tbody");
 
                     var newBodyElement = angular.element("<tbody>");
 

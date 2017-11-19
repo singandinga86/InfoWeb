@@ -347,6 +347,8 @@ namespace InfoWeb.Presentation.Controllers
                     result.Messages.Add("Este proyecto no cuenta con horas de este tipo.");
                 }
 
+
+
                 var totalHours = hourType.Hours;
 
                 var currentHours = assignmentRepository.Assignments

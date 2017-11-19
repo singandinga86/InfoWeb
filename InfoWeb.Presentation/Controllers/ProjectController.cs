@@ -190,14 +190,25 @@ namespace InfoWeb.Presentation.Controllers
 
                 if (projectType != null && client != null)
                 {                   
-                    if (isProjectAlreadyInserted(projectInputModel.Name, projectTypeId,clientId) == false)
+                    if (isProjectAlreadyInserted(projectInputModel.Name, projectTypeId,clientId) == false &&
+                        projectContainsValidHourTypes(projectInputModel.ProjectHourTypes) == true)
                     {
                         Project project = new Project()
                         {
                             ClientId = projectInputModel.Client.Id,
                             TypeId = projectInputModel.Type.Id,
-                            Name = projectInputModel.Name
+                            Name = projectInputModel.Name,
+                            ProjectsHoursTypes = new List<ProjectsHoursTypes>()
                         };
+
+                        foreach(var pht in projectInputModel.ProjectHourTypes)
+                        {
+                            project.ProjectsHoursTypes.Add(new ProjectsHoursTypes() {
+                                HourTypeId = pht.HourType.Id,
+                                Hours = pht.Hours
+                            });
+                        }
+
                         projectRepository.Add(project);
                         try
                         {
@@ -217,6 +228,30 @@ namespace InfoWeb.Presentation.Controllers
             }
 
             return BadRequest(new ValidationResult("Error en los datos de entrada."));
+        }
+
+        private bool projectContainsValidHourTypes(List<ProjectsHoursTypes> projectHourTypes)
+        {
+            if (projectHourTypes.Count() > 0)
+            {
+                var ids = projectHourTypes.Select(pht => pht.HourType.Id).Distinct().ToList();
+                var hourTypeCount = projectHourTypes.Count();
+
+                if (ids.Count() == hourTypeCount)
+                {
+                    var items = queryModel.HourTypes.Where(ht => ids.Contains(ht.Id)).Count();
+                    if (items == hourTypeCount)
+                    {
+                        var invalidHours = projectHourTypes.Any(pht => pht.Hours < 1);
+                        if(invalidHours == false)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            return false;
         }
 
         [HttpPut]

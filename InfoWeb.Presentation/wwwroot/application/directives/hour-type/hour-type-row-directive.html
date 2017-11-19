@@ -1,0 +1,18 @@
+﻿
+<div class="row">
+    <div class="col-md-5">
+        <select ng-options="item.name for item in all" ng-model="current.hourType"
+                class="form-control" name="{{comboName}}" ng-change="hourTypeChanged()" required>
+            <option value="">Seleccione</option>
+        </select>
+        <span class="text-danger" ng-show="hourTypeError">Debe seleccionar un tipo de hora, y éste no puede estar repetido.</span>
+    </div>
+    <div class="col-md-5">
+        <input type="number" ng-model="current.hours" required class="form-control"
+               name="{{textName}}" min="1" ng-change="onHourCountChanged()"/>
+        <span class="text-danger" ng-show="hourError">La cantidad de horas debe ser un número mayor que 1.</span>
+    </div>
+    <div class="col-md-2">      
+            <span class="glyphicon glyphicon-trash" style="cursor:pointer; top:18px;left:10px" ng-click="removeRow($event)" title="Eliminar"></span>
+    </div>
+</div>

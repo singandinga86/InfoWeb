@@ -15,5 +15,7 @@ namespace InfoWeb.Presentation.InputModels
         public Client Client { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        public List<ProjectsHoursTypes> ProjectHourTypes { get; set; }
     }
 }
