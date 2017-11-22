@@ -74,11 +74,7 @@ app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTyp
 
             }
         }, function () {
-            ngToast.create({
-                className: "danger",
-                dismissButton: true,
-                content: "Ocurrióun error."
-            });
+           
         });
     }
 

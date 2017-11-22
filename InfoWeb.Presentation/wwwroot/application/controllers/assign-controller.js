@@ -37,5 +37,4 @@ app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService',
             });
             });
     };
-
 }]);

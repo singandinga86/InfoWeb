@@ -10,7 +10,7 @@
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Proyecto</label>
                         <select class="form-control selectStyle" ng-model="assignment.project" ng-options="project.name for project in projects"
-                                required name="projectName">
+                                required name="projectName" ng-change="onProjectAssignChanged()">
                             <option value="">Seleccione proyecto</option>
                         </select>
                     </div>

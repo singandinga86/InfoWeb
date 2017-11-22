@@ -28,6 +28,14 @@ module.factory("AssignmentService", ['$http', '$q','UrlService', 'Authentication
                 url: url
             });
         },
+        getHoursTypeByProject: function (idProject) {
+            var url = UrlService.getApiUrlPrefix() + "manager/hourTypeByProject/" + idProject;
+
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         createAssigment: function (assignment) {
             var userId = AuthenticationService.getCurrentUser().id;
             return $http({
@@ -53,6 +61,14 @@ module.factory("AssignmentService", ['$http', '$q','UrlService', 'Authentication
                     projectId: inputData.project.id,
                     assigneeId: inputData.assignee.id
                 }
+            });
+        },
+        createProjectAssignmentGroup: function (inputData) {
+            var userId = AuthenticationService.getCurrentUser().id;
+            return $http({
+                method: 'POST',
+                url: UrlService.getApiUrlPrefix() + "user/" + userId + "/Assignments/projectGroup",
+                data: inputData
             });
         }
     }   

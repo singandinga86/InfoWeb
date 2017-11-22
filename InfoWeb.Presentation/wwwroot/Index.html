@@ -192,6 +192,15 @@
                     angular.element(currentMenu).addClass("activeMenu");
                 };
 
+                $scope.assignProjectGroup = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignProjectGroup");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
                 $scope.notificationState = function ($event) {
                    // $event.stopPropagation();
                   // alert('asdasd');
@@ -268,6 +277,7 @@
     <script src="application/controllers/update-user-controller.js"></script>
     <script src="application/controllers/create-project-controller.js"></script>
     <script src="application/controllers/update-project-controller.js"></script>
+    <script src="application/controllers/assign-group-controller.js"></script>
 
 
 
@@ -442,6 +452,12 @@
                                                     <span class="sidebar-title">Asignar Horas</span>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a ng-click="assignProjectGroup($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Asignar Proyecto a Grupo</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
@@ -463,6 +479,12 @@
                                                     <span class="sidebar-title">Ver Proyectos</span>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a ng-click="assignProjectGroup($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Asignar Proyecto a Grupo</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'TEC'">
@@ -472,12 +494,12 @@
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                                            <li>
+                                            <!--<li>
                                                 <a ng-click="uploadHours($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Subir Horas</span>
                                                 </a>
-                                            </li>
+                                            </li>-->
                                             <li>
                                                 <a ng-click="listProject($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>

@@ -44,5 +44,15 @@ namespace InfoWeb.DataAccess.Repositories
                    .Include(p => p.Project)
                    .Include(p => p.HourType), skip, take);
         }
+
+        public ProjectsHoursTypes GetHourType(int idProject, int idHourType)
+        {
+            return context.ProjectsHoursTypes.Where(pht => pht.HourTypeId == idHourType && pht.ProjectId == idProject).FirstOrDefault();
+        }
+
+        public IEnumerable<ProjectsHoursTypes> GetHourTypeByProject(int idProject)
+        {
+            return context.ProjectsHoursTypes.Where(pht => pht.ProjectId == idProject).ToList();
+        }
     }
 }

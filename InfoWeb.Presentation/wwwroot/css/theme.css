@@ -264,6 +264,7 @@ button#notification {
     position: relative;
     top: 40px;
     padding-top: 0px;
+    border-radius: 0px;
 }
 #contentNotifications li{
     color:#000;
@@ -351,4 +352,20 @@ legend{
     text-decoration: none;
     background-color: #2489cc !important;
     box-shadow: inset 3px 0px 0px 0px #f2ab00
+}
+/*style button square*/
+button{
+    border-radius:0 !important;
+}
+/*style panel square*/
+.panel, .panel-default, .panel-body{
+    border-radius:0px !important;
+}
+/*menu logout*/
+ul.dropdown-menu{
+    border-radius:0px;
+}
+/*modal border square*/
+.modal-content {
+    border-radius: 0px ;
 }

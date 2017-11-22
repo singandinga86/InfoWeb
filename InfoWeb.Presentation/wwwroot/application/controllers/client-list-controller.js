@@ -73,11 +73,7 @@ app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientServ
 
             }
         }, function () {
-            ngToast.create({
-                className: "danger",
-                dismissButton: true,
-                content: "Ocurrió un error."
-            });
+          
         });
     }
 

@@ -1,7 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("CreateProjectController", ['$q', "$scope", '$state', "ProjectService", 'AuthenticationService', 'ProjectTypesService', 'ClientService','HourTypeService',
-    function ($q, $scope, $state, ProjectService, AuthenticationService, ProjectTypesService, ClientService, HourTypeService) {
+app.controller("CreateProjectController", ['$q', "$scope", '$state', "ProjectService", 'AuthenticationService', 'ProjectTypesService', 'ClientService','HourTypeService','ngToast',
+    function ($q, $scope, $state, ProjectService, AuthenticationService, ProjectTypesService, ClientService, HourTypeService, ngToast) {
         $scope.model = {
             projectsHoursTypes:[]
         };

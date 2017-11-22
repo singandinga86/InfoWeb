@@ -14,5 +14,6 @@ namespace InfoWeb.Domain.Interfaces
         IEnumerable<Assignment> GetAssignments(int userId, int skip = 0, int take = 0);
         Assignment GetAssigmentExist(int idUser, int idHourType, int idProject);
         void removeAssigmentsAssignedTo(int userId, int projectId, int assignmentTypeId);
+        Assignment GetAssigmentUserAssginator(int idUser, int idProject);
     }
 }

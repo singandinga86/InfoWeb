@@ -102,5 +102,15 @@ namespace InfoWeb.DataAccess.Repositories
                                                    && a.AssignmentTypeId == assignmentTypeId)
                                            .ToList());
         }
+
+        public Assignment GetAssigmentUserAssginator(int idUser, int idProject)
+        {
+            return context.Assignments
+                    .Where(a => a.ProjectId == idProject && a.AssigneeId == idUser)
+                    .Include(a => a.Assignator)
+                    .Include(a => a.Assignee)
+                    .Include(a => a.HourType)
+                    .FirstOrDefault();
+        }
     }
 }

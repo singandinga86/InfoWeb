@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'ProjectTypesService', '$filter', 'NgTableParams', function ($scope, $state, $uibModal, ProjectTypesService, $filter,NgTableParams) {
+app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'ProjectTypesService', '$filter', 'NgTableParams','ngToast',
+    function ($scope, $state, $uibModal, ProjectTypesService, $filter, NgTableParams, ngToast) {
 
     $scope.model = {};
     $scope.search = { term: '' };
@@ -58,11 +59,21 @@ app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'Proj
             if (result == true) {
                 ProjectTypesService.remove(target.id).then(function (response) {
                     fillTable();
-                }, function (error) { });
+                    ngToast.create({
+                        dismissButton: true,
+                        content: 'El tipo de proyecto fue elimado satisfactoriamente.'
+                    });
+                }, function (error) {
+                    ngToast.create({
+                        className: "danger",
+                        dismissButton: true,
+                        content: error.data.messages[0]
+                    });
+                    });
 
             }
         }, function () {
-
+           
         });
     }
 

@@ -1,0 +1,73 @@
+﻿<div class="container-fluid tableStyle">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>{{title}}</b></span>
+        </div>
+        <div class="panel-body">
+            <form name="assignmentGroupInput" novalidate ng-submit="assignProjectGroup()">
+                <div class="section row">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Proyecto</label>
+                            <select class="form-control" ng-model="model.project" ng-options="project.name for project in projects"
+                                    required name="projectName" ng-change="onChangedProject()">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Tipos de horas</label>
+                            <select class="form-control" ng-model="model.hourType" ng-options="hourType.name for hourType in hourTypes"
+                                    required name="hourTypeName">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Usuarios</label>
+                            <select class="form-control" ng-model="model.user" ng-options="user.name for user in users"
+                                   name="userName" ng-change="onUserSelectedChanged()">
+                                <option value="">Seleccione</option>
+                            </select>
+                            <span class="text-danger" ng-show="userDuplicate">El usuario ya esta seleccionado.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <td><label>Usuarios Seleccionados</label></td>
+                                    <td><label>Opciones</label></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="userSelected in model.usersSelected">
+                                    <td>{{userSelected.name}}</td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-trash" ng-click="onRemoveUser($index)"></span>
+                                    </td>
+                                </tr>
+                                <tr ng-show="model.usersSelected == null || model.usersSelected == undefined || model.usersSelected.length == 0">
+                                    <td colspan="2"><span>No se han seleccionado usuarios.</span></td>                                    
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>                   
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 pull-right">
+                        <button class="btn btn-primary btn-block btn-info" type="submit"
+                                ng-disabled="model.usersSelected.length == 0 || assignmentGroupInput.$invalid">
+                            {{acceptButtonCaption}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

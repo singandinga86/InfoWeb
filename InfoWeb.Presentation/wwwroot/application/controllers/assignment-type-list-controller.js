@@ -74,11 +74,7 @@ app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal',
 
             }
         }, function () {
-            ngToast.create({
-                className: "danger",
-                dismissButton: true,
-                content: "Ocurrió un error."
-            });
+           
         });
     }
 

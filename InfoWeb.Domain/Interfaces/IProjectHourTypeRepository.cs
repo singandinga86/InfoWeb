@@ -10,5 +10,7 @@ namespace InfoWeb.Domain.Interfaces
     {
         IQueryable<ProjectsHoursTypes> ProjectHourTypes { get; }
         IEnumerable<ProjectsHoursTypes> GetListById(int id);
+        ProjectsHoursTypes GetHourType(int idProject, int idHourType);
+        IEnumerable<ProjectsHoursTypes> GetHourTypeByProject(int idProject);
     }
 }

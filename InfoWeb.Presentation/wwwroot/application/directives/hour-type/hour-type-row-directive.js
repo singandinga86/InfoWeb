@@ -23,7 +23,7 @@ app.directive("hourTypeRow", function ($compile) {
                 }                
             }
 
-            var changeFormValidity = function ()
+            /*var changeFormValidity = function ()
             {
                 if ($scope.hourTypeError || $scope.hourError)
                 {
@@ -34,22 +34,27 @@ app.directive("hourTypeRow", function ($compile) {
                     $scope.targetForm.$invalid = false;
                 }
 
+                
+
                     
-            }
+            }*/
 
             var validateItems = function () {
+
                 if (parentController.validateHourSelection($scope.index) == false) {
                     $scope.hourTypeError = true;
+                    $scope.targetForm[$scope.comboName].$setValidity("required", false);
                     $scope.comboBox.removeClass('ng-valid');
                     $scope.comboBox.addClass('ng-invalid');
                 }
                 else {
                     $scope.hourTypeError = false;
+                    $scope.targetForm[$scope.comboName].$setValidity("required", true);
                     $scope.comboBox.removeClass('ng-invalid');
                     $scope.comboBox.addClass('ng-valid');
                 }
 
-                changeFormValidity();
+                //changeFormValidity();
             };
 
             $scope.$on("hourTypeValidationRequired", function () {
@@ -70,7 +75,7 @@ app.directive("hourTypeRow", function ($compile) {
                 {
                     $scope.hourError = false;
                 }
-                changeFormValidity();
+                //changeFormValidity();
             }
 
             $scope.removeRow = function ($event)

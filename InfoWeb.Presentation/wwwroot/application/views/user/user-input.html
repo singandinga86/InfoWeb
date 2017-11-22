@@ -9,7 +9,7 @@
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Nombre</label>
                         <input class="form-control" type="text" ng-model="model.name" 
-                               required name="username"/>
+                               required name="username" placeholder="Nombre de usuario"/>
                     </div>
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Rol</label>
@@ -22,7 +22,7 @@
 
                         <label>Contraseña</label>
                         <input class="form-control" type="password" ng-model="model.password"
-                               required name="password" ng-minlength="6" />
+                               required name="password" ng-minlength="6" placeholder="Contraseña"/>
                         <div class="text-danger" ng-show="userInput.password.$error">
                             <span ng-show="userInput.password.$error.minlength">
                                 La contraseña debe tener un mínimo de 6 caracteres
@@ -36,7 +36,7 @@
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Confirmar contraseña</label>
                         <input class="form-control" type="password" ng-model="model.passwordConfirmation" 
-                               required name="passwordConfirmation" ng-minlength="6"/>
+                               required name="passwordConfirmation" ng-minlength="6" placeholder="Confirmar contraseña"/>
                         <div class="text-danger" ng-show="userInput.passwordConfirmation.$error">
                             <span ng-show="userInput.passwordConfirmation.$error.minlength">
                                 La contraseña debe tener un mínimo de 6 caracteres

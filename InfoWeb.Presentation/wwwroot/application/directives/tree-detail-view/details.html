@@ -13,5 +13,8 @@
             <td ng-show="assignment.hourType.name != null">{{assignment.hourType.name}}</td>
             <td ng-show="assignment.hourType.name == null">--</td>            
         </tr>
+        <tr ng-show="assignments.length == 0 || assignments == null">
+            <td colspan="4"><span>No hay datos para mostrar.</span></td>
+        </tr>
     </tbody>
 </table>

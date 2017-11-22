@@ -92,6 +92,13 @@
         authenticate: true
     }); 
 
+    $stateProvider.state('assignProjectGroup', {
+        templateUrl: "application/views/assignments/assign-group.html",
+        controller: 'GroupAssignmentController',
+        url: "/assign/group",
+        authenticate: true
+    }); 
+
     $stateProvider.state('hourTypeList', {
         templateUrl: "application/views/hour-type/list.html",
         controller: 'HourTypesController',

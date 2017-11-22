@@ -42,12 +42,7 @@ app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal'
 
             }
         }, function () {
-            ngToast.create({
-                className: "danger",
-                dismissButton: true,
-                content: "Ocurrió un error."
-            });
-
+            
         });
 
     }

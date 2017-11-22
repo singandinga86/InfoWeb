@@ -13,7 +13,7 @@ using InfoWeb.Presentation.Models;
 namespace InfoWeb.Presentation.Controllers
 {
     [Route("api/user/{userId}/Assignments")]
-    public class AssignmentsController: Controller
+    public class AssignmentsController : Controller
     {
         private readonly IAssignmentRepository assignmentRepository;
         private readonly IAssignmentTypeRepository assigmentTypeRepository;
@@ -22,6 +22,7 @@ namespace InfoWeb.Presentation.Controllers
         private readonly IProjectRepository projectRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly INotificationRepository notificationRepository;
+        private readonly IProjectHourTypeRepository projectHourTypeRepository;
 
 
 
@@ -31,7 +32,8 @@ namespace InfoWeb.Presentation.Controllers
                                      IHourTypeRepository hourTypeRepository,
                                      IProjectRepository projectRepository,
                                      IUnitOfWork unitOfWork,
-                                     INotificationRepository notificationRepository)
+                                     INotificationRepository notificationRepository,
+                                     IProjectHourTypeRepository projectHourTypeRepository)
         {
             this.assignmentRepository = assigmentRepository;
             this.assigmentTypeRepository = assigmentTypeRepository;
@@ -40,6 +42,7 @@ namespace InfoWeb.Presentation.Controllers
             this.projectRepository = projectRepository;
             this.unitOfWork = unitOfWork;
             this.notificationRepository = notificationRepository;
+            this.projectHourTypeRepository = projectHourTypeRepository;
         }
 
         [HttpGet]
@@ -51,21 +54,21 @@ namespace InfoWeb.Presentation.Controllers
 
         [HttpPost]
         public IActionResult CreateAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
-        { 
-            if(ModelState.IsValid)
+        {
+            if (ModelState.IsValid)
             {
                 User assignator = userRepository.GetById(userId);
-                Assignment assigmentUpdate = null;                
-                HourType hourType = assignment.HourType != null?hourTypeRepository.GetById(assignment.HourType.Id):null;
+                Assignment assigmentUpdate = null;
+                HourType hourType = assignment.HourType != null ? hourTypeRepository.GetById(assignment.HourType.Id) : null;
                 AssignmentType assignmentType = assigmentTypeRepository.GetByName("Delegar proyecto");
                 User assignee = userRepository.GetById(assignment.User.Id);
-                Project project = projectRepository.GetById(assignment.Project.Id);                
+                Project project = projectRepository.GetById(assignment.Project.Id);
 
                 if (assignator != null && assignee != null && assignmentType != null && project != null)
                 {
                     Notification notification = null;
 
-                    var validationResult = CanProjectDelegationBeDone(assignment, assignmentType, project, assignment.Hours);
+                    var validationResult = CanProjectDelegationBeDone(assignment, assignmentType, project, assignment.Hours == null?0 : assignment.Hours.Value);
 
                     if (validationResult.IsValid)
                     {
@@ -84,8 +87,7 @@ namespace InfoWeb.Presentation.Controllers
                                     ProjectId = assignment.Project.Id,
                                     AssigneeId = assignment.User.Id,
                                     Assignator = assignator,
-                                    AssignmentType = assignmentType,
-                                    Hours = assignment.Hours,
+                                    AssignmentType = assignmentType,                                    
                                     Date = DateTime.Now
                                 };
                                 notification = new Notification()
@@ -108,7 +110,7 @@ namespace InfoWeb.Presentation.Controllers
                                     Assignator = assignator,
                                     AssignmentType = assignmentType,
                                     HourTypeId = assignment.HourType.Id,
-                                    Hours = assignment.Hours,
+                                    Hours = assignment.Hours.Value,
                                     Date = DateTime.Now
                                 };
                                 notification = new Notification()
@@ -126,7 +128,7 @@ namespace InfoWeb.Presentation.Controllers
                         }
                         else
                         {
-                            assigmentUpdate.Hours += assignment.Hours;
+                            assigmentUpdate.Hours += assignment.Hours.Value;
 
                             assignmentRepository.Update(assigmentUpdate);
                         }
@@ -158,18 +160,18 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Datos de entrada no válidos."));
             }
 
-            return Ok();            
+            return Ok();
         }
 
         [HttpPost("technician")]
         public IActionResult CreateTechnicianAssignment([FromBody]CreateAssignmentInputModel assignment, [FromRoute] int userId)
         {
             var assignator = userRepository.GetById(userId);
-            User assignee = (assignment.User != null) ? userRepository.GetById(assignment.User.Id): null;
+            User assignee = (assignment.User != null) ? userRepository.GetById(assignment.User.Id) : null;
             Project project = (assignment.Project != null) ? projectRepository.GetById(assignment.Project.Id) : null;
-            HourType hourType = (assignment.HourType != null) ? hourTypeRepository.GetById(assignment.HourType.Id): null;
+            HourType hourType = (assignment.HourType != null) ? hourTypeRepository.GetById(assignment.HourType.Id) : null;
             AssignmentType assignmentType = assigmentTypeRepository.GetByName("Asignar horas");
-            int hours = assignment.Hours;
+            int hours = assignment.Hours.Value;
 
             if (assignee != null && assignee.Role.Name == "TEC"
                 && assignator != null && project != null && hourType != null
@@ -216,7 +218,7 @@ namespace InfoWeb.Presentation.Controllers
                     {
                         Notification notification = new Notification() {
                             Date = DateTime.Now,
-                            Message = "Se le han asignado " + assignment.Hours + " horas de " + hourType.Name +" en el proyecto " + project.Name,
+                            Message = "Se le han asignado " + assignment.Hours + " horas de " + hourType.Name + " en el proyecto " + project.Name,
                             Seen = false,
                             UserId = assignee.Id,
                             SenderId = assignator.Id
@@ -313,8 +315,101 @@ namespace InfoWeb.Presentation.Controllers
             }
             else
             {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));   
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
+
+            return Ok();
+        }
+
+        [HttpPost("projectGroup")]
+        public IActionResult AssignProjectGroup([FromBody]AssignProjectGroupInputModel model, [FromRoute]int userId)
+        {
+            if(model != null)
+            {
+                var date = DateTime.Now;
+                var assignmentType = assigmentTypeRepository.GetByName("Asignar a grupo");
+
+                var assignmentToOM = assignmentRepository.Assignments.Where(a => a.ProjectId == model.project.Id && a.Assignator.Id == userId 
+                                     && a.AssignmentType.Name == "Delegar proyecto" && a.Assignator.Role.Name == "OM").FirstOrDefault();
+                
+                var userAssignatorAssigment = assignmentRepository.GetAssigmentUserAssginator(userId, model.project.Id);
+
+                if (assignmentToOM == null)
+                {
+                    if (userAssignatorAssigment.HourType != null)
+                    {
+                        foreach (var user in model.usersSelected)
+                        {
+                            var assignment = new Assignment()
+                            {
+                                AssigneeId = user.Id,
+                                Assignator = userAssignatorAssigment.Assignee,
+                                AssignmentType = assignmentType,
+                                HourTypeId = userAssignatorAssigment.HourTypeId,
+                                Date = date,
+                                ProjectId = userAssignatorAssigment.ProjectId,
+                                Hours = userAssignatorAssigment.Hours
+                            };
+
+                            Notification notification = new Notification()
+                            {
+                                Date = DateTime.Now,
+                                Message = "Se le hasn asignado " + userAssignatorAssigment.Hours + " horas de " + model.hourType.Name + " a consumir del proyecto " + model.project.Name,
+                                Seen = false,
+                                UserId = user.Id,
+                                SenderId = userAssignatorAssigment.Assignee.Id
+                            };
+                            notificationRepository.Add(notification);
+
+                            assignmentRepository.Add(assignment);
+                        }
+                    }
+                    else
+                    {
+                        var hourTypeProject = projectHourTypeRepository.GetHourType(model.project.Id, model.hourType.Id);
+                        foreach (var user in model.usersSelected)
+                        {
+                            var assignment = new Assignment()
+                            {
+                                AssigneeId = user.Id,
+                                Assignator = userAssignatorAssigment.Assignee,
+                                AssignmentType = assignmentType,
+                                HourTypeId = hourTypeProject.HourTypeId,
+                                Date = date,
+                                ProjectId = hourTypeProject.ProjectId,
+                                Hours = hourTypeProject.Hours
+                            };
+                            Notification notification = new Notification()
+                            {
+                                Date = DateTime.Now,
+                                Message = "Se le hasn asignado " + hourTypeProject.Hours + " horas de " + model.hourType.Name + " a consumir del proyecto " + model.project.Name,
+                                Seen = false,
+                                UserId = user.Id,
+                                SenderId = userAssignatorAssigment.Assignee.Id
+                            };
+                            notificationRepository.Add(notification);
+
+                            assignmentRepository.Add(assignment);
+                        }
+                    }
+
+                    try
+                    {
+                        unitOfWork.Commit();
+                        Response.StatusCode = (int)HttpStatusCode.Created;
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
+                }
+                else
+                    return BadRequest(new ValidationResult("Ya se delegó este proyecto anteriormente."));
+
+                
+            }
+            else
+                return BadRequest(new ValidationResult("Error en los datos de entrada."));
 
             return Ok();
         }
@@ -378,7 +473,15 @@ namespace InfoWeb.Presentation.Controllers
                                              a.HourTypeId == hourType.HourTypeId)
                                     .Sum(a => a.Hours);
 
-                        if ((currentHours + hours) > totalHours)
+                        var developerGroupAssignment = this.assigmentTypeRepository.GetByName("Asignar a grupo");
+
+                        var developerGroupHours = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
+                                                                          a.HourTypeId == hourType.HourTypeId &&
+                                                                          a.AssignmentTypeId == developerGroupAssignment.Id)
+                                                                          .Select(a => new { a.Date, a.Hours })
+                                                                          .Distinct().Sum(o => o.Hours);
+
+                        if ((currentHours + developerGroupHours + hours) > totalHours)
                         {
                             result.Messages.Add("La cantidad de horas seleccionada excecde el total de horas.");
                         }
@@ -399,6 +502,9 @@ namespace InfoWeb.Presentation.Controllers
             var result = new ValidationResult();
 
             var projectContainsHourType = project.ProjectsHoursTypes.Any(pht => pht.HourTypeId == hourType.Id);
+            AssignmentType assignmentTypeAssigneHour = assigmentTypeRepository.GetByName("Asignar horas");
+            AssignmentType assignmentTypeDelegateHour = assigmentTypeRepository.GetByName("Delegar proyecto");
+
 
             if (projectContainsHourType)
             {
@@ -412,7 +518,7 @@ namespace InfoWeb.Presentation.Controllers
                 {
                     var assignments = assignmentRepository.Assignments
                                             .Where(a => a.Assignator.Id == assignator.Id && a.HourTypeId == hourType.Id
-                                                   && a.ProjectId == project.Id && a.AssignmentTypeId == 2)
+                                                   && a.ProjectId == project.Id && (a.AssignmentTypeId == assignmentTypeAssigneHour.Id  || (a.AssignmentTypeId == assignmentTypeDelegateHour.Id && a.HourTypeId != null) ))
                                             .ToList();
                     int assignmentCount = assignments.Count();
                     int totalHours = 0;
@@ -431,12 +537,21 @@ namespace InfoWeb.Presentation.Controllers
                         if (parentAuthorizationAssignment == null)
                         {
                             result.Messages.Add("No tiene permitido asignar este tipo de horas en este proyecto.");
+                            return result;
                         }
 
                         totalHours = parentAuthorizationAssignment.Hours;
                     }
 
-                    if ((hourCount + hours) > totalHours)
+                    var developerGroupAssignment = this.assigmentTypeRepository.GetByName("Asignar a grupo");
+
+                    var developerGroupHours = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
+                                                                          a.HourTypeId == hourType.Id &&
+                                                                          a.AssignmentTypeId == developerGroupAssignment.Id)
+                                                                          .Select(a => new { a.Date, a.Hours })
+                                                                          .Distinct().Sum(o => o.Hours);
+
+                    if ((hourCount + developerGroupHours + hours) > totalHours)
                     {
                         result.Messages.Add("La cantidad de horas seleccionada excecde el total de horas del proyecto.");
                     }

@@ -1,6 +1,7 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("UpdateProjectTypesController", ['$scope', '$state', '$stateParams', 'ProjectTypesService', function ($scope, $state, $stateParams, ProjectTypesService) {
+app.controller("UpdateProjectTypesController", ['$scope', '$state', '$stateParams', 'ProjectTypesService',"ngToast",
+    function ($scope, $state, $stateParams, ProjectTypesService, ngToast) {
 
     var id = $stateParams.id;
     $scope.model = {};
@@ -15,6 +16,16 @@ app.controller("UpdateProjectTypesController", ['$scope', '$state', '$stateParam
     $scope.onButtonClicked = function () {
         ProjectTypesService.update($scope.model).then(function (response) {
             $state.go("projectTypesList");
-        }, function (error) { });
+            ngToast.create({
+                dismissButton: true,
+                content: 'El tipo de proyecto fue actualizado satisfactoriamente.'
+            });
+        }, function (error) {
+            ngToast.create({
+                className: "danger",
+                dismissButton: true,
+                content: error.data.messages[0]
+            });
+            });
     }
 }]);

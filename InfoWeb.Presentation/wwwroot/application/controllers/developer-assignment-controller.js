@@ -42,7 +42,17 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                        });
                    }
 
+                   $scope.onProjectAssignChanged = function () {
+                       var project = $scope.assignment.project;
+                       //console.log(project);
+                       AssignmentService.getHoursTypeByProject(project.id).then(function (response) {
 
+                           $scope.hourTypes = response.data;
+                       },
+                           function (error) {
+
+                           });
+                   };
 
 
 }]);

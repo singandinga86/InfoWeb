@@ -98,11 +98,7 @@ app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'A
 
                 }
             }, function (error) {
-                ngToast.create({
-                    className: "danger",
-                    dismissButton: true,
-                    content:"Ocurrió un error al eliminar."
-                });
+               
             });
 
 

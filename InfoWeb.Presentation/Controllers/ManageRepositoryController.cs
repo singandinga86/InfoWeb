@@ -13,12 +13,17 @@ namespace InfoWeb.Presentation.Controllers
     {
         private readonly IAssignmentTypeRepository assigmentTypeRepository;
         private readonly IHourTypeRepository hourTypeRepository;
+        private readonly IProjectHourTypeRepository projectHourTypeRepository;
 
 
-        public ManageRepositoryController(IAssignmentTypeRepository assigmentTypeRepository, IHourTypeRepository hourTypeRepository)
+
+        public ManageRepositoryController(IAssignmentTypeRepository assigmentTypeRepository,
+                                          IHourTypeRepository hourTypeRepository,
+                                          IProjectHourTypeRepository projectHourTypeRepository)
         {
             this.assigmentTypeRepository = assigmentTypeRepository;
             this.hourTypeRepository = hourTypeRepository;
+            this.projectHourTypeRepository = projectHourTypeRepository;
         }
 
         [HttpGet("assigmentType")]
@@ -33,6 +38,18 @@ namespace InfoWeb.Presentation.Controllers
         {
             IEnumerable<HourType> result = hourTypeRepository.GetAll();
             return result;
+        }
+
+        [HttpGet("hourTypeByProject/{idProject}")]
+        public IEnumerable<HourType> GetHourTypeByProject([FromRoute]int idProject)
+        {
+            IEnumerable<ProjectsHoursTypes> result = projectHourTypeRepository.GetHourTypeByProject(idProject);
+            List<HourType> hoursType = new List<HourType>();
+            foreach(var projectHourType in result)
+            {
+                hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
+            }
+            return hoursType;
         }
     }
 }

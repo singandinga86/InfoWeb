@@ -77,11 +77,7 @@ app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal'
 
             }
         }, function () {
-            ngToast.create({
-                className: "danger",
-                dismissButton: true,
-                content: "Ocurrió un error."
-            });
+           
         });
 
 
