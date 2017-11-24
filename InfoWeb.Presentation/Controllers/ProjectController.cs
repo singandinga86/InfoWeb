@@ -94,7 +94,8 @@ namespace InfoWeb.Presentation.Controllers
                 {
                     HourTypeName = projectHourType.HourType.Name,
                     ProjectName = projectHourType.Project.Name,
-                    TotalHours = projectHourType.Hours
+                    TotalHours = projectHourType.Hours,
+                    TotalHoursAssigned = GetTotalHoursAssigned(projectHourType.HourType.Id, projectId)
                 });
             }
 
@@ -170,6 +171,7 @@ namespace InfoWeb.Presentation.Controllers
             var assignments = queryModel.Assignments.
                              Where(a => a.Assignator.Id == userId && a.Project.Id == projectId)
                              .Include(a => a.HourType)
+                             .Include(a => a.AssignmentType)
                              .Include(a => a.Assignee)
                              .ThenInclude(a => a.Role)
                              .GroupBy(a => a.Assignee)
@@ -180,8 +182,50 @@ namespace InfoWeb.Presentation.Controllers
 
         private IEnumerable<Assignment> getAssignmentsMadeToUserInProject(int userId, int projectId)
         {
-            return queryModel.Assignments.Where(a => a.Assignee.Id == userId && a.ProjectId == projectId)
-                .ToList();
+            return queryModel.Assignments
+                   .Where(a => a.Assignee.Id == userId && a.ProjectId == projectId)
+                   .Include(a => a.AssignmentType)
+                   .ToList();
+        }
+
+        public int GetTotalHoursAssigned(int idHourtype, int idProject)
+        {
+            int totalHoursAssigned = 0;
+
+            //contar horas asignadas por OM y delegadas por horas
+            totalHoursAssigned = queryModel.Assignments
+                                .Where(a => (a.HourTypeId == idHourtype && a.AssignmentType.Name == "Asignar horas" && a.Assignator.Role.Name == "OM" && a.ProjectId == idProject)
+                                || (a.AssignmentType.Name == "Delegar proyecto" && a.HourTypeId == idHourtype && a.ProjectId == idProject))
+                                .Sum(a => a.Hours);
+
+            //contar horas asignadas a grupos de desarrolladores
+            IEnumerable<int> projectsAssignedGroup = queryModel.Assignments
+                                        .Where(a => a.ProjectId == idProject && a.AssignmentType.Name == "Asignar a grupo" && a.HourTypeId == idHourtype).Select(a => a.ProjectId).Distinct().ToList();
+            if(projectsAssignedGroup.Count<int>() > 0)
+            {
+                projectsAssignedGroup.ToList().ForEach(p =>
+               {
+                   totalHoursAssigned += queryModel.ProjectHoursTypes
+                                        .Where(pht => pht.ProjectId == p && pht.HourTypeId == idHourtype).Select(pht => pht.Hours).FirstOrDefault();
+               });
+            }
+
+            //contar horas asignadas a grupos por TAM y PM
+            var listAssignmentbyHours = queryModel.Assignments
+                                  .Where(a => a.AssignmentType.Name == "Asignar horas" && a.ProjectId == idProject && a.HourTypeId == idHourtype
+                                  && (a.Assignator.Role.Name == "PM" || a.Assignator.Role.Name == "TAM")).ToList();
+
+            listAssignmentbyHours.ForEach(l =>
+            {
+                var assigmentParent = queryModel.Assignments
+                                      .Where(a => a.AssigneeId == l.Assignator.Id && a.AssignmentType.Name == "Delegar proyecto"
+                                      && a.ProjectId == idProject && a.HourTypeId == null && a.Hours == 0).FirstOrDefault();
+                if (assigmentParent != null)
+                    totalHoursAssigned += l.Hours;
+                                        
+            });
+
+            return totalHoursAssigned;
         }
 
         [HttpGet("search/{searchValue}")]

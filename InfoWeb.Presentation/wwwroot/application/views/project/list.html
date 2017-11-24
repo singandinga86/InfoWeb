@@ -38,6 +38,7 @@
                                 <span class="glyphicon glyphicon-list" ng-click="viewDetails(project.id)" title="Ver"></span>
                                 <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(project.id)" ng-show="currentUser.role.name == 'ADMIN'"></span>
                                 <span ng-if="currentUser.role.name == 'ADMIN'" class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project)" title="Eliminar"></span>
+                                <span class="glyphicon glyphicon-search" ng-click="onViewHoursClicked(project)" title="Ver horas"></span>
                             </td>
                         </tr>
                     </tbody>

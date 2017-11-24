@@ -4,14 +4,17 @@
             <th>Fecha</th>
             <th>Hora</th>
             <th>Tipo de hora</th>
+            <th>Tipo de asignación</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="assignment in assignments">
             <td>{{assignment.date | date:"dd/MM/yyyy"}}</td>
-            <td>{{assignment.hours}}</td>
+            <td ng-show="assignment.hours != 0">{{assignment.hours}}</td>
+            <td ng-show="assignment.hours == 0">--</td>
             <td ng-show="assignment.hourType.name != null">{{assignment.hourType.name}}</td>
-            <td ng-show="assignment.hourType.name == null">--</td>            
+            <td ng-show="assignment.hourType.name == null">--</td> 
+            <td>{{assignment.assignmentType.name}}</td>
         </tr>
         <tr ng-show="assignments.length == 0 || assignments == null">
             <td colspan="4"><span>No hay datos para mostrar.</span></td>

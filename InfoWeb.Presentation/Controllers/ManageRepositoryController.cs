@@ -14,16 +14,23 @@ namespace InfoWeb.Presentation.Controllers
         private readonly IAssignmentTypeRepository assigmentTypeRepository;
         private readonly IHourTypeRepository hourTypeRepository;
         private readonly IProjectHourTypeRepository projectHourTypeRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IAssignmentRepository assignmentRepository;
+
 
 
 
         public ManageRepositoryController(IAssignmentTypeRepository assigmentTypeRepository,
                                           IHourTypeRepository hourTypeRepository,
-                                          IProjectHourTypeRepository projectHourTypeRepository)
+                                          IProjectHourTypeRepository projectHourTypeRepository,
+                                          IUserRepository userRepository,
+                                          IAssignmentRepository assignmentRepository)
         {
             this.assigmentTypeRepository = assigmentTypeRepository;
             this.hourTypeRepository = hourTypeRepository;
             this.projectHourTypeRepository = projectHourTypeRepository;
+            this.userRepository = userRepository;
+            this.assignmentRepository = assignmentRepository;
         }
 
         [HttpGet("assigmentType")]
@@ -40,15 +47,48 @@ namespace InfoWeb.Presentation.Controllers
             return result;
         }
 
-        [HttpGet("hourTypeByProject/{idProject}")]
-        public IEnumerable<HourType> GetHourTypeByProject([FromRoute]int idProject)
+        [HttpGet("hourTypeByProject/{idProject}/{userId}")]
+        public IEnumerable<HourType> GetHourTypeByProject([FromRoute]int idProject, [FromRoute]int userId)
         {
-            IEnumerable<ProjectsHoursTypes> result = projectHourTypeRepository.GetHourTypeByProject(idProject);
+            User user = userRepository.GetById(userId);
             List<HourType> hoursType = new List<HourType>();
-            foreach(var projectHourType in result)
+
+            if (user.Role.Name == "TAM" || user.Role.Name == "PM")
             {
-                hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
+                var assignments = assignmentRepository.Assignments
+                                  .Where(a => a.ProjectId == idProject && a.AssigneeId == userId && a.AssignmentType.Name == "Delegar proyecto" 
+                                  && a.HourTypeId != null)
+                                  .ToList();
+
+                if(assignments.Count > 0)
+                {
+                    assignments.ForEach(a =>
+                    {
+                        hoursType.Add(hourTypeRepository.GetById(a.HourTypeId.Value));
+                    });
+                }
+                else
+                {
+                    IEnumerable<ProjectsHoursTypes> result = projectHourTypeRepository.GetHourTypeByProject(idProject);
+
+                    foreach (var projectHourType in result)
+                    {
+                        hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
+                    }
+                }
+              
             }
+            else
+            {
+                IEnumerable<ProjectsHoursTypes> result = projectHourTypeRepository.GetHourTypeByProject(idProject);
+               
+                foreach (var projectHourType in result)
+                {
+                    hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
+                }
+            }
+
+           
             return hoursType;
         }
     }

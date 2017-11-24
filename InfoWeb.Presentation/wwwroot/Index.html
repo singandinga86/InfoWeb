@@ -278,6 +278,7 @@
     <script src="application/controllers/create-project-controller.js"></script>
     <script src="application/controllers/update-project-controller.js"></script>
     <script src="application/controllers/assign-group-controller.js"></script>
+    <script src="application/controllers/project-detail-modal-controller.js"></script>
 
 
 
@@ -290,10 +291,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body ng-app="InfoWeb">
+<body ng-app="InfoWeb" style="overflow-y:scroll;height:auto">
     <toast></toast>
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
-    <div id="main" ng-controller="MainController">
+    <div id="main" ng-controller="MainController" >
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-md-12 col-xs12">
@@ -516,7 +517,7 @@
                 </div>
                 <div id="content" class="col-md-10 col-lg-10 -col-sm-12 col-xs-12">
                     <div class="row">
-                        <div ui-view>
+                        <div ui-view >
                         </div>
                     </div>
                 </div>

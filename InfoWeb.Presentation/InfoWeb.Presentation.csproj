@@ -27,6 +27,7 @@
     <Content Include="wwwroot\application\controllers\hour-types-list-controller.js" />
     <Content Include="wwwroot\application\controllers\login-controller.js" />
     <Content Include="wwwroot\application\controllers\project-controller.js" />
+    <Content Include="wwwroot\application\controllers\project-detail-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\project-details-controller.js" />
     <Content Include="wwwroot\application\controllers\project-types-list-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-assignment-type-dialog-controller.js" />
@@ -80,6 +81,7 @@
     <Content Include="wwwroot\application\views\project-types\remove-modal.html" />
     <Content Include="wwwroot\application\views\project\assign.html" />
     <Content Include="wwwroot\application\views\project\delegate.html" />
+    <Content Include="wwwroot\application\views\project\details-modal.html" />
     <Content Include="wwwroot\application\views\project\list.html" />
     <Content Include="wwwroot\application\views\project\details.html" />
     <Content Include="wwwroot\application\views\role\list.html" />

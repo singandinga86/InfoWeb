@@ -4,19 +4,22 @@ angular
     .module("InfoWeb")
     .controller("ProjectDetailsController", ProjectDetailsController);
 
-ProjectDetailsController.$inject = ["$scope", "$stateParams","ProjectService","AuthenticationService"];
+ProjectDetailsController.$inject = ["$scope", "$stateParams", "ProjectService", "AuthenticationService"];
 
 function ProjectDetailsController($scope, $stateParams, ProjectService, AuthenticationService) {
     var vm = this;
     vm.expandAll = expandAll;
-
+   
     var userId = AuthenticationService.getCurrentUser().id;
-    var projectId = $stateParams.projectId;
+    var projectId = null;
+    if ($scope.$resolve.targetProject == null || $scope.$resolve.targetProject == undefined)
+        projectId = $stateParams.projectId;
+    else
+        projectId = $scope.$resolve.targetProject;
+   
 
     ProjectService.getProjectDetails(userId, projectId).then(function (response) {
         var data = response.data;
-
-
 
         var addExpansionDetails = function (assignmentDescription, parent) {
             assignmentDescription.isExpanded = false;
@@ -37,7 +40,7 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
             project: data.project,
             innerAssignments: null,
             assignments: data.assignments,           
-            isExpanded: true,
+            isExpanded: false,
             isSelected: false,
         }
 
@@ -50,7 +53,7 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
         vm.innerAssignments = root;
         $scope.innerAssignments = root;
         $scope.HoursDetails = data.hoursDetails;
-
+        $scope.project = data.project;
     },
         function (error) { });
 
@@ -63,4 +66,5 @@ function ProjectDetailsController($scope, $stateParams, ProjectService, Authenti
             expandAll(branch, setting);
         });
     }
+
 }

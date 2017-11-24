@@ -28,12 +28,12 @@ module.factory("AssignmentService", ['$http', '$q','UrlService', 'Authentication
                 url: url
             });
         },
-        getHoursTypeByProject: function (idProject) {
-            var url = UrlService.getApiUrlPrefix() + "manager/hourTypeByProject/" + idProject;
+        getHoursTypeByProject: function (idProject, userId) {
+            var url = UrlService.getApiUrlPrefix() + "manager/hourTypeByProject/" + idProject+"/"+ userId;
 
             return $http({
                 method: 'GET',
-                url: url
+                url: url               
             });
         },
         createAssigment: function (assignment) {

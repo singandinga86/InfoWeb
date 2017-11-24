@@ -25,9 +25,9 @@ app.controller("GroupAssignmentController", ['$scope', '$state', 'ProjectService
 
             });
 
-        AssignmentService.getHoursType().then(function (response) {
-            $scope.hourTypes = response.data;
-        }, function (error) { });
+        //AssignmentService.getHoursType().then(function (response) {
+        //    $scope.hourTypes = response.data;
+        //}, function (error) { });
 
         $scope.onUserSelectedChanged = function () {
 
@@ -43,10 +43,15 @@ app.controller("GroupAssignmentController", ['$scope', '$state', 'ProjectService
         };
 
         $scope.onChangedProject = function () {
-            var projectSelected = $scope.model.project;         
-            AssignmentService.getHoursTypeByProject(projectSelected.id).then(function (response) {
-                $scope.hourTypes = response.data;
-            }, function (error) { });
+            if ($scope.model.project) {
+                var projectSelected = $scope.model.project;
+                var userId = AuthenticationService.getCurrentUser().id;
+                AssignmentService.getHoursTypeByProject(projectSelected.id, userId).then(function (response) {
+                    $scope.hourTypes = response.data;
+                }, function (error) { });
+            }
+            else
+                $scope.model.hourType = null;
         };
 
         $scope.onRemoveUser = function (index) {
@@ -56,7 +61,7 @@ app.controller("GroupAssignmentController", ['$scope', '$state', 'ProjectService
         };
 
         $scope.assignProjectGroup = function () {
-            console.log($scope.model);
+            
             AssignmentService.createProjectAssignmentGroup($scope.model).then(function (response) {
                 $scope.model = {}
                 $scope.model.usersSelected = [];

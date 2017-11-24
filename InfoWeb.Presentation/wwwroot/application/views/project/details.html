@@ -15,6 +15,9 @@
                            <div class="col-md-4">
                                <label>Cliente: </label> {{innerAssignments.project.client.name}}
                            </div>
+                           <div class="col-md-4">
+                               <label>Tipo de proyecto: </label> {{innerAssignments.project.type.name}}
+                           </div>
                        </div>
 
                    </div>
@@ -43,12 +46,16 @@
                             <thead>
                                 <tr>
                                     <td><label>Tipos de horas</label></td>
+                                    <td><label>Horas asignadas</label></td>
+                                    <td><label>Horas disponibles</label></td>
                                     <td><label>Total</label></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="hd in HoursDetails">
                                     <td>{{hd.hourTypeName}}</td>
+                                    <td>{{hd.totalHoursAssigned}}</td>
+                                    <td>{{hd.totalHours-hd.totalHoursAssigned}}</td>
                                     <td>{{hd.totalHours}}</td>
                                 </tr>
                             </tbody>

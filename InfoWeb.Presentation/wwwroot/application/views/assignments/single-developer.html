@@ -15,19 +15,19 @@
                         </select>
                     </div>
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <label>Tipo de hora</label>
+                        <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes"
+                                required name="hourType" ng-disabled="!assignment.project">
+                            <option value="">Seleccione tipo de hora</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
                         <label>Usuario</label>
                         <select class="form-control" ng-model="assignment.user" ng-options="user.name for user in users"
                                 required name="user">
                             <option value="" selected>Seleccione usuario</option>
                         </select>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                        <label>Tipo de hora</label>
-                        <select class="form-control" ng-model="assignment.hourType" ng-options="hourType.name for hourType in hourTypes"
-                                required name="hourType">
-                            <option value="">Seleccione tipo de hora</option>
-                        </select>
-                    </div>
+                    </div>                   
                 </div>
                 <div class="row" style="margin-top:10px">                   
                     <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">

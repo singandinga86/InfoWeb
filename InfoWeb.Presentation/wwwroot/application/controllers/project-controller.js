@@ -4,6 +4,8 @@ app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'A
 
         $scope.acceptButtonCaption = "Nuevo";
         $scope.currentUser = AuthenticationService.getCurrentUser();
+       
+       
 
         var fillTable = function () {
             ProjectService.getProjectsForUser(AuthenticationService.getCurrentUser().id).then(function (response) {
@@ -110,5 +112,26 @@ app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'A
         $scope.onEditClicked = function (id) {
             $state.go('updateProject', { projectId: id })
         }
-        
+
+        $scope.onViewHoursClicked = function (project) {
+           
+
+            $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'application/views/project/details-modal.html',
+                controller: "ProjectDetailModalController",
+                windowClass: 'clsPopup',
+                resolve: {
+                    targetProject: function () {
+                        return project.id;
+                    }
+                }
+            });
+
+            
+        }
+    
+       
 }]);

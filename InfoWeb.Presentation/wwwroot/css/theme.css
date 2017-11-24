@@ -369,3 +369,7 @@ ul.dropdown-menu{
 .modal-content {
     border-radius: 0px ;
 }
+/*width modal detail project*/
+.clsPopup .modal-content{
+    width:100% !important
+}

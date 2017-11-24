@@ -87,15 +87,21 @@ app.controller("ProjectDelegateController",
     };
 
     $scope.onChangeProjectDelegate = function () {
-        var project = $scope.assignment.project;
-        //console.log(project);
-        AssignmentService.getHoursTypeByProject(project.id).then(function (response) {
+        if ($scope.assignment.project) {
+            var userId = AuthenticationService.getCurrentUser().id;
+            var project = $scope.assignment.project;
+            //console.log(project);
+            AssignmentService.getHoursTypeByProject(project.id, userId).then(function (response) {
 
-            $scope.HoursTypes = response.data;
-        },
-            function (error) {
+                $scope.HoursTypes = response.data;
+            },
+                function (error) {
 
-            });
+                });
+        }
+        else
+            $scope.assignment.hourType = null;
+   
     };
 
     //$scope.changeValue = function () {

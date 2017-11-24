@@ -43,15 +43,20 @@ app.controller("DeveloperAssignmentController",["$scope", '$state','Authenticati
                    }
 
                    $scope.onProjectAssignChanged = function () {
-                       var project = $scope.assignment.project;
-                       //console.log(project);
-                       AssignmentService.getHoursTypeByProject(project.id).then(function (response) {
+                       if ($scope.assignment.project) {
+                           var project = $scope.assignment.project;
+                           //console.log(project);
+                           AssignmentService.getHoursTypeByProject(project.id, assignator.id).then(function (response) {
 
-                           $scope.hourTypes = response.data;
-                       },
-                           function (error) {
+                               $scope.hourTypes = response.data;
+                           },
+                               function (error) {
 
-                           });
+                               });
+                       }
+                       else
+                           $scope.assignment.hourType = null;
+                       
                    };
 
 

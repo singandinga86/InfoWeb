@@ -19,7 +19,7 @@
                         <div class="form-group">
                             <label>Tipos de horas</label>
                             <select class="form-control" ng-model="model.hourType" ng-options="hourType.name for hourType in hourTypes"
-                                    required name="hourTypeName">
+                                    required name="hourTypeName" ng-disabled="!model.project">
                                 <option value="">Seleccione</option>
                             </select>
                         </div>

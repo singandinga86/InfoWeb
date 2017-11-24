@@ -10,5 +10,6 @@ namespace InfoWeb.Presentation.Models
         public string ProjectName { get; set; }
         public string HourTypeName { get; set; }
         public int TotalHours { get; set; }
+        public int TotalHoursAssigned { get; set; }
     }
 }
