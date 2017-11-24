@@ -291,14 +291,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body ng-app="InfoWeb" style="overflow-y:scroll;height:auto">
+<body ng-app="InfoWeb" >
     <toast></toast>
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
     <div id="main" ng-controller="MainController" >
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-md-12 col-xs12">
-                    <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-show="currentUser != null">
+                    <header id="headerStyle" class="navbar navbar-fixed-top bg-primary col-s12" ng-if="currentUser != null" ng-cloak>
                         <div class="row">
                             <div>
                                 <h2 class=" col-md-offset-0 col-md-1 col-lg-offset-0 col-lg-1 col-sm-offset-4 col-sm-1">
@@ -358,7 +358,7 @@
             <div class="row">
                 <div class="col-md-2 col-lg-2 hidden-sm">
                     <div class="row">
-                        <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar hidden-xs" ng-show="currentUser != null">
+                        <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar hidden-xs" ng-if="currentUser != null" ng-cloak>
 
                             
 
@@ -369,7 +369,7 @@
                                 <ul class="nav sidebar-menu">
                                     <!--<li class="sidebar-label">Menu</li>-->
 
-                                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'ADMIN'">
+                                    <li ng-click="toggleMenu($event,open);" ng-if="currentUser.role.name == 'ADMIN'" ng-cloak>
                                         <a class="accordion-toggle">
                                             <span class="glyphicon glyphicon-home"></span>
                                             <span class="sidebar-title">Gestión de Admon</span>
@@ -428,7 +428,7 @@
                                         </ul>
 
                                     </li>
-                                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'OM'">
+                                    <li ng-click="toggleMenu($event,open);" ng-if="currentUser.role.name == 'OM'" ng-cloak>
                                         <a>
                                             <span class="glyphicon glyphicon-home"></span>
                                             <span class="sidebar-title">Gestión de Proyectos</span>
@@ -461,7 +461,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'">
+                                    <li ng-click="toggleMenu($event,open);" ng-if="currentUser.role.name == 'PM' || currentUser.role.name == 'TAM'" ng-cloak>
                                         <a>
                                             <span class="glyphicon glyphicon-home"></span>
                                             <span class="sidebar-title" ng-click="ir();">Gestión de Horas</span>
@@ -488,7 +488,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li ng-click="toggleMenu($event,open);" ng-show="currentUser.role.name == 'TEC'">
+                                    <li ng-click="toggleMenu($event,open);" ng-if="currentUser.role.name == 'TEC'" ng-cloak>
                                         <a>
                                             <span class="glyphicon glyphicon-home"></span>
                                             <span class="sidebar-title" ng-click="ir();">Gestión de Horas</span>

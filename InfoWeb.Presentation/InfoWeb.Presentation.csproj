@@ -76,6 +76,7 @@
     <Content Include="wwwroot\application\views\hour-type\hour-type-input.html" />
     <Content Include="wwwroot\application\views\hour-type\list.html" />
     <Content Include="wwwroot\application\views\hour-type\remove-modal.html" />
+    <Content Include="wwwroot\application\views\login\loading-modal.html" />
     <Content Include="wwwroot\application\views\project-types\list.html" />
     <Content Include="wwwroot\application\views\project-types\project-types-input.html" />
     <Content Include="wwwroot\application\views\project-types\remove-modal.html" />

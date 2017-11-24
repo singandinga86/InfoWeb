@@ -5,12 +5,12 @@
                 <span ng-show="branch.innerAssignments.length>0 && !branch.isExpanded">
                     <i class="glyphicon glyphicon-plus"
                        ng-click="branch.isExpanded=true;"
-                       ng-dblclick="expand(branch, true)"></i>
+                       ng-dblclick="expand(branch, true)" style="padding:5px"></i>
                 </span>
                 <span ng-show="branch.innerAssignments.length>0 && branch.isExpanded">
                     <i class="glyphicon glyphicon-minus"
                        ng-click="branch.isExpanded=false;"
-                       ng-dblclick="expand(branch, false)"></i>
+                       ng-dblclick="expand(branch, false)" style="padding:5px"></i>
                 </span>
                 <!--<span ng-show="!branch.isSelected"><i class="fa fa-square-o" ng-click="toggle(branch,true)"></i></span>-->
                 <!--<span ng-show="branch.isSelected"><i class="fa fa-check-square-o" ng-click="toggle(branch,false)"></i></span>--> 
