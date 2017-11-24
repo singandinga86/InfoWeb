@@ -12,5 +12,6 @@ namespace InfoWeb.Domain.Interfaces
         IEnumerable<ProjectsHoursTypes> GetListById(int id);
         ProjectsHoursTypes GetHourType(int idProject, int idHourType);
         IEnumerable<ProjectsHoursTypes> GetHourTypeByProject(int idProject);
+        bool CanItemBeRemoved(int id, int projectId);
     }
 }

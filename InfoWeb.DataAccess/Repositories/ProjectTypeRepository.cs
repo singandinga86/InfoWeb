@@ -15,6 +15,11 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IQueryable<ProjectType> ProjectTypes => this.entitySet;
 
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Projects.Where(p => p.TypeId == id).FirstOrDefault() == null;
+        }
+
         public IEnumerable<ProjectType> GetAll()
         {
             return entitySet.ToList();

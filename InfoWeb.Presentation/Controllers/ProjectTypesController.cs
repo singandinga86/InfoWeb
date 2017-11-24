@@ -103,13 +103,22 @@ namespace InfoWeb.Presentation.Controllers
             var target = projectTypesRepository.GetById(id);
             if (target != null)
             {
-                projectTypesRepository.Remove(target);
-                try {
-                    unitOfWork.Commit();
-                }
-                catch(Exception e)
+                if (projectTypesRepository.CanItemBeRemoved(target.Id))
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    projectTypesRepository.Remove(target);
+                    try
+                    {
+                        unitOfWork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
+                }
+                else
+
+                {
+                    return BadRequest(new ValidationResult("Este tipo de proyecto no puede se elimnado. Tiene proyectos asociados a él."));
                 }
             }
             else

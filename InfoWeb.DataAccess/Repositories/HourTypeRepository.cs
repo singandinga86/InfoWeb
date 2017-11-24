@@ -16,6 +16,11 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IQueryable<HourType> HourTypes => this.entitySet;
 
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Assignments.Where(a => a.HourTypeId == id).FirstOrDefault() == null;
+        }
+
         public IEnumerable<HourType> GetAll()
         {
             return entitySet.ToList();

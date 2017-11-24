@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InfoWeb.DataAccess.Repositories
 {
-    public class ProjectRepository : GenericRepository<Project,int>, IProjectRepository
+    public class ProjectRepository : GenericRepository<Project,int>, 
+                                     IProjectRepository
     {
         public ProjectRepository(InfoWebDatabaseContext context): base(context)
         {
@@ -95,6 +96,11 @@ namespace InfoWeb.DataAccess.Repositories
             var query = context.Projects.Where(p => p.Name.Contains(search));
 
             return base.GetRange(query, skip, take);
+        }
+
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Assignments.Where(a => a.ProjectId == id).FirstOrDefault() == null;
         }
     }
 }

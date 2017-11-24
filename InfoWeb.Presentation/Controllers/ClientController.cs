@@ -105,14 +105,21 @@ namespace InfoWeb.Presentation.Controllers
             var target = clientRepository.GetById(id);
             if (target != null)
             {
-                clientRepository.Remove(target);
-                try
+                if (clientRepository.CanItemBeRemoved(target.Id))
                 {
-                    unitOfwork.Commit();
+                    clientRepository.Remove(target);
+                    try
+                    {
+                        unitOfwork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                catch(Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    return BadRequest(new ValidationResult("Este cliente no puede ser eliminado. Tiene proyectos asociados a él."));
                 }
             }
             else
