@@ -1,0 +1,9 @@
+D:\Trabajo\Clients\Clients\bin\Debug\netcoreapp1.1\Clients.deps.json
+D:\Trabajo\Clients\Clients\bin\Debug\netcoreapp1.1\Clients.runtimeconfig.json
+D:\Trabajo\Clients\Clients\bin\Debug\netcoreapp1.1\Clients.runtimeconfig.dev.json
+D:\Trabajo\Clients\Clients\bin\Debug\netcoreapp1.1\Clients.dll
+D:\Trabajo\Clients\Clients\bin\Debug\netcoreapp1.1\Clients.pdb
+D:\Trabajo\Clients\Clients\obj\Debug\netcoreapp1.1\Clients.AssemblyInfo.cs
+D:\Trabajo\Clients\Clients\obj\Debug\netcoreapp1.1\Clients.dll
+D:\Trabajo\Clients\Clients\obj\Debug\netcoreapp1.1\Clients.pdb
+D:\Trabajo\Clients\Clients\obj\Debug\netcoreapp1.1\Clients.csprojResolveAssemblyReference.cache

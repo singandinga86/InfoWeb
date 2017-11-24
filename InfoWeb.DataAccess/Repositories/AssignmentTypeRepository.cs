@@ -15,6 +15,11 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IQueryable<AssignmentType> AssignmentTypes => this.entitySet;
 
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Assignments.Where(a => a.AssignmentTypeId == id).FirstOrDefault() == null;
+        }
+
         public IEnumerable<AssignmentType> GetAll()
         {
             return entitySet.ToList();

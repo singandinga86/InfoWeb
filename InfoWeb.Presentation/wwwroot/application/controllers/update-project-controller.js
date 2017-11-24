@@ -1,9 +1,9 @@
 ﻿var app = angular.module("InfoWeb");
 
 app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$stateParams',
-    'ProjectService', 'AuthenticationService', 'ProjectTypesService', 'ClientService','HourTypeService',
+    'ProjectService', 'AuthenticationService', 'ProjectTypesService', 'ClientService', 'HourTypeService', 'ngToast',
     function ($q, $scope, $state, $stateParams, ProjectService, AuthenticationService,
-              ProjectTypesService, ClientService, HourTypeService) {
+        ProjectTypesService, ClientService, HourTypeService,ngToast) {
    
     var id = $stateParams.projectId;
     var userId = AuthenticationService.getCurrentUser().id;

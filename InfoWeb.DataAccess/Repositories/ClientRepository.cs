@@ -16,6 +16,12 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IQueryable<Client> Clients => this.entitySet;
 
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Assignments.Where(a => a.Project.ClientId == id).FirstOrDefault() == null;
+
+        }
+
         public IEnumerable<Client> GetAll()
         {
             return entitySet.ToList();

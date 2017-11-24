@@ -106,13 +106,21 @@ namespace InfoWeb.Presentation.Controllers
             var target = hourTypeRepository.GetById(id);
             if(target != null)
             {
-                hourTypeRepository.Remove(target);
-                try {
-                    unitOfWork.Commit();
-                }
-                catch(Exception e)
+                if (hourTypeRepository.CanItemBeRemoved(target.Id))
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    hourTypeRepository.Remove(target);
+                    try
+                    {
+                        unitOfWork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
+                }
+                else
+                {
+                    return BadRequest(new ValidationResult("Este tipo de hora no se puede eliminar. Tiene proyectos asociados a él."));
                 }
             }
             else

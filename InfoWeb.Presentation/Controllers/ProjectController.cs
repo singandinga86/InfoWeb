@@ -9,6 +9,7 @@ using InfoWeb.Presentation.Models;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using InfoWeb.Presentation.InputModels;
+using InfoWeb.Domain.Comparers;
 
 namespace InfoWeb.Presentation.Controllers
 {
@@ -122,15 +123,23 @@ namespace InfoWeb.Presentation.Controllers
             var project = projectRepository.GetById(id);
             if (project != null)
             {
-                projectRepository.Remove(project);
-
-                try {
-                    unitOfwork.Commit();
-                }
-                catch (Exception e)
+                if(projectRepository.CanItemBeRemoved(project.Id))
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    projectRepository.Remove(project);
+
+                    try
+                    {
+                        unitOfwork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
+                else
+                {
+                    return BadRequest(new ValidationResult("No se puede elimiar el proyecto. Tiene asignaciones asociadas a él."));
+                }                
             }
             else
             {
@@ -310,29 +319,47 @@ namespace InfoWeb.Presentation.Controllers
                         {
                             if (hourTypesContainValidHourAmounts(targetProject, project.ProjectsHoursTypes).IsValid)
                             {
-                                targetProject.Name = project.Name;
-                                targetProject.TypeId = project.Type.Id;
-                                targetProject.ClientId = project.Client.Id;
+                                var hourTypesToBeRemoved = targetProject.ProjectsHoursTypes.Except(project.ProjectsHoursTypes,
+                                                            new ProjectHoursTypesByHourTypeComprarer()).ToList();
+                                var hourTypeValidationResult = this.canProjectHourTypesBeReplaced(hourTypesToBeRemoved);
 
-                                targetProject.ProjectsHoursTypes.Clear();
-
-                                foreach (var pht in project.ProjectsHoursTypes)
+                                if (hourTypeValidationResult.IsValid)
                                 {
-                                    targetProject.ProjectsHoursTypes.Add(new ProjectsHoursTypes
+
+                                    targetProject.Name = project.Name;
+                                    targetProject.TypeId = project.Type.Id;
+                                    targetProject.ClientId = project.Client.Id;
+
+                                    var hourTypesToBeAdded = project.ProjectsHoursTypes.Except(targetProject.ProjectsHoursTypes,
+                                                             new ProjectHoursTypesByHourTypeComprarer()).ToList();
+
+                                    foreach (var hourType in hourTypesToBeRemoved)
                                     {
-                                        HourTypeId = pht.HourType.Id,
-                                        Hours = pht.Hours
-                                    });
-                                }
+                                        targetProject.ProjectsHoursTypes.Remove(hourType);
+                                    }                                  
 
-                                projectRepository.Update(targetProject);
-                                try
-                                {
-                                    unitOfwork.Commit();
+                                    foreach (var pht in hourTypesToBeAdded)
+                                    {
+                                        targetProject.ProjectsHoursTypes.Add(new ProjectsHoursTypes
+                                        {
+                                            HourTypeId = pht.HourType.Id,
+                                            Hours = pht.Hours
+                                        });
+                                    }
+
+                                    projectRepository.Update(targetProject);
+                                    try
+                                    {
+                                        unitOfwork.Commit();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                                    }
                                 }
-                                catch (Exception e)
+                                else
                                 {
-                                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                                    return BadRequest(hourTypeValidationResult.Messages.First());
                                 }
                             }
                             else
@@ -429,6 +456,24 @@ namespace InfoWeb.Presentation.Controllers
                     {
                         result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
                     }
+                }
+            }
+
+            return result;
+        }
+
+        private ValidationResult canProjectHourTypesBeReplaced(IEnumerable<ProjectsHoursTypes> itemsToBeRemoved)
+        {
+            var result = new ValidationResult();
+
+
+
+            foreach(var item in itemsToBeRemoved)
+            {
+                if(projectHourTypeRepository.CanItemBeRemoved(item.Id,item.ProjectId) == false)
+                {
+                    result.Messages.Add("El tipo de hora " + item.HourType.Name + " no puede ser eliminado porque tiene asigmaciones asociadas a él.");
+                    return result;
                 }
             }
 

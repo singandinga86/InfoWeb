@@ -54,5 +54,13 @@ namespace InfoWeb.DataAccess.Repositories
         {
             return context.ProjectsHoursTypes.Where(pht => pht.ProjectId == idProject).ToList();
         }
+
+        public bool CanItemBeRemoved(int id, int projectId)
+        {
+            var hourType = context.Assignments
+                           .Where(a => a.HourTypeId == id && a.ProjectId == projectId).FirstOrDefault();
+           
+            return hourType == null;
+        }
     }
 }

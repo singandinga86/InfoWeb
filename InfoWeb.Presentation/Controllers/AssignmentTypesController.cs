@@ -106,14 +106,21 @@ namespace InfoWeb.Presentation.Controllers
 
             if (target != null)
             {
-                assignmentTypeRepository.Remove(target);
-                try
+                if (assignmentTypeRepository.CanItemBeRemoved(target.Id))
                 {
-                    unitOfWork.Commit();
+                    assignmentTypeRepository.Remove(target);
+                    try
+                    {
+                        unitOfWork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                catch(Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    return BadRequest(new ValidationResult("Este tipo de asignación no puede ser eliminado. Tiene asigaciones asociadas a él."));
                 }
             }
             else
