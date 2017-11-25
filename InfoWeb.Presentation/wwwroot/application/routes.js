@@ -17,7 +17,7 @@
         url:"/login"
     });
 
-    $stateProvider.state('projectList', {
+    var projectList = $stateProvider.state('projectList', {
         templateUrl: "application/views/project/list.html",
         controller: 'ProjectController',
         url: "/projects",

@@ -47,7 +47,7 @@ namespace InfoWeb.Presentation.Controllers
                     try
                     {
                         unitOfWork.Commit();
-                        return Ok();
+                        return Ok("Tipo de asignación <strong>" + assignmentType.Name + "</strong> creado correctamente.");
                     }
                     catch (Exception e)
                     {
@@ -56,7 +56,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("El tipo de asignación ya existe."));
+                    return BadRequest(new ValidationResult("El tipo de asignación <strong>" + assignmentType.Name + "</strong> ya existe."));
                 }
             }
            
@@ -78,7 +78,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Tipo de asignación <strong>" + assignmentType.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -87,7 +87,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("El tipo de asignación ya existe."));
+                        return BadRequest(new ValidationResult("El tipo de asignación <strong>" + assignmentType.Name + "</strong> ya existe."));
                     }
                 }
                 else
@@ -128,7 +128,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Tipo de asignación no encontrado."));
             }
 
-            return Ok();
+            return Ok("Tipo de asignación <strong>" + target.Name + "</strong> eliminado correctamente.");
         }
 
         private bool isAssignmentTypeTaken(string name, int id)

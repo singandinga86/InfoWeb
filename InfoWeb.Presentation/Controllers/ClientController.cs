@@ -77,7 +77,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfwork.Commit();
-                            return Ok();
+                            return Ok("Cliente <strong>" + targetClient.Name + "</strong> actualizado satisfactoriamente");
                         }
                         catch (Exception e)
                         {
@@ -86,7 +86,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("El cliente ya existe."));
+                        return BadRequest(new ValidationResult("El cliente <strong>" + client.Name +"</strong> ya existe."));
                     }
                     
                 }
@@ -119,7 +119,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("Este cliente no puede ser eliminado. Tiene proyectos asociados a él."));
+                    return BadRequest(new ValidationResult("El cliente <strong>" + target.Name + "</strong> no puede ser eliminado. Tiene proyectos asociados a él."));
                 }
             }
             else
@@ -127,7 +127,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Cliente no encontrado."));
             }
 
-            return Ok();
+            return Ok("Cliente <strong>" + target.Name + "</strong> eliminado satisfactoriamente");
         }
 
         private bool isClientNameTaken(string name, int id)

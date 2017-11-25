@@ -54,7 +54,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("El tipo de hora ya existe."));
+                    return BadRequest(new ValidationResult("El tipo de hora <strong>" + hourType.Name + "</strong> ya existe."));
                 }
             }
            
@@ -76,7 +76,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Tipo de hora <strong>" + targetHourType.Name + "</strong> creado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -85,7 +85,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("El tipo de hora ya existe."));
+                        return BadRequest(new ValidationResult("El tipo de hora <strong>" + targetHourType.Name +"</strong> ya existe."));
                     }
                 }
                 else
@@ -120,7 +120,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("Este tipo de hora no se puede eliminar. Tiene proyectos asociados a él."));
+                    return BadRequest(new ValidationResult("El tipo de hora <strong>" + target.Name +"</strong> no se puede eliminar. Tiene proyectos asociados a él."));
                 }
             }
             else
@@ -128,7 +128,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Tipo de hora no encontrado."));
             }
 
-            return Ok();
+            return Ok("Tipo de hora <strong>" + target.Name + "</strong> actualizado correctamente.");
         }
 
         private bool isHourTypeTaken(string name, int id)

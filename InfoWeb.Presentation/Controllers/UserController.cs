@@ -101,7 +101,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Usuario <strong>" + user.Name + "</strong> creado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -138,7 +138,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Usuario <strong>" + user.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -175,7 +175,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return Ok("Usuario <strong>" + user.Name + "</strong> eliminado correctamente.");
         }
 
         private bool isUsernameTaken(string userName, int id)

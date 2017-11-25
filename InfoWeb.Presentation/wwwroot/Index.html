@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿`<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -57,7 +57,7 @@
             configureRoutes($stateProvider);
         });
 
-        app.run(function ($transitions, $state, AuthenticationService) {
+        app.run(function (/*$rootscope,*/$transitions, $state, AuthenticationService) {
             $transitions.onStart({}, function (transition) {
                 var targetState = transition.to();
                 var user = AuthenticationService.getCurrentUser();
@@ -68,10 +68,14 @@
                 }
 
             });
+
+            /*$transitions.onSuccess({}, function (transition) {
+
+            });*/
         });
 
-        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService',
-            function ($scope, $rootScope, $state, AuthenticationService, NotificationService) {
+        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService', '$transitions',
+            function ($scope, $rootScope, $state, AuthenticationService, NotificationService, $transitions) {
                 $scope.currentUser = null;
                 $scope.open = true;
                 $scope.notifications = {};
@@ -89,6 +93,14 @@
                 }
 
                 populateNotifications($scope.currentUser);
+
+                $transitions.onSuccess({}, function (transition) {
+                    //var state = transition.to();
+                    //var targetStateName = state.name;                   
+                    //console.log(transition.to());
+                    //console.log($state);                
+                    //$scope.currentStateName = transition.to().name;
+                });
 
 
                 $rootScope.$on("userAuthenticated", function (event, user) {
@@ -115,10 +127,10 @@
                 $scope.listProject = function ($event) {
                     $event.stopPropagation();
                     $state.go('projectList');
-                    var currentMenu = $event.currentTarget;
+                    /*var currentMenu = $event.currentTarget;
                     var parentMenu = angular.element(currentMenu).parent().parent();
                     angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
+                    angular.element(currentMenu).addClass("activeMenu");*/
                 }
                 $scope.asignar = function ($event) {
                     $event.stopPropagation();
@@ -377,50 +389,50 @@
                                         </a>
                                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
                                             <li>
-                                                <a ng-click="listProject($event);">
+                                                <a ng-click="listProject($event);" ng-class='{"activeMenu":currentStateName=="projectList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title" ng-show="currentUser.role.name != 'ADMIN'">Ver Proyectos</span>
                                                     <span class="sidebar-title" ng-show="currentUser.role.name == 'ADMIN'">Gestión de Proyectos</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="asignar($event);">
+                                                <a ng-click="asignar($event);" ng-class='{"activeMenu":currentStateName=="assign"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Asignar Proyectos</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listUser($event);">
+                                                <a ng-click="listUser($event);" ng-class='{"activeMenu":currentStateName=="userList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Usuarios</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listHourTypes($event);">
+                                                <a ng-click="listHourTypes($event);" ng-class='{"activeMenu":currentStateName=="hourTypeList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Tipos de Hora</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listAssignmentTypes($event);">
+                                                <a ng-click="listAssignmentTypes($event);" ng-class='{"activeMenu":currentStateName=="assignmentTypeList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Tipos de Asignación</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listClient($event);">
+                                                <a ng-click="listClient($event);" ng-class='{"activeMenu":currentStateName=="clientList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Clientes</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listRoles($event);">
+                                                <a ng-click="listRoles($event);" ng-class='{"activeMenu":currentStateName=="roleList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Roles</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a ng-click="listProjectTypes($event);">
+                                                <a ng-click="listProjectTypes($event);" ng-class='{"activeMenu":currentStateName=="projectTypesList"}'>
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Gestionar Tipos de Proyectos</span>
                                                 </a>
