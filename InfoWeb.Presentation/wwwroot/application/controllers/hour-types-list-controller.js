@@ -62,7 +62,7 @@ app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTyp
                     fillTable();
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El tipo de hora fue eliminado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

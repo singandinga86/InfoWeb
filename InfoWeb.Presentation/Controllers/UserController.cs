@@ -160,14 +160,21 @@ namespace InfoWeb.Presentation.Controllers
             var user = userRepository.GetById(id);
             if(user != null)
             {
-                userRepository.Remove(user);
-                try
+                if (userRepository.CanItemBeRemoved(id))
                 {
-                    unitOfWork.Commit();
+                    userRepository.Remove(user);
+                    try
+                    {
+                        unitOfWork.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(new ValidationResult("Error interno del servidor."));
+                    }
                 }
-                 catch(Exception e)
+                else
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    return BadRequest(new ValidationResult("El usuario <strong>" + user.Name + "</strong> no puede ser eliminado. Tiene asignaciones asociadas a él."));
                 }
             }
             else

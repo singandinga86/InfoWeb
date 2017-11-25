@@ -30,7 +30,7 @@ app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal'
                     fillTable();
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El usuario fue elimado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

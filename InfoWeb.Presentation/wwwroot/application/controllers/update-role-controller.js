@@ -19,7 +19,7 @@ app.controller("UpdateRoleController", ['$scope', '$state', '$stateParams', 'Rol
             $state.go("roleList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El rol fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

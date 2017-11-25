@@ -7,7 +7,7 @@ using InfoWeb.Domain.Entities;
 
 namespace InfoWeb.Domain.Interfaces
 {
-    public interface IRoleRepository: IGenericRepository<Role, int>, INamedObjectRepository<Role>
+    public interface IRoleRepository: IGenericRepository<Role, int>, INamedObjectRepository<Role>, INomenclatorRepository<int>
     {
         IQueryable<Role> Roles { get; }
     }

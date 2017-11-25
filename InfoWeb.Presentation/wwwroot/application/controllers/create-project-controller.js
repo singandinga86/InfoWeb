@@ -28,7 +28,7 @@ app.controller("CreateProjectController", ['$q', "$scope", '$state', "ProjectSer
             $state.go("projectList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El proyecto fue creado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

@@ -16,7 +16,7 @@ app.controller("CreateUserController", ["$scope", '$state', "UserListService", '
                 $state.go("userList");
                 ngToast.create({
                     dismissButton: true,
-                    content: 'El usuario fue creado satisfactoriamente.'
+                    content: response.data
                 });
             }, function (error) {
                 ngToast.create({

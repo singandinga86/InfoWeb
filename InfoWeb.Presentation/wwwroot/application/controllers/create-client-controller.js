@@ -10,7 +10,7 @@ app.controller("CreateClientController", ["$scope", '$state', "ClientService", '
             $state.go("clientList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El cliente fue creado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

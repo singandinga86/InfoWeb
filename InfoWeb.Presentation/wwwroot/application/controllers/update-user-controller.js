@@ -40,7 +40,7 @@ app.controller("UpdateUserController", ['$q','$scope', '$state', '$stateParams',
             $state.go("userList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El usuario fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

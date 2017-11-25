@@ -88,7 +88,7 @@ app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'A
                         fillTable();
                         ngToast.create({
                             dismissButton: true,
-                            content: 'El proyecto fue eliminado satisfactoriamente.'
+                            content: response.data
                         });
                     }, function (error) {
                         ngToast.create({

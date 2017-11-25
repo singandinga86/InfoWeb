@@ -61,7 +61,7 @@ app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'Proj
                     fillTable();
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El tipo de proyecto fue elimado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

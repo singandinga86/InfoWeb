@@ -11,7 +11,7 @@ app.controller("CreateRoleController", ["$scope", '$state', "RoleService", 'ngTo
             $state.go("roleList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El rol fue creado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

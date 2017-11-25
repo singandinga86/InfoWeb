@@ -17,7 +17,7 @@ app.controller("UpdateHourTypeController", ['$scope', '$state', '$stateParams', 
             $state.go("hourTypeList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El tipo de hora fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

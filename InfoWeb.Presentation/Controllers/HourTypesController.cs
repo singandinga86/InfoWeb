@@ -45,7 +45,7 @@ namespace InfoWeb.Presentation.Controllers
                     try
                     {
                         unitOfWork.Commit();
-                        return Ok();
+                        return Ok("Tipo de hora <strong>" + hourType.Name + "</strong> creado correctamente.");
                     }
                     catch (Exception e)
                     {
@@ -76,7 +76,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok("Tipo de hora <strong>" + targetHourType.Name + "</strong> creado correctamente.");
+                            return Ok("Tipo de hora <strong>" + targetHourType.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -128,7 +128,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Tipo de hora no encontrado."));
             }
 
-            return Ok("Tipo de hora <strong>" + target.Name + "</strong> actualizado correctamente.");
+            return Ok("Tipo de hora <strong>" + target.Name + "</strong> eliminado correctamente.");
         }
 
         private bool isHourTypeTaken(string name, int id)

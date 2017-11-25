@@ -138,7 +138,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("No se puede elimiar el proyecto. Tiene asignaciones asociadas a él."));
+                    return BadRequest(new ValidationResult("No se puede elimiar el proyecto <strong>"+ project.Name + "</strong>. Tiene asignaciones asociadas a él."));
                 }                
             }
             else

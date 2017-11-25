@@ -11,7 +11,7 @@ app.controller("CreateProjectTypesController", ["$scope", '$state', "ProjectType
             $state.go("projectTypesList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El tipo de proyecto fue creado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

@@ -18,6 +18,11 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IQueryable<User> Users { get => context.Users; }
 
+        public bool CanItemBeRemoved(int id)
+        {
+            return context.Assignments.Where(a => a.Assignator.Id == id || a.Assignee.Id == id).FirstOrDefault() == null;
+        }
+
         public IEnumerable<User> GetAll()
         {
             return entitySet.Include(u => u.Role).ToList();
