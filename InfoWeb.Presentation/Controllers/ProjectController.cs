@@ -457,19 +457,19 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    /*var targetHourTypeAssignmentCount = queryModel.Assignments
+                    var targetHourTypeAssignmentCount = queryModel.Assignments
                                                    .Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId)
-                                                   .Count();
+                                                   .Sum(a => a.Hours);
 
                     if (targetHourTypeAssignmentCount > pht.Hours)
                     {
-                        result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
-                    }*/
-                    if (targetHourType.Hours < pht.Hours)
+                        result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido.");
+                    }
+                    /*if (targetHourType.Hours < pht.Hours)
                     {
                         //result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
                         result.Messages.Add("La cantidad de horas especificada para " + pht.HourType.Name + " es menor que la actual.");
-                    }
+                    }*/
                 }
             }
 
