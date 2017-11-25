@@ -73,7 +73,7 @@
         app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService',
             function ($scope, $rootScope, $state, AuthenticationService, NotificationService) {
                 $scope.currentUser = null;
-                $scope.open = false;
+                $scope.open = true;
                 $scope.notifications = {};
                
                 $scope.currentUser = AuthenticationService.getCurrentUser();
