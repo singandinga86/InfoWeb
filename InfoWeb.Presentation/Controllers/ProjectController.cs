@@ -146,7 +146,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return Ok("Proyecto <strong>" + project.Name + "</strong> eliminado correctamente.");
         }
 
         private IEnumerable<ProjectDetailsUserAssigmentViewModel> getProjectDetailsforUser(User user, int projectId)
@@ -281,7 +281,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfwork.Commit();
-                            return Ok();
+                            return Ok("Proyecto <strong>" + projectInputModel.Name + "</strong> creado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -290,7 +290,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("Este proyecto ya existe."));
+                        return BadRequest(new ValidationResult("El proyecto <strong>" + projectInputModel.Name +"</strong> ya existe."));
                     }
                 }
             }
@@ -317,7 +317,8 @@ namespace InfoWeb.Presentation.Controllers
                     {
                         if (projectContainsValidHourTypes(project.ProjectsHoursTypes) == true)
                         {
-                            if (hourTypesContainValidHourAmounts(targetProject, project.ProjectsHoursTypes).IsValid)
+                            var hourAmountValidationResult = hourTypesContainValidHourAmounts(targetProject, project.ProjectsHoursTypes);
+                            if (hourAmountValidationResult.IsValid)
                             {
                                 var hourTypesToBeRemoved = targetProject.ProjectsHoursTypes.Except(project.ProjectsHoursTypes,
                                                             new ProjectHoursTypesByHourTypeComprarer()).ToList();
@@ -325,7 +326,6 @@ namespace InfoWeb.Presentation.Controllers
 
                                 if (hourTypeValidationResult.IsValid)
                                 {
-
                                     targetProject.Name = project.Name;
                                     targetProject.TypeId = project.Type.Id;
                                     targetProject.ClientId = project.Client.Id;
@@ -333,10 +333,19 @@ namespace InfoWeb.Presentation.Controllers
                                     var hourTypesToBeAdded = project.ProjectsHoursTypes.Except(targetProject.ProjectsHoursTypes,
                                                              new ProjectHoursTypesByHourTypeComprarer()).ToList();
 
+
                                     foreach (var hourType in hourTypesToBeRemoved)
                                     {
                                         targetProject.ProjectsHoursTypes.Remove(hourType);
-                                    }                                  
+                                    }
+
+                                    foreach(var hourType in targetProject.ProjectsHoursTypes)
+                                    {
+                                        var incommingHourtype = project.ProjectsHoursTypes
+                                                                .Where(pht => pht.HourType.Id == hourType.HourType.Id)
+                                                                .First();
+                                        hourType.Hours = incommingHourtype.Hours;
+                                    }
 
                                     foreach (var pht in hourTypesToBeAdded)
                                     {
@@ -364,7 +373,7 @@ namespace InfoWeb.Presentation.Controllers
                             }
                             else
                             {
-                                return BadRequest(new ValidationResult("Cantidades de hora no válidos."));
+                                return BadRequest(hourAmountValidationResult);
                             }
                         }
                         else
@@ -374,7 +383,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("Este nombre de proyecto con el tipo seleccionado ya existe para este cliente."));
+                        return BadRequest(new ValidationResult("El nombre de proyecto <strong>" + project.Name + "</strong> con el tipo seleccionado ya existe para este cliente."));
                     }
                 }
                 else
@@ -387,7 +396,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return Ok("Proyecto <strong>" + project.Name + "</strong> actualizado correctamente.");
         }
 
         [HttpGet("{projectId}/getProject")]
@@ -448,13 +457,18 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    var targetHourTypeAssignmentCount = queryModel.Assignments
+                    /*var targetHourTypeAssignmentCount = queryModel.Assignments
                                                    .Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId)
                                                    .Count();
 
                     if (targetHourTypeAssignmentCount > pht.Hours)
                     {
                         result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
+                    }*/
+                    if (targetHourType.Hours < pht.Hours)
+                    {
+                        //result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
+                        result.Messages.Add("La cantidad de horas especificada para " + pht.HourType.Name + " es menor que la actual.");
                     }
                 }
             }
@@ -465,8 +479,6 @@ namespace InfoWeb.Presentation.Controllers
         private ValidationResult canProjectHourTypesBeReplaced(IEnumerable<ProjectsHoursTypes> itemsToBeRemoved)
         {
             var result = new ValidationResult();
-
-
 
             foreach(var item in itemsToBeRemoved)
             {

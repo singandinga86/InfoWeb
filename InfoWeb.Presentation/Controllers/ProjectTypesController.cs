@@ -46,7 +46,7 @@ namespace InfoWeb.Presentation.Controllers
                     try
                     {
                         unitOfWork.Commit();
-                        return Ok();
+                        return Ok("Tipo de proyecto <strong>" + projectType.Name + "</strong> creado correctamente.");
                     }
                     catch (Exception e)
                     {
@@ -55,7 +55,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("El tipo de proyecto ya existe."));
+                    return BadRequest(new ValidationResult("El tipo de proyecto < strong > " + projectType.Name +" </ strong > ya existe."));
                 }
             }
             return BadRequest(new ValidationResult("Error en los datos de entrada."));
@@ -76,7 +76,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Tipo de proyecto <strong>" + projectType.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -85,12 +85,12 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("El tipo de proyecto ya existe."));
+                        return BadRequest(new ValidationResult("El tipo de proyecto <strong>" + targetProjectType.Name +"</strong> ya existe."));
                     }                    
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("Tipo de proyecto no encontrado."));
+                    return BadRequest(new ValidationResult("Tipo de proyecto <strong>" + targetProjectType.Name + "</strong> no encontrado."));
                 }
 
             }
@@ -118,7 +118,7 @@ namespace InfoWeb.Presentation.Controllers
                 else
 
                 {
-                    return BadRequest(new ValidationResult("Este tipo de proyecto no puede se elimnado. Tiene proyectos asociados a él."));
+                    return BadRequest(new ValidationResult("El tipo de proyecto <strong>" + target.Name +"</strong> no puede se elimnado. Tiene proyectos asociados a él."));
                 }
             }
             else
@@ -126,7 +126,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return Ok("Tipo de proyecto <strong>" + target.Name + "</strong> eliminado correctamente.");
         }
 
         private bool isProjectTypeTaken(string userName, int id)

@@ -44,7 +44,7 @@ namespace InfoWeb.Presentation.Controllers
                     try
                     {
                         unitOfWork.Commit();
-                        return Ok();
+                        return Ok("Rol <strong>" + role.Name + "</strong> creado correctamente.");
                     }
                     catch (Exception e)
                     {
@@ -53,7 +53,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("El rol ya existe."));
+                    return BadRequest(new ValidationResult("El rol <strong>" + role.Name + "</strong> ya existe."));
                 }
             }
           
@@ -75,7 +75,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfWork.Commit();
-                            return Ok();
+                            return Ok("Rol <strong>" + role.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -84,7 +84,7 @@ namespace InfoWeb.Presentation.Controllers
                     }
                     else
                     {
-                        return BadRequest(new ValidationResult("El rol ya existe."));
+                        return BadRequest(new ValidationResult("El rol < strong > " + role.Name + " </ strong > ya existe."));
                     }
                 }
                 else
@@ -105,18 +105,15 @@ namespace InfoWeb.Presentation.Controllers
 
                 try {
                     unitOfWork.Commit();
+                    return Ok("Rol <strong>" + targetRole.Name + "</strong> eliminado correctamente.");
                 }
                 catch(Exception e)
                 {
                     return BadRequest(new ValidationResult("Error interno del servidor."));
                 }
             }
-            else
-            {
-                return BadRequest(new ValidationResult("Error en los datos de entrada."));
-            }
-
-            return Ok();
+    
+            return BadRequest(new ValidationResult("Error en los datos de entrada."));
         }
 
         private bool isRoleTaken(string userName, int id)
