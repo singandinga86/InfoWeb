@@ -49,5 +49,14 @@ namespace InfoWeb.DataAccess.Repositories
             var query = this.entitySet.Where(u => roles.Any(r => r == u.Role.Name)).Include(u => u.Role);
             return base.GetRange(query, skip, take);
         }
+
+        public IEnumerable<User> getUserSearch(string searchValue, int skip = 0, int take = 0)
+        {
+            var query = context.Users
+                        .Where(u => u.Name.Contains(searchValue) || u.Role.Name.Contains(searchValue) || searchValue == "")
+                        .Include(u => u.Role);
+
+            return base.GetRange(query, skip,take);
+        }
     }
 }

@@ -127,10 +127,10 @@
                 $scope.listProject = function ($event) {
                     $event.stopPropagation();
                     $state.go('projectList');
-                    /*var currentMenu = $event.currentTarget;
+                    var currentMenu = $event.currentTarget;
                     var parentMenu = angular.element(currentMenu).parent().parent();
                     angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");*/
+                    angular.element(currentMenu).addClass("activeMenu");
                 }
                 $scope.asignar = function ($event) {
                     $event.stopPropagation();

@@ -6,7 +6,7 @@
         <div class="panel-body">
             <div id="search" class="pull-right">
                 <div class="inner-addon left-addon">
-                    <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})" />
+                    <input class="form-control" placeholder="Buscar..." ng-model="search" />
                     <i class="glyphicon glyphicon-search"></i>
                 </div>
             </div>
@@ -17,22 +17,27 @@
 
             <div id="tableList" class="ng-table-responsive">
                 <table ng-table="model.tableParams" class="table table-hover" id="rolTable">
-                    <thead>
+                    <!--<thead>
                         <tr>
                             <td><b>Nombre</b></td>
                             <td><b>Opciones</b></td>
                         </tr>
-                    </thead>
+                    </thead>-->
                     <tbody>
                         <tr ng-repeat="assignmentType in $data">
-                            <td>
+                            <td title="'Nombre'" sortable="'name'">
                                 {{assignmentType.name}}
                             </td>
-                            <td>
+                            <td title="'Opciones'">
                                 <span>
                                     <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(assignmentType.id)" title="Editar"></span>
                                     <span class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(assignmentType)" title="Eliminar"></span>
                                 </span>
+                            </td>
+                        </tr>
+                        <tr ng-if="$data.length == 0">
+                            <td colspan="2">
+                                <span>No hay datos para mostrar</span>
                             </td>
                         </tr>
                 </table>

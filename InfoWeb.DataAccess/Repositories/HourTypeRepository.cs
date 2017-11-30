@@ -26,6 +26,14 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.ToList();
         }
 
+        public IEnumerable<HourType> GetHourTypeSearch(string searchValue, int skip = 0, int take = 0)
+        {
+            var query = context.HourTypes
+                        .Where(ht => ht.Name.Contains(searchValue) || searchValue == "");
+
+            return base.GetRange(query, skip, take);
+        }
+
         public override HourType GetById(int id)
         {
             return entitySet.Where(h => h.Id == id).FirstOrDefault();

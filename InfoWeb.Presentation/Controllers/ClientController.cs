@@ -27,6 +27,12 @@ namespace InfoWeb.Presentation.Controllers
             return clientRepository.GetAll();
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<Client> getSearchClient([FromRoute]string searchValue = "")
+        {
+            return clientRepository.GetClientSearch(searchValue);
+        }
+
         [HttpGet("{clientId}")]
         public Client GetClient([FromRoute] int clientId)
         {

@@ -237,8 +237,8 @@ namespace InfoWeb.Presentation.Controllers
             return totalHoursAssigned;
         }
 
-        [HttpGet("search/{searchValue}")]
-        public IEnumerable<Project> searchProject([FromRoute]string searchValue)
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<Project> searchProject([FromRoute]string searchValue = "")
         {
             return projectRepository.SearchProject(searchValue);
 

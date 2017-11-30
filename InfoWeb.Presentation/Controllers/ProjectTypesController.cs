@@ -28,6 +28,12 @@ namespace InfoWeb.Presentation.Controllers
             return projectTypesRepository.GetAll();
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<ProjectType> getSearchProjectTypes([FromRoute]string searchValue = "")
+        {
+            return projectTypesRepository.GetSearchProjectTypes(searchValue);
+        }
+
         [HttpGet("{projectTypeId}")]
         public ProjectType GetProjectType([FromRoute] int projectTypeId)
         {

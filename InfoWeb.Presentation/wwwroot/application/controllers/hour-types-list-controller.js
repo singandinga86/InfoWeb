@@ -3,35 +3,41 @@
 app.controller("HourTypesController", ['$scope', '$state', '$uibModal', 'HourTypeService', '$filter', 'NgTableParams','ngToast',
     function ($scope, $state, $uibModal, HourTypeService, $filter, NgTableParams, ngToast) {
 
-    $scope.model = {};
-    $scope.search = { term: '' };
-    var orderedData = [];
+
 
     var fillTable = function ()
     {
-        HourTypeService.getHourTypes().then(function (response) {
+        $scope.model = {};
+        $scope.search = "";
+        var orderedData = [];
+       // HourTypeService.getHourTypes().then(function (response) {
             $scope.model.tableParams = new NgTableParams({
                 page: 1,
-                count: 6,
-                filter: $scope.search
+                count: 10,
+                sorting: {
+                    name: 'asc'
+                }
+               // filter: $scope.search
             }, {
-                    total: response.data.length,
+                    //total: response.data.length,
                     getData: function (params) {
 
-                        if (params.filter().term) {
-                            orderedData = params.filter() ? $filter('filter')(response.data, params.filter().term) : response.data;
-                        } else {
-                            orderedData = response.data;
-                        }
+                        return HourTypeService.getSearchHourType($scope.search).then(function (response) {
+                            orderedData = $filter('orderBy')(response.data, params.orderBy());
 
-                        //$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            params.total(orderedData.length);
+                            return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        }, function (error) {
 
-                        params.total(orderedData.length);
-                        return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        });
                     }
                 }
             );
-        }, function (error) { });
+            $scope.$watch("search", function () {
+                console.log('asd');
+                $scope.model.tableParams.reload();
+
+            });       
     }
 
     fillTable();

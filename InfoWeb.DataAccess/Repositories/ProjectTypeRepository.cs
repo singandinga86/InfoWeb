@@ -25,6 +25,14 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.ToList();
         }
 
+        public IEnumerable<ProjectType> GetSearchProjectTypes(string searchValue, int skip = 0, int take = 0)
+        {
+            var query = context.ProjectTypes
+                         .Where(pt => pt.Name.Contains(searchValue) || searchValue == "");
+
+            return base.GetRange(query, skip, take);
+        }
+
         public override ProjectType GetById(int id)
         {
             return entitySet.Where(pt => pt.Id == id).FirstOrDefault();

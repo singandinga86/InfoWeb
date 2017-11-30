@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
                                              INomenclatorRepository<int>
     {
         IQueryable<ProjectType> ProjectTypes { get; }
+        IEnumerable<ProjectType> GetSearchProjectTypes(string searchValue, int skip = 0, int take = 0);
     }
 }

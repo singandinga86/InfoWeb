@@ -16,6 +16,13 @@ app.factory("HourTypeService", ['$http','UrlService', function ($http, UrlServic
                 url: url
             });
         },
+        getSearchHourType: function (searchValue) {
+            var url = UrlService.getApiUrlPrefix() + 'HourTypes/search/' + searchValue;
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         create: function (hourType)
         {
             var url = UrlService.getApiUrlPrefix() + 'HourTypes';

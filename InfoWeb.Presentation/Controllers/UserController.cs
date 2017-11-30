@@ -53,6 +53,12 @@ namespace InfoWeb.Presentation.Controllers
             return result;
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<User> GetSearchUser([FromRoute]string searchValue = "")
+        {
+            return userRepository.getUserSearch(searchValue);
+        }
+
 
         [HttpGet("listAdmin")]
         public IEnumerable<User> ListAdmin()

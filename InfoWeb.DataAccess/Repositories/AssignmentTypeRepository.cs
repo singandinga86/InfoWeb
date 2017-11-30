@@ -25,6 +25,15 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.ToList();
         }
 
+        public IEnumerable<AssignmentType> GetSearchAssignmentType(string searchValue,int skip = 0, int take = 0)
+        {
+            var query = context.AssignmentTypes
+                         .Where(at => at.Name.Contains(searchValue) || searchValue == "");
+
+            return base.GetRange(query, skip, take);
+
+        }
+
         public override AssignmentType GetById(int id)
         {
             return entitySet.Where(a => a.Id == id).FirstOrDefault();

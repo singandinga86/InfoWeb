@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
                                           INomenclatorRepository<int>
     {
         IQueryable<HourType> HourTypes { get; }
+        IEnumerable<HourType> GetHourTypeSearch(string searchValue, int skip = 0, int take = 0);
     }
 }

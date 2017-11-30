@@ -20,6 +20,14 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.ToList();
         }
 
+        public IEnumerable<Role> GetSearchRole(string searchValue, int skip =0, int take = 0)
+        {
+            var query = context.Roles
+                        .Where(r => r.Name.Contains(searchValue) || searchValue == "");
+
+            return base.GetRange(query,skip,take);
+        }
+
         public override Role GetById(int id)
         {
             return entitySet.Where(r => r.Id == id).FirstOrDefault();

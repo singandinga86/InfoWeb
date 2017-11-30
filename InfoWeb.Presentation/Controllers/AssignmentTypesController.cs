@@ -29,6 +29,12 @@ namespace InfoWeb.Presentation.Controllers
             return assignmentTypeRepository.GetAll();
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<AssignmentType> getSearchAssignmentType([FromRoute]string searchValue = "")
+        {
+            return assignmentTypeRepository.GetSearchAssignmentType(searchValue);
+        }
+
         [HttpGet("{assignmentTypeId}")]
         public AssignmentType GetHourType([FromRoute] int assignmentTypeId)
         {

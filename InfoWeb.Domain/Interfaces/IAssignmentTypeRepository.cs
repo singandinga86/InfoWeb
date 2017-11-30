@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
                                                 INomenclatorRepository<int>
     {
         IQueryable<AssignmentType> AssignmentTypes { get; }
+        IEnumerable<AssignmentType> GetSearchAssignmentType(string searchValue, int skip = 0, int take = 0);
     }
 }

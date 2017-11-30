@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
         IQueryable<User> Users { get; }
         IEnumerable<User> getUsersByRoleName(string roleName, int skip = 0, int take = 0);
         IEnumerable<User> getUsersByRoleName(IEnumerable<string> roles, int skip = 0, int take = 0);
+        IEnumerable<User> getUserSearch(string searchValue, int skip = 0, int take = 0);
     }
 }

@@ -27,6 +27,12 @@ namespace InfoWeb.Presentation.Controllers
             return roleRepository.GetAll();
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<Role> getSearchRole([FromRoute]string searchValue = "")
+        {
+            return roleRepository.GetSearchRole(searchValue);
+        }
+
         [HttpGet("{roleId}")]
         public Role GetRole(int roleId)
         {

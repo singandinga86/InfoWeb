@@ -27,6 +27,12 @@ namespace InfoWeb.Presentation.Controllers
             return hourTypeRepository.GetAll();
         }
 
+        [HttpGet("search/{searchValue?}")]
+        public IEnumerable<HourType> getSearchHourType([FromRoute]string searchValue = "")
+        {
+            return hourTypeRepository.GetHourTypeSearch(searchValue);
+        }
+
         [HttpGet("{hourTypeId}")]
         public HourType GetHourType([FromRoute] int hourTypeId)
         {

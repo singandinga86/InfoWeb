@@ -181,7 +181,7 @@ td span{
     cursor:pointer
 }
 #rolTable th:last-child span {
-    float: right;
+    /*float: right;*/
     margin-right: 10px;
 }
 /* enable absolute positioning */

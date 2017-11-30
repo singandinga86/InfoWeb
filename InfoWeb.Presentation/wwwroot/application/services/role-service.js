@@ -9,6 +9,12 @@ app.factory("RoleService", ["$http", "UrlService", function ($http, UrlService) 
                 url: UrlService.getApiUrlPrefix() + "roles"
             });
         },
+        getSearchRoles: function (searchValue) {
+            return $http({
+                method: 'GET',
+                url: UrlService.getApiUrlPrefix() + "roles/search/" + searchValue
+            });
+        },
         getRole: function (id) {
             return $http({
                 method: 'GET',

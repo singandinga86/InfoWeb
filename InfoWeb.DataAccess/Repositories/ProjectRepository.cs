@@ -24,6 +24,7 @@ namespace InfoWeb.DataAccess.Repositories
                   .Include(p => p.ProjectsHoursTypes)
                   .Include(p => p.Client)
                   .Include(p => p.Type)
+                  .OrderBy(p => p.Name)
                   .ToList();
         }
 
@@ -60,7 +61,8 @@ namespace InfoWeb.DataAccess.Repositories
                         where a.Assignator.Id == userId
                         select p).Include(p => p.Client)
                         .Include(p => p.ProjectsHoursTypes)
-                        .Include(p => p.Type).AsNoTracking().Distinct();
+                        .Include(p => p.Type)
+                        .AsNoTracking().Distinct();
             return base.GetRange(query, skip, take);
                         
         }
@@ -75,7 +77,8 @@ namespace InfoWeb.DataAccess.Repositories
                          .Include(p => p.Client)
                          .Include(p => p.ProjectsHoursTypes)
                          .Include(p => p.Type)
-                         .GroupBy(p => p)
+                         .OrderBy(p => p.Name)
+                         .GroupBy(p => p)                        
                          .Select(p => p.First());
             return base.GetRange(query, skip, take);
         }
@@ -93,7 +96,10 @@ namespace InfoWeb.DataAccess.Repositories
 
         public IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0)
         {
-            var query = context.Projects.Where(p => p.Name.Contains(search));
+            var query = context.Projects.
+                Where(p => p.Name.Contains(search) || p.Client.Name.Contains(search) || p.Type.Name.Contains(search) || search == "")
+                .Include(p => p.Client)
+                .Include(p => p.Type);
 
             return base.GetRange(query, skip, take);
         }

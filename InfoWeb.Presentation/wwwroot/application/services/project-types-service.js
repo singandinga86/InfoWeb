@@ -9,6 +9,13 @@ app.factory("ProjectTypesService", ['$http', 'UrlService', function ($http, UrlS
                 url: url
             });
         },
+        getSearchProjectTypes: function (searchValue) {
+            var url = UrlService.getApiUrlPrefix() + 'ProjectTypes/search/' + searchValue;
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         getProjectType: function (id) {
             var url = UrlService.getApiUrlPrefix() + 'ProjectTypes/' + id;
             return $http({

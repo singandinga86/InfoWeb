@@ -11,5 +11,6 @@ namespace InfoWeb.Domain.Interfaces
                                         INomenclatorRepository<int>
     {
         IQueryable<Client> Clients { get; }
+        IEnumerable<Client> GetClientSearch(string searchValue, int skip = 0, int take = 0);
     }
 }

@@ -27,6 +27,14 @@ namespace InfoWeb.DataAccess.Repositories
             return entitySet.ToList();
         }
 
+        public IEnumerable<Client> GetClientSearch(string searchValue,int skip = 0, int take = 0)
+        {
+            var query = context.Clients
+                        .Where(c => c.Name.Contains(searchValue) || searchValue == "");
+
+            return base.GetRange(query,skip,take);
+        }
+
         public override Client GetById(int id)
         {
             return entitySet.Where(c => c.Id == id).FirstOrDefault();

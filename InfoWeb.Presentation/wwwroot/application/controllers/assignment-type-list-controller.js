@@ -3,35 +3,42 @@
 app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal', 'AssignmentTypeService', '$filter', 'NgTableParams','ngToast',
     function ($scope, $state, $uibModal, AssignmentTypeService, $filter, NgTableParams, ngToast) {
 
-    $scope.model = {};
-    $scope.search = { term: '' };
-    var orderedData = [];
 
 
-    var fillTable = function () {
-        AssignmentTypeService.getAssignmentTypes().then(function (response) {
+        var fillTable = function () {
+
+            $scope.model = {};
+            $scope.search = "";
+            var orderedData = [];
+        //AssignmentTypeService.getAssignmentTypes().then(function (response) {
             $scope.model.tableParams = new NgTableParams({
                 page: 1,
-                count: 6,
-                filter: $scope.search
+                count: 10,
+                sorting: {
+                    name: 'asc'
+                }
+                //filter: $scope.search
             }, {
-                    total: response.data.length,
+                   // total: response.data.length,
                     getData: function (params) {
 
-                        if (params.filter().term) {
-                            orderedData = params.filter() ? $filter('filter')(response.data, params.filter().term) : response.data;
-                        } else {
-                            orderedData = response.data;
-                        }
+                        return AssignmentTypeService.getSearchAssignmentTypes($scope.search).then(function (response) {
+                            orderedData = $filter('orderBy')(response.data, params.orderBy());
 
-                        //$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            params.total(orderedData.length);
+                            return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        }, function (error) {
 
-                        params.total(orderedData.length);
-                        return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        });
                     }
                 }
             );
-        }, function (error) { });
+       // }, function (error) { });
+            $scope.$watch("search", function () {
+
+                $scope.model.tableParams.reload();
+
+            });
     }
 
     fillTable();

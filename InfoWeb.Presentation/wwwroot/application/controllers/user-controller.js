@@ -48,41 +48,46 @@ app.controller("UserListController", ['$scope', '$filter', '$state', '$uibModal'
     }
 
     var fillTable = function () {
-        UserListService.getUser().then(function (response) {
+       // UserListService.getUser().then(function (response) {
 
             $scope.model = {};
-            $scope.search = { term: '' };
+            $scope.search = "";
             var orderedData = [];
             //$scope.model.tableParams = new NgTableParams({}, { dataset: response.data });
             $scope.model.tableParams = new NgTableParams({
                 page: 1,
-                count: 6,
-
-                filter: $scope.search
+                count: 10,
+                sorting: {
+                    name: 'asc'
+                }
+                //filter: $scope.search
             },
                 {
-                    total: response.data.length,
+                   // total: response.data.length,
                     getData: function (params) {
 
-                        if (params.filter().term) {
-                            orderedData = params.filter() ? $filter('filter')(response.data, params.filter().term) : response.data;
-                        } else {
-                            orderedData = response.data;
-                        }
+                        return UserListService.getSearchUser($scope.search).then(function (respuesta) {
+                            orderedData = $filter('orderBy')(respuesta.data, params.orderBy());
 
-                        //$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            params.total(orderedData.length);
+                            return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        }, function (error) {
 
-                        params.total(orderedData.length);
-                        return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        });
                     }
                 }
             );
+            $scope.$watch("search", function () {
 
-        },
-            function (error) {
-
+                $scope.model.tableParams.reload();
 
             });
+
+        //},
+        //    function (error) {
+
+
+        //    });
     }
 
     fillTable();

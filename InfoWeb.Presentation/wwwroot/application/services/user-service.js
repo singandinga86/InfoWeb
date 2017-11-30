@@ -10,6 +10,14 @@ module.factory("UserListService", ['$http', '$q', 'UrlService', function ($http,
                 url: url
             });
         },
+        getSearchUser: function (searchValue) {
+            var url = UrlService.getApiUrlPrefix() + "User/search/" + searchValue;
+
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         getUserById: function (id)
         {
             var url = UrlService.getApiUrlPrefix() + "User/" + id;

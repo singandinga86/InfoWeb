@@ -9,6 +9,13 @@ app.factory("ClientService", ['$http', 'UrlService', function ($http, UrlService
                 url: url
             });
         },
+        getSearchCliente: function (searchValue) {
+            var url = UrlService.getApiUrlPrefix() + 'Client/search/' + searchValue;
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         getClient: function (id) {
             var url = UrlService.getApiUrlPrefix() + 'Client/' + id;
             return $http({

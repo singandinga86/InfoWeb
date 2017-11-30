@@ -9,37 +9,42 @@
             </div>
             <div id="search" class="pull-right">
                 <div class="inner-addon left-addon">
-                    <input class="form-control" placeholder="Buscar..." ng-model="search.term" ng-click="model.tableParams.sorting({})"/>
+                    <input type="text" class="form-control" placeholder="Buscar..." ng-model="search" />
                     <i class="glyphicon glyphicon-search"></i>
                 </div>
             </div>
             <div id="tableList">
                 <table ng-table="model.tableParams" class="table table-hover">
-                    <thead>
+                    <!--<thead>
                         <tr>
                             <td><b>Nombre</b></td>
                             <td><b>Cliente</b></td>
                             <td><b>Tipo de Proyecto</b></td>
                             <td><b>Opciones</b></td>
                         </tr>
-                    </thead>
+                    </thead>-->
                     <tbody>
                         <tr ng-repeat="project in $data">
-                            <td>
+                            <td title="'Nombre'" sortable="'name'">
                                 {{project.name}}
                             </td>
-                            <td title="'Cliente'">
+                            <td title="'Cliente'" sortable="'client.name'">
                                 {{project.client.name}}
                             </td>
-                            <td title="'Tipo'">
+                            <td title="'Tipo'" sortable="'type.name'">
                                 {{project.type.name}}
                             </td>
-                            <td>
+                            <td title="'Opciones'">
                                 <span class="glyphicon glyphicon-list" ng-click="viewDetails(project.id)" title="Ver"></span>
                                 <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(project.id)" ng-show="currentUser.role.name == 'ADMIN'"></span>
                                 <span ng-if="currentUser.role.name == 'ADMIN'" class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project)" title="Eliminar"></span>
                                 <span class="glyphicon glyphicon-search" ng-click="onViewHoursClicked(project)" title="Ver horas"></span>
                             </td>
+                        </tr>
+                        <tr ng-if="$data.length == 0"> 
+                            <td colspan ="4">
+                                <span>No hay datos para mostrar</span>
+                            </td>                           
                         </tr>
                     </tbody>
                 </table>

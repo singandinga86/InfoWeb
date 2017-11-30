@@ -9,6 +9,13 @@ app.factory("AssignmentTypeService", ['$http', 'UrlService', function ($http, Ur
                 url: url
             });
         },
+        getSearchAssignmentTypes: function (searchValue) {
+            var url = UrlService.getApiUrlPrefix() + 'AssignmentTypes/search/' + searchValue;
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         getAssignmentType: function (id) {
             var url = UrlService.getApiUrlPrefix() + 'AssignmentTypes/' + id;
             return $http({
