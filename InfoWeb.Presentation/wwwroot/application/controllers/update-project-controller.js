@@ -44,7 +44,7 @@ app.controller("UpdateProjectController", ['$q', '$scope', '$state', '$statePara
             $state.go("projectList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El proyecto fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

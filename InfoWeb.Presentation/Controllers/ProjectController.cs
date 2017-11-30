@@ -34,6 +34,16 @@ namespace InfoWeb.Presentation.Controllers
             this.unitOfwork = unitOfwork;
         }
 
+        [HttpGet("canBeRemoved/{id}")]
+        public IActionResult CanBeRemoved(int id)
+        {
+            bool result = projectRepository.CanItemBeRemoved(id);
+            if(result == false)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
         [HttpGet]
         public IActionResult GetProjectsForUser([FromRoute]int userId)
         {
@@ -138,7 +148,7 @@ namespace InfoWeb.Presentation.Controllers
                 }
                 else
                 {
-                    return BadRequest(new ValidationResult("No se puede elimiar el proyecto. Tiene asignaciones asociadas a él."));
+                    return BadRequest(new ValidationResult("No se puede elimiar el proyecto <strong>"+ project.Name + "</strong>. Tiene asignaciones asociadas a él."));
                 }                
             }
             else
@@ -208,8 +218,11 @@ namespace InfoWeb.Presentation.Controllers
                                 .Sum(a => a.Hours);
 
             //contar horas asignadas a grupos de desarrolladores
-            IEnumerable<int> projectsAssignedGroup = queryModel.Assignments
-                                        .Where(a => a.ProjectId == idProject && a.AssignmentType.Name == "Asignar a grupo" && a.HourTypeId == idHourtype).Select(a => a.ProjectId).Distinct().ToList();
+            /*IEnumerable<int> projectsAssignedGroup = queryModel.Assignments
+                                        .Where(a => a.ProjectId == idProject
+                                        && a.AssignmentType.Name == "Asignar a grupo" 
+                                        && a.HourTypeId == idHourtype)
+                                        .Select(a => a.ProjectId).Distinct().ToList();
             if(projectsAssignedGroup.Count<int>() > 0)
             {
                 projectsAssignedGroup.ToList().ForEach(p =>
@@ -232,7 +245,19 @@ namespace InfoWeb.Presentation.Controllers
                 if (assigmentParent != null)
                     totalHoursAssigned += l.Hours;
                                         
-            });
+            });*/
+
+            var groupAssignmentsMadeWithSameHourType = queryModel.Assignments
+                                            .Where(a => a.ProjectId == idProject && a.AssignmentType.Name == "Asignar a grupo" 
+                                            && a.HourTypeId == idHourtype && a.Assignator.Role.Name == "OM")
+                                            
+                                            
+                                            .ToList();
+            var groupAssignmentHourCount = groupAssignmentsMadeWithSameHourType
+                             .Distinct(new AssignmentByDateComparer()).Sum(a => a.Hours);
+           
+
+            totalHoursAssigned += groupAssignmentHourCount;
 
             return totalHoursAssigned;
         }
@@ -452,24 +477,25 @@ namespace InfoWeb.Presentation.Controllers
                     var firstAssignment = queryModel.Assignments.Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId).FirstOrDefault();
                     if(firstAssignment != null)
                     {
-                        result.Messages.Add("El tipo de hora " + pht.HourType.Name + " no puede ser eliminado.");
+                        result.Messages.Add("El tipo de hora <strong>" + pht.HourType.Name + "</strong> no puede ser eliminado.");
                     }
                 }
                 else
                 {
                     /*var targetHourTypeAssignmentCount = queryModel.Assignments
                                                    .Where(a => a.ProjectId == project.Id && a.HourTypeId == pht.HourTypeId)
-                                                   .Count();
+                                                   .Sum(a => a.Hours);*/
+                    var targetHourTypeAssignmentCount = this.GetTotalHoursAssigned(pht.HourTypeId, project.Id);
 
-                    if (targetHourTypeAssignmentCount > pht.Hours)
+                    if (targetHourTypeAssignmentCount > targetHourType.Hours)
                     {
-                        result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
-                    }*/
-                    if (targetHourType.Hours < pht.Hours)
+                        result.Messages.Add("La cantidad de horas para <strong>" + pht.HourType.Name + "</strong> es menor que el total consumido.");
+                    }
+                    /*if (targetHourType.Hours < pht.Hours)
                     {
                         //result.Messages.Add("La cantidad de horas para " + pht.HourType.Name + "es menor que el total consumido");
                         result.Messages.Add("La cantidad de horas especificada para " + pht.HourType.Name + " es menor que la actual.");
-                    }
+                    }*/
                 }
             }
 
@@ -484,7 +510,7 @@ namespace InfoWeb.Presentation.Controllers
             {
                 if(projectHourTypeRepository.CanItemBeRemoved(item.Id,item.ProjectId) == false)
                 {
-                    result.Messages.Add("El tipo de hora " + item.HourType.Name + " no puede ser eliminado porque tiene asigmaciones asociadas a él.");
+                    result.Messages.Add("El tipo de hora <strong>" + item.HourType.Name + "</strong> no puede ser eliminado porque tiene asigmaciones asociadas a él.");
                     return result;
                 }
             }

@@ -11,8 +11,9 @@ app.controller("CreateAssignmentTypeController", ["$scope", '$state', "Assignmen
             $state.go("assignmentTypeList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El tipo de asignación fue creado satisfactoriamente.'
+                content: response.data
             });
+            
         }, function (error) {
             ngToast.create({
                 className: "danger",

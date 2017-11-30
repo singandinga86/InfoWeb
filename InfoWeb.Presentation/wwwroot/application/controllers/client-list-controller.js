@@ -67,7 +67,7 @@ app.controller("ClientController", ['$scope', '$state', '$uibModal', 'ClientServ
                     $state.go("clientList");
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El cliente fue eliminado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

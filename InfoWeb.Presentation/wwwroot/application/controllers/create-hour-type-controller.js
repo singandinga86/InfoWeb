@@ -10,7 +10,7 @@ app.controller("CreateHourTypeController", ["$scope", '$state', "HourTypeService
             $state.go("hourTypeList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El tipo de hora fue creado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

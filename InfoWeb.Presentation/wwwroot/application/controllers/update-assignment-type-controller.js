@@ -18,7 +18,7 @@ app.controller("UpdateAssignmentTypeController", ['$scope', '$state', '$statePar
             $state.go("assignmentTypeList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El tipo de asignación fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

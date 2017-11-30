@@ -69,7 +69,7 @@ app.controller("AssignmentTypeListController", ['$scope', '$state', '$uibModal',
                     fillTable();
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El tipo de asignación fue eliminado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

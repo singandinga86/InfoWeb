@@ -51,7 +51,7 @@ namespace InfoWeb.Presentation.Controllers
                     try
                     {
                         unitOfwork.Commit();
-                        return Ok();
+                        return Ok("Cliente <strong>" + client.Name + "</strong> creado correctamente.");
                     }
                     catch (Exception e)
                     {
@@ -83,7 +83,7 @@ namespace InfoWeb.Presentation.Controllers
                         try
                         {
                             unitOfwork.Commit();
-                            return Ok("Cliente <strong>" + targetClient.Name + "</strong> actualizado satisfactoriamente");
+                            return Ok("Cliente <strong>" + client.Name + "</strong> actualizado correctamente.");
                         }
                         catch (Exception e)
                         {
@@ -133,7 +133,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Cliente no encontrado."));
             }
 
-            return Ok("Cliente <strong>" + target.Name + "</strong> eliminado satisfactoriamente");
+            return Ok("Cliente <strong>" + target.Name + "</strong> eliminado correctamente.");
         }
 
         private bool isClientNameTaken(string name, int id)

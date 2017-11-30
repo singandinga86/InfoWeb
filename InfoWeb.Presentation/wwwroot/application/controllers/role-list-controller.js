@@ -71,7 +71,7 @@ app.controller("RoleListController", ['$scope', '$state', '$filter', '$uibModal'
                     fillTable();
                     ngToast.create({
                         dismissButton: true,
-                        content: 'El rol fue eliminado satisfactoriamente.'
+                        content: response.data
                     });
                 }, function (error) {
                     ngToast.create({

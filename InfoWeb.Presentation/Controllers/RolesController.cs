@@ -107,16 +107,29 @@ namespace InfoWeb.Presentation.Controllers
             if(id > 0)
             {
                 Role targetRole = roleRepository.GetById(id);
-                roleRepository.Remove(targetRole);
 
-                try {
-                    unitOfWork.Commit();
-                    return Ok("Rol <strong>" + targetRole.Name + "</strong> eliminado correctamente.");
-                }
-                catch(Exception e)
+                if (targetRole != null)
                 {
-                    return BadRequest(new ValidationResult("Error interno del servidor."));
+                    if (roleRepository.CanItemBeRemoved(id))
+                    {
+                        roleRepository.Remove(targetRole);
+
+                        try
+                        {
+                            unitOfWork.Commit();
+                            return Ok("Rol <strong>" + targetRole.Name + "</strong> eliminado correctamente.");
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest(new ValidationResult("Error interno del servidor."));
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new ValidationResult("El usuario <strong>" + targetRole.Name + "</strong> no puede ser eliminado. Tiene usuarios asociadas a él."));
+                    }
                 }
+
             }
     
             return BadRequest(new ValidationResult("Error en los datos de entrada."));

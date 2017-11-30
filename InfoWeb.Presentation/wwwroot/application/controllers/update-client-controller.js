@@ -17,7 +17,7 @@ app.controller("UpdateClientController", ['$scope', '$state', '$stateParams', 'C
             $state.go("clientList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El cliente fue actualizado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({
