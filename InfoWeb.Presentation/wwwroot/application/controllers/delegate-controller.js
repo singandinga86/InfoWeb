@@ -62,7 +62,7 @@ app.controller("ProjectDelegateController",
             $state.go("projectList");
             ngToast.create({
                 dismissButton: true,
-                content: 'El proyecto fue delegado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             //console.log(error);

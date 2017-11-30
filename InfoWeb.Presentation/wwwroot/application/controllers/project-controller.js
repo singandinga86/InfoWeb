@@ -71,37 +71,55 @@ app.controller("ProjectController", ['$scope', '$uibModal', 'ProjectService', 'A
         };
 
         $scope.onRemoveClicked = function (project) {
-            var dialog = $uibModal.open({
-                animation: true,
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                templateUrl: 'application/views/project/remove-modal.html',
-                controller: "RemoveProjetcDialogController",
-                resolve: {
-                    targetProject: function () { return project; }
-                }
-            });
 
-            dialog.result.then(function (result) {
-                if (result == true) {
-                    ProjectService.removeProject($scope.currentUser.id,project.id).then(function (response) {
-                        fillTable();
-                        ngToast.create({
-                            dismissButton: true,
-                            content: response.data
-                        });
-                    }, function (error) {
-                        ngToast.create({
-                            className: "danger",
-                            dismissButton: true,
-                            content: error.data.messages[0]
-                        });
+            ProjectService.canBeRemoved(project.id, $scope.currentUser.id).then(function (response) {
+                var dialog = $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'application/views/project/remove-modal.html',
+                    controller: "RemoveProjetcDialogController",
+                    resolve: {
+                        targetProject: function () { return project; }
+                    }
+                });
+
+                dialog.result.then(function (result) {
+                    if (result == true) {
+                        ProjectService.removeProject($scope.currentUser.id, project.id).then(function (response) {
+                            fillTable();
+                            ngToast.create({
+                                dismissButton: true,
+                                content: response.data
+                            });
+                        }, function (error) {
+                            ngToast.create({
+                                className: "danger",
+                                dismissButton: true,
+                                content: error.data.messages[0]
+                            });
                         });
 
-                }
+                    }
+                }, function (error) {
+
+                });
             }, function (error) {
-               
-            });
+                var dialog = $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'application/views/project/remove-error.html',
+                    controller: "RemoveProjetcErrorDialogController",
+                    resolve: {
+                        targetProject: function () { return project; }
+                    }
+                }).result.catch(function (res) {
+                    if (!(res === 'cancel' || res === 'escape key press')) {
+                        throw res;
+                    }
+                });
+                });          
 
 
         }

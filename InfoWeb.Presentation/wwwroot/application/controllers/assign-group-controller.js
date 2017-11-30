@@ -68,7 +68,7 @@ app.controller("GroupAssignmentController", ['$scope', '$state', 'ProjectService
                 $scope.userDuplicate = false;
                 ngToast.create({
                     dismissButton: true,
-                    content: 'El proyecto fue asignado al grupo satisfactoriamente.'
+                    content: response.data
                 });
             }, function (error) {
                 ngToast.create({

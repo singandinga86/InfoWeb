@@ -2,17 +2,15 @@
 
 app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService) {
     return {
-        getProjectDetails: function (userId, projectId)
-        {
+        getProjectDetails: function (userId, projectId) {
             return $http({
                 method: 'GET',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId + "/details"
             });
         },
-        getProjectsForUser: function (userId)
-        {
+        getProjectsForUser: function (userId) {
             return $http({
-                method: 'GET', 
+                method: 'GET',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/"
             });
         },
@@ -22,21 +20,19 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/getUnassignedProjects"
             });
         },
-        removeProject: function (userId, projectId)
-        {
+        removeProject: function (userId, projectId) {
             return $http({
                 method: 'DELETE',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId
             });
         },
-        searchProjects: function (userId, searchValue)
-        {
+        searchProjects: function (userId, searchValue) {
             return $http({
                 mehtod: 'GET',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/search/" + searchValue
             });
         },
-        create: function (userId,project) {
+        create: function (userId, project) {
             var url = UrlService.getApiUrlPrefix() + userId + '/projects';
             return $http({
                 method: 'POST',
@@ -44,7 +40,7 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 data: project
             });
         },
-        update: function (userId,project) {
+        update: function (userId, project) {
             var url = UrlService.getApiUrlPrefix() + userId + '/projects';
             return $http({
                 method: 'PUT',
@@ -57,6 +53,14 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 method: 'GET',
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId + "/getProject"
             });
+        },
+        canBeRemoved: function (projectId, userId)
+        {
+            return $http({
+                method: 'GET',
+                url: UrlService.getApiUrlPrefix() + userId + "/projects/canBeRemoved/" + projectId
+            });
         }
+
     }
 }]);

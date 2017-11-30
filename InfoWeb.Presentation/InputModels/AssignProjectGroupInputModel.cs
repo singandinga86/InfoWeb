@@ -12,5 +12,6 @@ namespace InfoWeb.Presentation.InputModels
         public HourType hourType { get; set; }
         public User user { get; set; }
         public List<User> usersSelected { get; set; }
+        public int Hours { get; set; }
     }
 }

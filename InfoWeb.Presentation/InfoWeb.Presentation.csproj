@@ -33,10 +33,12 @@
     <Content Include="wwwroot\application\controllers\remove-assignment-type-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-client-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-hour-type-modal-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-project-error-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-project-types-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-role-modal-controller.js" />
     <Content Include="wwwroot\application\controllers\remove-user-dialog-controller.js" />
+    <Content Include="wwwroot\application\controllers\remove-projetc-error-dialog-controller.js" />
     <Content Include="wwwroot\application\controllers\role-list-controller.js" />
     <Content Include="wwwroot\application\controllers\update-assignment-type-controller.js" />
     <Content Include="wwwroot\application\controllers\update-client-controller.js" />
@@ -85,6 +87,7 @@
     <Content Include="wwwroot\application\views\project\details-modal.html" />
     <Content Include="wwwroot\application\views\project\list.html" />
     <Content Include="wwwroot\application\views\project\details.html" />
+    <Content Include="wwwroot\application\views\project\remove-error.html" />
     <Content Include="wwwroot\application\views\role\list.html" />
     <Content Include="wwwroot\application\views\role\remove-modal.html" />
     <Content Include="wwwroot\application\views\role\role-input.html" />
