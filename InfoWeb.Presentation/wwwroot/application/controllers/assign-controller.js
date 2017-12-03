@@ -27,7 +27,7 @@ app.controller("ProjectAssignController", ['$scope', '$state', 'ProjectService',
             $state.go('projectList');
             ngToast.create({
                 dismissButton: true,
-                content: 'El proyecto fue asignado satisfactoriamente.'
+                content: response.data
             });
         }, function (error) {
             ngToast.create({

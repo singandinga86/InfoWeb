@@ -18,7 +18,7 @@ namespace InfoWeb.DataAccess.Repositories
 
         public bool CanItemBeRemoved(int id)
         {
-            return context.Assignments.Where(a => a.Project.ClientId == id).FirstOrDefault() == null;
+            return context.Projects.Where(p => p.ClientId == id).FirstOrDefault() == null;
 
         }
 

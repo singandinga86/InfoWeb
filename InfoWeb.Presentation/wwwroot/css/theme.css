@@ -318,18 +318,21 @@ button#notification {
     height:50px
 }
 /*select,input, label style*/
-.panel-body select {
-    color: #999;
-}
+/*.panel-body select {
+    color: #444;
+}*/
 .panel-body label{
     color:#555;
 }
 .panel-body input {
-    color: #999;
+    color: #444;
 }
+/*option#optDefault {
+    color: #999 !important;
+}*/
 /*border control*/
-.form-control{
-    border-radius:0;
+.form-control {
+    border-radius: 0;
 }
 .modal-content{
     width:80%;

@@ -8,13 +8,13 @@ app.factory("ProjectService", ['$http', 'UrlService',function ($http, UrlService
                 url: UrlService.getApiUrlPrefix() + userId + "/projects/" + projectId + "/details"
             });
         },
-        getProjectsForUser: function (userId, searchValue)
+        getProjectsForUser: function (userId)
         {
             return $http({
                 method: 'GET',
-                url: UrlService.getApiUrlPrefix() + userId + "/projects/" + searchValue
+                url: UrlService.getApiUrlPrefix() + userId + "/projects/"
             });
-        },
+        },      
         getUnassignedProjects: function (userId) {
             return $http({
                 method: 'GET',

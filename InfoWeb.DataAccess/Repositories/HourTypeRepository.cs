@@ -18,7 +18,7 @@ namespace InfoWeb.DataAccess.Repositories
 
         public bool CanItemBeRemoved(int id)
         {
-            return context.Assignments.Where(a => a.HourTypeId == id).FirstOrDefault() == null;
+            return context.ProjectsHoursTypes.Where(pht => pht.HourTypeId == id).FirstOrDefault() == null;
         }
 
         public IEnumerable<HourType> GetAll()

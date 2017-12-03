@@ -265,12 +265,13 @@ namespace InfoWeb.Presentation.Controllers
         [HttpPost("project")]
         public IActionResult AssignProject([FromBody]AssignProjectInputModel model, [FromRoute]int userId)
         {
+            var assignee = userRepository.GetById(model.AssigneeId);
+            var assignator = userRepository.GetById(userId);
+            var assignmentType = assigmentTypeRepository.GetByName("Asignar proyecto");
+            var project = projectRepository.GetById(model.ProjectId);
+
             if (model != null)
-            {
-                var assignee = userRepository.GetById(model.AssigneeId);
-                var assignator = userRepository.GetById(userId);
-                var assignmentType = assigmentTypeRepository.GetByName("Asignar proyecto");
-                var project = projectRepository.GetById(model.ProjectId);
+            {            
 
                 if (assignee != null && assignator != null &&
                     assignee.Role.Name == "OM" && assignator.Role.Name == "ADMIN"
@@ -330,7 +331,7 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Error en los datos de entrada."));
             }
 
-            return Ok();
+            return Ok($"El proycto <strong>{project.Name}</strong> fue asignado correctamente.");
         }
 
         [HttpPost("projectGroup")]
