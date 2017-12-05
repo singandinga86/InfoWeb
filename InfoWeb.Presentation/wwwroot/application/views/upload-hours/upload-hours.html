@@ -1,0 +1,76 @@
+﻿<div class="container-fluid tableStyle">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span><b>{{title}}</b></span>
+        </div>
+        <div class="panel-body">
+            <form name="uploadHoursInput" novalidate ng-submit="uploadHours()">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="section row">
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Proyecto</label>
+                                    <select class="form-control" ng-model="model.project" ng-options="project.name for project in projects"
+                                            required name="projectName" ng-change="onChangedProject()">
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Tipos de horas</label>
+                                    <select class="form-control" ng-model="model.hourType" ng-options="hourType.name for hourType in hourTypes"
+                                            required name="hourTypeName" ng-disabled="!model.project">
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Fecha y hora de inicio</label>
+                                    <adm-dtp ng-model='model.dateStart' ng-required="true"></adm-dtp>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Fecha y hora de fin</label>
+                                    <adm-dtp ng-model='model.dateEnd' ng-required="true"></adm-dtp>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Horas a subir</label>
+                                    <input class="form-control" type="text" readonly value="0"/>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="section row">
+                            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Descripción</label>
+                                    <textarea ng-model="model.description" placeholder="Descripción"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 pull-right">
+                        <button class="btn btn-primary btn-block btn-info" type="submit" ng-disabled="uploadHoursInput.$invalid">
+                            {{acceptButtonCaption}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

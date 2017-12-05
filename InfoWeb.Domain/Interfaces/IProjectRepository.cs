@@ -13,6 +13,6 @@ namespace InfoWeb.Domain.Interfaces
         IEnumerable<Project> GetProjectsAssignedTo(int userId, int skip = 0, int take = 0);
 
         IEnumerable<Project> GetUnassignedProjects(int skip = 0, int take = 0);
-        IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0);
+        //IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0);
     }
 }

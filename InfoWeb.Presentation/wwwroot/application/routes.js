@@ -193,6 +193,12 @@
         url: "/project/:projectId/update",
         authenticate: true
     }); 
+    $stateProvider.state('uploadHours', {
+        templateUrl: "application/views/upload-hours/upload-hours.html",
+        controller: 'UploadHoursController',
+        url: "/uploadHours",
+        authenticate: true
+    }); 
 
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",

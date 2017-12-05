@@ -51,14 +51,7 @@ namespace InfoWeb.Presentation.Controllers
             IEnumerable<Project> projects = null;
             if (user != null)
             {
-                if (user.Role.Name == "ADMIN")
-                {
-                    projects = projectRepository.GetAll();
-                }
-                else
-                {
-                    projects = projectRepository.GetProjectsAssignedTo(userId);
-                }
+                projects = ListProject(user, "");
                 foreach (var p in projects)
                 {
                     p.Client.Projects = null;
@@ -69,6 +62,22 @@ namespace InfoWeb.Presentation.Controllers
                 return BadRequest(new ValidationResult("Usuario no válido"));
             }
             return Ok(projects);
+        }
+
+        public IEnumerable<Project> ListProject(User user, string search)
+        {
+            IEnumerable<Project> projects = null;
+            if (user.Role.Name == "ADMIN")
+            {
+                projects = projectRepository.GetAll();
+            }
+            else
+            {
+               projects = projectRepository.GetProjectsAssignedTo(user.Id)
+                           .Where(p => p.Name.ToLower().Contains(search.ToLower()) || p.Client.Name.ToLower().Contains(search.ToLower()) || p.Type.Name.ToLower().Contains(search.ToLower()) || search == "");
+            }
+          
+            return projects;
         }
 
         [HttpGet("AssignedBy")]
@@ -263,9 +272,10 @@ namespace InfoWeb.Presentation.Controllers
         }
 
         [HttpGet("search/{searchValue?}")]
-        public IEnumerable<Project> searchProject([FromRoute]string searchValue = "")
+        public IEnumerable<Project> searchProject([FromRoute]int userId, [FromRoute]string searchValue = "")
         {
-            return projectRepository.SearchProject(searchValue);
+            var user = userRepository.GetById(userId);
+            return ListProject(user, searchValue);
 
         }
 

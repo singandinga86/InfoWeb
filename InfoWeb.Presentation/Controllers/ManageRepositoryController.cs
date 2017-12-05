@@ -56,11 +56,11 @@ namespace InfoWeb.Presentation.Controllers
             if (user.Role.Name == "TAM" || user.Role.Name == "PM")
             {
                 var assignments = assignmentRepository.Assignments
-                                  .Where(a => a.ProjectId == idProject && a.AssigneeId == userId && a.AssignmentType.Name == "Delegar proyecto" 
+                                  .Where(a => a.ProjectId == idProject && a.AssigneeId == userId && a.AssignmentType.Name == "Delegar proyecto"
                                   && a.HourTypeId != null)
                                   .ToList();
 
-                if(assignments.Count > 0)
+                if (assignments.Count > 0)
                 {
                     assignments.ForEach(a =>
                     {
@@ -76,20 +76,29 @@ namespace InfoWeb.Presentation.Controllers
                         hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
                     }
                 }
-              
+
             }
             else
             {
                 IEnumerable<ProjectsHoursTypes> result = projectHourTypeRepository.GetHourTypeByProject(idProject);
-               
+
                 foreach (var projectHourType in result)
                 {
                     hoursType.Add(hourTypeRepository.GetById(projectHourType.HourTypeId));
                 }
             }
 
-           
+
             return hoursType;
+        }
+
+        [HttpGet("hourTypeByAssignment/{idProject}/{userId}")]
+        public IEnumerable<HourType> GetHourTypeByAssignment([FromRoute]int idProject, [FromRoute]int userId)
+        {
+            var assignment = assignmentRepository.Assignments                              
+                              .Where(a => a.ProjectId == idProject && a.AssigneeId == userId).Select(a => a.HourType).Distinct();
+
+            return assignment;
         }
     }
 }

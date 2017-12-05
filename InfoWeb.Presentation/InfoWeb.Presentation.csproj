@@ -46,6 +46,7 @@
     <Content Include="wwwroot\application\controllers\update-project-types-controller.js" />
     <Content Include="wwwroot\application\controllers\update-role-controller.js" />
     <Content Include="wwwroot\application\controllers\update-user-controller.js" />
+    <Content Include="wwwroot\application\controllers\upload-hours-controller.js" />
     <Content Include="wwwroot\application\controllers\user-controller.js" />
     <Content Include="wwwroot\application\directives\hour-type\hour-type-directive.html" />
     <Content Include="wwwroot\application\directives\hour-type\hour-type-row-directive.html" />
@@ -91,6 +92,7 @@
     <Content Include="wwwroot\application\views\role\list.html" />
     <Content Include="wwwroot\application\views\role\remove-modal.html" />
     <Content Include="wwwroot\application\views\role\role-input.html" />
+    <Content Include="wwwroot\application\views\upload-hours\upload-hours.html" />
     <Content Include="wwwroot\application\views\user\htmlpage.html" />
     <Content Include="wwwroot\application\views\user\list.html" />
     <Content Include="wwwroot\css\theme.css" />

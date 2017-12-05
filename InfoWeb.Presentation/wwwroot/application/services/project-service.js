@@ -36,6 +36,14 @@ module.factory("AssignmentService", ['$http', '$q','UrlService', 'Authentication
                 url: url               
             });
         },
+        getHoursTypeByAssignment: function (idProject, userId) {
+            var url = UrlService.getApiUrlPrefix() + "manager/hourTypeByAssignment/" + idProject + "/" + userId;
+
+            return $http({
+                method: 'GET',
+                url: url
+            });
+        },
         createAssigment: function (assignment) {
             var userId = AuthenticationService.getCurrentUser().id;
             return $http({

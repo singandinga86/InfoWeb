@@ -12,7 +12,7 @@
 
     <!--<link rel="stylesheet" href="lib/bootstrap/less/bootstrap.less" />-->
     <!-- Bootstrap Material Design -->
-   <!-- <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">-->
+    <!-- <link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">-->
     <!--<link rel="stylesheet" href="lib/bootstrap-material-design/dist/css/ripples.css">-->
     <!--<link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.css">
     <link rel="stylesheet" href="lib/material/bootstrap-material-design/css/bootstrap-material-design.min.css">
@@ -29,285 +29,19 @@
     <link rel="stylesheet" href="lib/ng-table-bundle/ng-table.min.css" />
     <!--NgToast-->
     <link rel="stylesheet" href="lib/ng-toast/ngToast.min.css" />
+    <!--ADM-datetimepicker-->
+    <link rel="stylesheet" href="lib/adm-dateTimePicker/ADM-dateTimePicker.css" />
 
 
-    <!--JQuery Bootstrap-->
-    <script src="lib/jquery-3.1.1.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-
-
-
-    <!--JQuery Angular-->
-    <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="lib/angular-messages/angular-messages.js"></script>
-    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
-    <script src="lib/ng-table-bundle/ng-table.min.js"></script>
-
-    <!--JQuery NgToast-->
-    <script src="lib/ng-toast/angular-sanitize.js"></script>
-    <script src="lib/ng-toast/ngToast.min.js"></script>
-
-
-    <script src="application/routes.js"></script>
-    <script type="text/javascript">
-        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router', 'ngTable','ngToast']);
-        app.config(function ($stateProvider) {
-            configureRoutes($stateProvider);
-        });
-
-        app.run(function (/*$rootscope,*/$transitions, $state, AuthenticationService) {
-            $transitions.onStart({}, function (transition) {
-                var targetState = transition.to();
-                var user = AuthenticationService.getCurrentUser();
-
-                if (targetState.authenticate == true && (user == null || user == undefined)) {
-                    $state.go('login');
-                    return true;
-                }
-
-            });
-
-            /*$transitions.onSuccess({}, function (transition) {
-
-            });*/
-        });
-
-        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService', '$transitions',
-            function ($scope, $rootScope, $state, AuthenticationService, NotificationService, $transitions) {
-                $scope.currentUser = null;
-                $scope.open = true;
-                $scope.notifications = {};
-               
-                $scope.currentUser = AuthenticationService.getCurrentUser();
-
-                var populateNotifications = function (user) {
-                    if (user) {
-                        NotificationService.getNotifications(user.id).then(function (response) {
-                            var notifications = response.data;
-                            $scope.notifications = notifications;
-                        }, function (error) {
-                        });
-                    }
-                }
-
-                populateNotifications($scope.currentUser);
-
-                $transitions.onSuccess({}, function (transition) {
-                    //var state = transition.to();
-                    //var targetStateName = state.name;                   
-                    //console.log(transition.to());
-                    //console.log($state);                
-                    //$scope.currentStateName = transition.to().name;
-                });
-
-
-                $rootScope.$on("userAuthenticated", function (event, user) {
-                    $scope.currentUser = user;
-                    populateNotifications(user);
-                    $state.go('projectList');
-                });
-
-                $scope.logout = function () {
-                    AuthenticationService.logout();
-                    $scope.currentUser = null;
-                    $state.go('login');
-                    angular.element('li a').removeClass('activeMenu');
-                };
-
-                $scope.listUser = function ($event) {
-                    $event.stopPropagation();
-                    $state.go('userList');
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass(); 
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-                $scope.listProject = function ($event) {
-                    $event.stopPropagation();
-                    $state.go('projectList');
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                }
-                $scope.asignar = function ($event) {
-                    $event.stopPropagation();
-                    $state.go('assign');
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.delegate = function ($event) {
-                    $event.stopPropagation();
-                    $state.go('delegateProject');
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.listRoles = function ($event) {
-                    $event.stopPropagation();
-                    $state.go('roleList');
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.listHourTypes = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("hourTypeList");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.listClient = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("clientList");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.listProjectTypes = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("projectTypesList");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.assignHours = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("assignHoursToDeveloper");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.listAssignmentTypes = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("assignmentTypeList");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.assignProjectGroup = function ($event) {
-                    $event.stopPropagation();
-                    $state.go("assignProjectGroup");
-                    var currentMenu = $event.currentTarget;
-                    var parentMenu = angular.element(currentMenu).parent().parent();
-                    angular.element(parentMenu).find('.activeMenu').removeClass();
-                    angular.element(currentMenu).addClass("activeMenu");
-                };
-
-                $scope.notificationState = function ($event) {
-                   // $event.stopPropagation();
-                  // alert('asdasd');
-                    NotificationService.setNotifications($scope.currentUser.id).then(function (response) {
-                       // populateNotifications($scope.currentUser);
-                    }, function (error) {
-                    });
-                };
-
-                $scope.uploadHours = function ($event) {
-                    $event.stopPropagation();
-                };
-
-                $scope.toggleMenu = function ($event, open) {
-
-                    //if (open && item == $scope.item)
-                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
-                    //else
-                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
-
-                    $scope.open = !open;
-                    //$scope.item = item;
-
-                };
-
-
-            }
-        ]);
-    </script>
-
-    <script src="application/services/UrlService.js"></script>
-    <script src="application/services/AuthenticationService.js"></script>
-    <script src="application/services/project-service.js"></script>
-    <script src="application/services/user-service.js"></script>
-    <script src="application/services/role-service.js"></script>
-    <script src="application/services/project-service-tmp.js"></script>
-    <script src="application/services/hour-type-service.js"></script>
-    <script src="application/services/client-service.js"></script>
-    <script src="application/services/project-types-service.js"></script>
-    <script src="application/services/assignment-type-service.js"></script>
-    <script src="application/services/notification-service.js"></script>
-
-
-    <script src="application/controllers/login-controller.js"></script>
-    <script src="application/controllers/project-controller.js"></script>
-    <script src="application/controllers/user-controller.js"></script>
-    <script src="application/controllers/role-list-controller.js"></script>
-    <script src="application/controllers/create-role-controller.js"></script>
-    <script src="application/controllers/update-role-controller.js"></script>
-    <script src="application/controllers/remove-role-dialog-controller.js"></script>
-    <script src="application/controllers/assign-controller.js"></script>
-    <script src="application/controllers/delegate-controller.js"></script>
-    <script src="application/controllers/project-details-controller.js"></script>
-    <script src="application/controllers/developer-assignment-controller.js"></script>
-    <script src="application/controllers/hour-types-list-controller.js"></script>
-    <script src="application/controllers/client-list-controller.js"></script>
-    <script src="application/controllers/create-hour-type-controller.js"></script>
-    <script src="application/controllers/update-hour-type-controller.js"></script>
-    <script src="application/controllers/remove-hour-type-modal-controller.js"></script>
-    <script src="application/controllers/create-client-controller.js"></script>
-    <script src="application/controllers/update-client-controller.js"></script>
-    <script src="application/controllers/remove-client-modal-controller.js"></script>
-    <script src="application/controllers/assignment-type-list-controller.js"></script>
-    <script src="application/controllers/create-assignment-type-controller.js"></script>
-    <script src="application/controllers/update-assignment-type-controller.js"></script>
-    <script src="application/controllers/remove-assignment-type-dialog-controller.js"></script>
-    <script src="application/controllers/remove-project-dialog-controller.js"></script>
-    <script src="application/controllers/create-project-types-controller.js"></script>
-    <script src="application/controllers/update-project-types-controller.js"></script>
-    <script src="application/controllers/remove-project-types-controller.js"></script>
-    <script src="application/controllers/project-types-list-controller.js"></script>
-    <script src="application/controllers/create-user-controller.js"></script>
-    <script src="application/controllers/remove-user-dialog-controller.js"></script>
-    <script src="application/controllers/update-user-controller.js"></script>
-    <script src="application/controllers/create-project-controller.js"></script>
-    <script src="application/controllers/update-project-controller.js"></script>
-    <script src="application/controllers/assign-group-controller.js"></script>
-    <script src="application/controllers/project-detail-modal-controller.js"></script>
-    <script src="application/controllers/remove-project-error-dialog-controller.js"></script>
-
-
-
-    <script src="application/directives/tree-detail-view/details-directive.js"></script>
-    <script src="application/directives/tree-detail-view/tree-directive.js"></script>
-    <script src="application/directives/hour-type/hour-type-row-directive.js"></script>
-    <script src="application/directives/hour-type/hour-type-directive.js"></script>
-
+   
     <!--<script src="demo.js"></script>-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body ng-app="InfoWeb" >
+<body ng-app="InfoWeb">
     <toast></toast>
     <!--<a ui-sref=".login"  class="btn btn-primary" >List</a>-->
-    <div id="main" ng-controller="MainController" >
+    <div id="main" ng-controller="MainController">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-md-12 col-xs12">
@@ -367,13 +101,13 @@
                     </header>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-2 col-lg-2 hidden-sm">
                     <div class="row">
                         <aside id="sidebar_left" class="nano nano-light affix sidebar-dark has-scrollbar hidden-xs" ng-if="currentUser != null" ng-cloak>
 
-                            
+
 
                             <!-- Start: Sidebar Left Content -->
                             <div class="sidebar-left-content nano-content" style="margin-right: -17px; margin-top: 30px;">
@@ -508,12 +242,12 @@
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                                            <!--<li>
+                                            <li>
                                                 <a ng-click="uploadHours($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Subir Horas</span>
                                                 </a>
-                                            </li>-->
+                                            </li>
                                             <li>
                                                 <a ng-click="listProject($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -530,7 +264,7 @@
                 </div>
                 <div id="content" class="col-md-10 col-lg-10 -col-sm-12 col-xs-12">
                     <div class="row">
-                        <div ui-view >
+                        <div ui-view>
                         </div>
                     </div>
                 </div>
@@ -538,5 +272,307 @@
         </div>
 
     </div>
+
+
+
+    <!--JQuery Bootstrap-->
+    <script src="lib/jquery-3.1.1.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+    <!--JQuery Angular-->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="lib/angular-messages/angular-messages.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="lib/angular-bootstrap-material/dist/angular-bootstrap-material.js"></script>
+    <script src="lib/ng-table-bundle/ng-table.min.js"></script>
+
+    <!--JQuery NgToast-->
+    <script src="lib/ng-toast/angular-sanitize.js"></script>
+    <script src="lib/ng-toast/ngToast.min.js"></script>
+
+    <!--ADM-->
+    <script src="lib/adm-dateTimePicker/ADM-dateTimePicker.js"></script>
+
+
+    <script src="application/routes.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("InfoWeb", ["angularBootstrapMaterial", 'ui.bootstrap', 'ui.router', 'ngTable', 'ngToast', 'ADM-dateTimePicker']);
+        app.config(['$stateProvider','ADMdtpProvider', function ($stateProvider, ADMdtp) {
+            configureRoutes($stateProvider);
+            ADMdtp.setOptions({
+                calType: 'gregorian',
+                format: 'YYYY/MM/DD hh:mm',
+                //default: 'today',
+                freezeInput:true,
+                autoClose: true,
+                multiple:false,
+                gregorianDic: {
+                    //title: 'Grégorien',
+                    monthsNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    daysNames: ['Dom', 'Lun', 'Mar', 'Miér', 'Jue', 'Vie', 'Sáb'],
+                    //todayBtn: "Hoy"
+                }
+            });
+        }]);
+
+        app.run(function (/*$rootscope,*/$transitions, $state, AuthenticationService) {
+            $transitions.onStart({}, function (transition) {
+                var targetState = transition.to();
+                var user = AuthenticationService.getCurrentUser();
+
+                if (targetState.authenticate == true && (user == null || user == undefined)) {
+                    $state.go('login');
+                    return true;
+                }
+
+            });
+
+            /*$transitions.onSuccess({}, function (transition) {
+
+            });*/
+        });
+
+        app.controller("MainController", ["$scope", '$rootScope', '$state', 'AuthenticationService', 'NotificationService', '$transitions',
+            function ($scope, $rootScope, $state, AuthenticationService, NotificationService, $transitions) {
+                $scope.currentUser = null;
+                $scope.open = true;
+                $scope.notifications = {};
+
+                $scope.currentUser = AuthenticationService.getCurrentUser();
+
+                var populateNotifications = function (user) {
+                    if (user) {
+                        NotificationService.getNotifications(user.id).then(function (response) {
+                            var notifications = response.data;
+                            $scope.notifications = notifications;
+                        }, function (error) {
+                        });
+                    }
+                }
+
+                populateNotifications($scope.currentUser);
+
+                $transitions.onSuccess({}, function (transition) {
+                    //var state = transition.to();
+                    //var targetStateName = state.name;
+                    //console.log(transition.to());
+                    //console.log($state);
+                    //$scope.currentStateName = transition.to().name;
+                });
+
+
+                $rootScope.$on("userAuthenticated", function (event, user) {
+                    $scope.currentUser = user;
+                    populateNotifications(user);
+                    $state.go('projectList');
+                });
+
+                $scope.logout = function () {
+                    AuthenticationService.logout();
+                    $scope.currentUser = null;
+                    $state.go('login');
+                    angular.element('li a').removeClass('activeMenu');
+                };
+
+                $scope.listUser = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('userList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+                $scope.listProject = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('projectList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                }
+                $scope.asignar = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('assign');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.delegate = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('delegateProject');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.listRoles = function ($event) {
+                    $event.stopPropagation();
+                    $state.go('roleList');
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.listHourTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("hourTypeList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.listClient = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("clientList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.listProjectTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("projectTypesList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.assignHours = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignHoursToDeveloper");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.listAssignmentTypes = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignmentTypeList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.assignProjectGroup = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("assignProjectGroup");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.notificationState = function ($event) {
+                    // $event.stopPropagation();
+                    // alert('asdasd');
+                    NotificationService.setNotifications($scope.currentUser.id).then(function (response) {
+                        // populateNotifications($scope.currentUser);
+                    }, function (error) {
+                    });
+                };
+
+                $scope.uploadHours = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("uploadHours");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                };
+
+                $scope.toggleMenu = function ($event, open) {
+
+                    //if (open && item == $scope.item)
+                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-bottom";
+                    //else
+                    //    $scope.toggleMenuClass = "glyphicon glyphicon-triangle-top";
+
+                    $scope.open = !open;
+                    //$scope.item = item;
+
+                };
+
+
+            }
+        ]);
+    </script>
+
+
+
+
+
+
+    <!--Services-->
+    <script src="application/services/UrlService.js"></script>
+    <script src="application/services/AuthenticationService.js"></script>
+    <script src="application/services/project-service.js"></script>
+    <script src="application/services/user-service.js"></script>
+    <script src="application/services/role-service.js"></script>
+    <script src="application/services/project-service-tmp.js"></script>
+    <script src="application/services/hour-type-service.js"></script>
+    <script src="application/services/client-service.js"></script>
+    <script src="application/services/project-types-service.js"></script>
+    <script src="application/services/assignment-type-service.js"></script>
+    <script src="application/services/notification-service.js"></script>
+
+    <!--Controller-->
+    <script src="application/controllers/login-controller.js"></script>
+    <script src="application/controllers/project-controller.js"></script>
+    <script src="application/controllers/user-controller.js"></script>
+    <script src="application/controllers/role-list-controller.js"></script>
+    <script src="application/controllers/create-role-controller.js"></script>
+    <script src="application/controllers/update-role-controller.js"></script>
+    <script src="application/controllers/remove-role-dialog-controller.js"></script>
+    <script src="application/controllers/assign-controller.js"></script>
+    <script src="application/controllers/delegate-controller.js"></script>
+    <script src="application/controllers/project-details-controller.js"></script>
+    <script src="application/controllers/developer-assignment-controller.js"></script>
+    <script src="application/controllers/hour-types-list-controller.js"></script>
+    <script src="application/controllers/client-list-controller.js"></script>
+    <script src="application/controllers/create-hour-type-controller.js"></script>
+    <script src="application/controllers/update-hour-type-controller.js"></script>
+    <script src="application/controllers/remove-hour-type-modal-controller.js"></script>
+    <script src="application/controllers/create-client-controller.js"></script>
+    <script src="application/controllers/update-client-controller.js"></script>
+    <script src="application/controllers/remove-client-modal-controller.js"></script>
+    <script src="application/controllers/assignment-type-list-controller.js"></script>
+    <script src="application/controllers/create-assignment-type-controller.js"></script>
+    <script src="application/controllers/update-assignment-type-controller.js"></script>
+    <script src="application/controllers/remove-assignment-type-dialog-controller.js"></script>
+    <script src="application/controllers/remove-project-dialog-controller.js"></script>
+    <script src="application/controllers/create-project-types-controller.js"></script>
+    <script src="application/controllers/update-project-types-controller.js"></script>
+    <script src="application/controllers/remove-project-types-controller.js"></script>
+    <script src="application/controllers/project-types-list-controller.js"></script>
+    <script src="application/controllers/create-user-controller.js"></script>
+    <script src="application/controllers/remove-user-dialog-controller.js"></script>
+    <script src="application/controllers/update-user-controller.js"></script>
+    <script src="application/controllers/create-project-controller.js"></script>
+    <script src="application/controllers/update-project-controller.js"></script>
+    <script src="application/controllers/assign-group-controller.js"></script>
+    <script src="application/controllers/project-detail-modal-controller.js"></script>
+    <script src="application/controllers/remove-project-error-dialog-controller.js"></script>
+    <script src="application/controllers/upload-hours-controller.js"></script>
+
+
+    <!--Tree directive-->
+    <script src="application/directives/tree-detail-view/details-directive.js"></script>
+    <script src="application/directives/tree-detail-view/tree-directive.js"></script>
+    <script src="application/directives/hour-type/hour-type-row-directive.js"></script>
+    <script src="application/directives/hour-type/hour-type-directive.js"></script>
+
+
+
 </body>
 </html>

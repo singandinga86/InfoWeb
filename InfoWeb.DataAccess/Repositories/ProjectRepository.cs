@@ -94,15 +94,15 @@ namespace InfoWeb.DataAccess.Repositories
             return base.GetRange(query,skip, take);
         }
 
-        public IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0)
-        {
-            var query = context.Projects.
-                Where(p => p.Name.Contains(search) || p.Client.Name.Contains(search) || p.Type.Name.Contains(search) || search == "")
-                .Include(p => p.Client)
-                .Include(p => p.Type);
+        //public IEnumerable<Project> SearchProject(string search, int skip = 0, int take = 0)
+        //{
+        //    var query = context.Projects.
+        //        Where(p => p.Name.Contains(search) || p.Client.Name.Contains(search) || p.Type.Name.Contains(search) || search == "")
+        //        .Include(p => p.Client)
+        //        .Include(p => p.Type);
 
-            return base.GetRange(query, skip, take);
-        }
+        //    return base.GetRange(query, skip, take);
+        //}
 
         public bool CanItemBeRemoved(int id)
         {

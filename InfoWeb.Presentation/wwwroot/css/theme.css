@@ -389,3 +389,9 @@ ul.dropdown-menu{
     margin-top:50%;
     margin-left:50%
 }
+textarea {
+    margin: 0px;
+    width: 327px;
+    height: 108px;
+    padding:5px;
+}
