@@ -578,7 +578,6 @@ namespace InfoWeb.Presentation.Controllers
         //    IEnumerable<Assignment> result = assigmentRepository.GetAssignments(userId, AssignmentType.AssignmentTypeHours);
         //    return result;
         //}
-
         private ValidationResult CanProjectDelegationBeDone(CreateAssignmentInputModel assignment, AssignmentType assignmentType, Project project, int hours)
         {
             var result = new ValidationResult();

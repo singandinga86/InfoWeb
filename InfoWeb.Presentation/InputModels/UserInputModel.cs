@@ -22,5 +22,7 @@ namespace InfoWeb.Presentation.InputModels
         [Required]
         public string PasswordConfirmation { get; set; }
 
+        public string Description { get; set; }
+
     }
 }

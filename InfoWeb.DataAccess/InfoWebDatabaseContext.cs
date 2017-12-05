@@ -28,6 +28,7 @@ namespace InfoWeb.DataAccess
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<AssignmentType> AssignmentTypes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<WorkedHour> WorkedHours { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
