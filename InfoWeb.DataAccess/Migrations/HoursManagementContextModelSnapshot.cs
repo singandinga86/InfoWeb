@@ -224,6 +224,26 @@ namespace InfoWeb.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("InfoWeb.Domain.Entities.WorkedHour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Hours");
+
+                    b.Property<int>("ProjectHourTypeId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WorkedHours");
+                });
+
             modelBuilder.Entity("InfoWeb.Domain.Entities.Assignment", b =>
                 {
                     b.HasOne("InfoWeb.Domain.Entities.User", "Assignator")
@@ -293,6 +313,14 @@ namespace InfoWeb.DataAccess.Migrations
                     b.HasOne("InfoWeb.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("InfoWeb.Domain.Entities.WorkedHour", b =>
+                {
+                    b.HasOne("InfoWeb.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
