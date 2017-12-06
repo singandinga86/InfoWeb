@@ -71,6 +71,7 @@
     <Content Include="wwwroot\application\services\role-service.js" />
     <Content Include="wwwroot\application\services\UrlService.js" />
     <Content Include="wwwroot\application\services\user-service.js" />
+    <Content Include="wwwroot\application\services\WorkedHourService.js" />
     <Content Include="wwwroot\application\views\assignment-type\assignment-type-input.html" />
     <Content Include="wwwroot\application\views\assignment-type\list.html" />
     <Content Include="wwwroot\application\views\assignment-type\remove-modal.html" />
