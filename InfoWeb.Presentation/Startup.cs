@@ -55,6 +55,7 @@
                 services.AddScoped<IInfoWebQueryModel, InfoWebQueryModel>();
                 services.AddScoped<IUnitOfWork, EntityFrameworkUnitOfWork>();
                 services.AddScoped<INotificationRepository, NotificationRepository>();
+                services.AddScoped<IWorkedHourRepository, WorkedHourRepository>();
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

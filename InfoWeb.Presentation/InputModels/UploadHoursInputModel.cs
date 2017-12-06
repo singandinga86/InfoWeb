@@ -13,13 +13,13 @@ namespace InfoWeb.Presentation.InputModels
         public Project Project { get; set; }
 
         [Required]
-        public ProjectsHoursTypes ProjectHourType { get; set; }
+        public HourType HourType { get; set; }
 
         [Required]
-        public string StartDate { get; set; }
+        public string DateStart { get; set; }
 
         [Required]
-        public string EndDate { get; set; }
+        public string DateEnd { get; set; }
 
         public string Description { get; set; }
     }

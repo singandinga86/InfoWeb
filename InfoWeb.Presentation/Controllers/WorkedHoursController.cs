@@ -1,6 +1,7 @@
 ﻿using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
 using InfoWeb.Presentation.InputModels;
+using InfoWeb.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,28 +49,29 @@ namespace InfoWeb.Presentation.Controllers
                 var project = projectRepository.GetById(inputModel.Project.Id);
                 if (project != null)
                 {
-                    var hourType = projectHourTypeRepository.GetById(inputModel.ProjectHourType.Id);
+
+                    var hourType = project.ProjectsHoursTypes.Where(pht => pht.HourType.Id == inputModel.HourType.Id).FirstOrDefault();
                     if (hourType != null)
                     {
                         var startDate = new DateTime();
                         var endTime = new DateTime();
-                        bool startDateParseResult = DateTime.TryParse(inputModel.StartDate, out startDate);
-                        bool endDateParseResult = DateTime.TryParse(inputModel.EndDate, out endTime);
+                        bool startDateParseResult = DateTime.TryParse(inputModel.DateStart, out startDate);
+                        bool endDateParseResult = DateTime.TryParse(inputModel.DateEnd, out endTime);
 
                         if (startDateParseResult == true && endDateParseResult == true)
                         {
                             if (startDateParseResult == true && endDateParseResult == true)
                             {
-                                var hours = (endTime - startDate).Hours;
-                                if (hours < 0)
+                                var hours = (int)(endTime - startDate).TotalHours;
+                                if (hours <= 0)
                                 {
                                     return BadRequest("La cantidad de horas suministrada no es válida");
                                 }
 
                                 var assignments = assignmentRepository.Assignments.Where(a => a.AssigneeId == userId &&
                                                   a.ProjectId == project.Id &&
-                                                  a.HourTypeId == hourType.Id &&
-                                                  (a.HourType.Name == "Asignar horas" || a.HourType.Name == "Asignar a grupo"))
+                                                  a.HourTypeId == hourType.HourType.Id &&
+                                                  (a.AssignmentType.Name == "Asignar horas" || a.AssignmentType.Name == "Asignar a grupo"))
                                                   .Include(a => a.AssignmentType)
                                                   .Include(a => a.Assignator)
                                                   .ToList();
@@ -130,31 +132,31 @@ namespace InfoWeb.Presentation.Controllers
                                         }
                                         catch (Exception e)
                                         {
-                                            return BadRequest("Error interno del servidor.");
+                                            return BadRequest(new ValidationResult("Error interno del servidor."));
                                         }
                                     }
                                     else
                                     {
-                                        return BadRequest("La cantidad de horas suministrada excede el total disponible");
+                                        return BadRequest(new ValidationResult("La cantidad de horas suministrada excede el total disponible"));
                                     }
                                 
 
                             }
                             else
                             {
-                                return BadRequest("Formatos de fecha incorrectos.");
+                                return BadRequest(new ValidationResult("Formatos de fecha incorrectos."));
                             }
 
                         }
                         else
                         {
-                            return BadRequest("Formatos de fecha incorrectos.");
+                            return BadRequest(new ValidationResult("Formatos de fecha incorrectos."));
                         }
                     }
                 }
 
             }
-            return BadRequest("Error en los datos de entrada");
+            return BadRequest(new ValidationResult("Error en los datos de entrada"));
         }
 
     }
