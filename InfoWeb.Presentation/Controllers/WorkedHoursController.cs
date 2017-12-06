@@ -68,44 +68,10 @@ namespace InfoWeb.Presentation.Controllers
                                     return BadRequest("La cantidad de horas suministrada no es válida");
                                 }
 
-                                var assignments = assignmentRepository.Assignments.Where(a => a.AssigneeId == userId &&
-                                                  a.ProjectId == project.Id &&
-                                                  a.HourTypeId == hourType.HourType.Id &&
-                                                  (a.AssignmentType.Name == "Asignar horas" || a.AssignmentType.Name == "Asignar a grupo"))
-                                                  .Include(a => a.AssignmentType)
-                                                  .Include(a => a.Assignator)
-                                                  .ToList();
-
-                                var hourAssignment = assignments.Where(a => a.AssignmentType.Name == "Asignar horas").FirstOrDefault();
-                                int totalAvailableHours = 0;
-                                if (hourAssignment != null)
-                                {
-                                    totalAvailableHours += hourAssignment.Hours;
-                                }
-                                int uploadedHours = workedHourRepository.WorkedHours.Where(wo => wo.UserId == userId &&
-                                                                                            wo.ProjectHourTypeId == hourType.Id)
-                                                                                           .Sum(wo => wo.Hours);
-
-                                var groupAssignment = assignments.Where(a => a.AssignmentType.Name == "Asignar a grupo").FirstOrDefault();
-
-                                if (groupAssignment != null)
-                                {
-                                    totalAvailableHours += groupAssignment.Hours;
-                                    var assigments = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
-                                                                                            a.HourTypeId == hourType.Id &&
-                                                                                            a.Assignator.Id == groupAssignment.Assignator.Id &&
-                                                                                            a.HourType.Name == "Asignar a grupo" &&
-                                                                                            a.AssigneeId != userId &&
-                                                                                            a.Date == groupAssignment.Date)
-                                                                                            .Select(a => a.AssigneeId)
-                                                                                            .ToList();
-                                    uploadedHours += workedHourRepository.WorkedHours.Where(wo => assigments.Contains(wo.UserId) &&
-                                                                                            wo.ProjectHourTypeId == hourType.Id)
-                                                                                            .Sum(wo => wo.Hours);
-                                }
+                                var statistics = GetWorkedHoursInformation(project, hourType.HourType, userId);
                             
 
-                                    if ((uploadedHours + hours) <= totalAvailableHours)
+                                    if ((statistics.WorkedHours + hours) <= statistics.TotalHours)
                                     {
                                         var workedHour = new WorkedHour()
                                         {
@@ -159,5 +125,50 @@ namespace InfoWeb.Presentation.Controllers
             return BadRequest(new ValidationResult("Error en los datos de entrada"));
         }
 
+        private WorkedHoursStatistics GetWorkedHoursInformation(Project project, HourType hourType, int userId)
+        {
+            WorkedHoursStatistics result = new WorkedHoursStatistics();
+
+            var assignments = assignmentRepository.Assignments.Where(a => a.AssigneeId == userId &&
+                                                 a.ProjectId == project.Id &&
+                                                 a.HourTypeId == hourType.Id &&
+                                                 (a.AssignmentType.Name == "Asignar horas" || a.AssignmentType.Name == "Asignar a grupo"))
+                                                 .Include(a => a.AssignmentType)
+                                                 .Include(a => a.Assignator)
+                                                 .ToList();
+
+            var hourAssignment = assignments.Where(a => a.AssignmentType.Name == "Asignar horas").FirstOrDefault();
+            int totalAvailableHours = 0;
+            if (hourAssignment != null)
+            {
+                totalAvailableHours += hourAssignment.Hours;
+            }
+            int uploadedHours = workedHourRepository.WorkedHours.Where(wo => wo.UserId == userId &&
+                                                                        wo.ProjectHourTypeId == hourType.Id)
+                                                                       .Sum(wo => wo.Hours);
+
+            var groupAssignment = assignments.Where(a => a.AssignmentType.Name == "Asignar a grupo").FirstOrDefault();
+
+            if (groupAssignment != null)
+            {
+                totalAvailableHours += groupAssignment.Hours;
+                var assigments = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
+                                                                        a.HourTypeId == hourType.Id &&
+                                                                        a.Assignator.Id == groupAssignment.Assignator.Id &&
+                                                                        a.HourType.Name == "Asignar a grupo" &&
+                                                                        a.AssigneeId != userId &&
+                                                                        a.Date == groupAssignment.Date)
+                                                                        .Select(a => a.AssigneeId)
+                                                                        .ToList();
+                uploadedHours += workedHourRepository.WorkedHours.Where(wo => assigments.Contains(wo.UserId) &&
+                                                                        wo.ProjectHourTypeId == hourType.Id)
+                                                                        .Sum(wo => wo.Hours);
+            }
+
+            result.TotalHours = totalAvailableHours;
+            result.WorkedHours = uploadedHours;
+
+            return result;
+        }
     }
 }
