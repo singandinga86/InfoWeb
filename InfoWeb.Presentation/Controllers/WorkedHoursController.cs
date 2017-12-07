@@ -68,7 +68,7 @@ namespace InfoWeb.Presentation.Controllers
                                     return BadRequest("La cantidad de horas suministrada no es válida");
                                 }
 
-                                var statistics = GetWorkedHoursInformation(project, hourType.HourType, userId);
+                                var statistics = GetWorkedHoursInformation(project, hourType, userId);
                             
 
                                     if ((statistics.WorkedHours + hours) <= statistics.TotalHours)
@@ -83,7 +83,7 @@ namespace InfoWeb.Presentation.Controllers
                                         var notification = new Notification()
                                         {
                                             Date = DateTime.Now,
-                                            Message = $"Ha subido {hours} de {hourType.HourType.Name} al proyecto {project.Name}.",
+                                            Message = $"Ha subido {hours} de {hourType.HourType.Name} al proyecto <strong>{project.Name}</strong>.",
                                             Seen = false,
                                             SenderId = userId,
                                             UserId = userId
@@ -125,13 +125,13 @@ namespace InfoWeb.Presentation.Controllers
             return BadRequest(new ValidationResult("Error en los datos de entrada"));
         }
 
-        private WorkedHoursStatistics GetWorkedHoursInformation(Project project, HourType hourType, int userId)
+        private WorkedHoursStatistics GetWorkedHoursInformation(Project project, ProjectsHoursTypes hourType, int userId)
         {
             WorkedHoursStatistics result = new WorkedHoursStatistics();
 
             var assignments = assignmentRepository.Assignments.Where(a => a.AssigneeId == userId &&
                                                  a.ProjectId == project.Id &&
-                                                 a.HourTypeId == hourType.Id &&
+                                                 a.HourTypeId == hourType.HourTypeId &&
                                                  (a.AssignmentType.Name == "Asignar horas" || a.AssignmentType.Name == "Asignar a grupo"))
                                                  .Include(a => a.AssignmentType)
                                                  .Include(a => a.Assignator)
@@ -153,9 +153,9 @@ namespace InfoWeb.Presentation.Controllers
             {
                 totalAvailableHours += groupAssignment.Hours;
                 var assigments = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
-                                                                        a.HourTypeId == hourType.Id &&
+                                                                        a.HourTypeId == hourType.HourTypeId &&
                                                                         a.Assignator.Id == groupAssignment.Assignator.Id &&
-                                                                        a.HourType.Name == "Asignar a grupo" &&
+                                                                        a.AssignmentTypeId == groupAssignment.AssignmentTypeId &&
                                                                         a.AssigneeId != userId &&
                                                                         a.Date == groupAssignment.Date)
                                                                         .Select(a => a.AssigneeId)
