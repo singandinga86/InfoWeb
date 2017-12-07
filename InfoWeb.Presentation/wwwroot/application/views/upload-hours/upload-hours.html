@@ -32,13 +32,13 @@
                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label>Fecha y hora de inicio</label>
-                                    <adm-dtp ng-model='model.dateStart' ng-required="true"></adm-dtp>
+                                    <adm-dtp ng-model='model.dateStart' ng-required="true" ng-change="onDatesChanged()"></adm-dtp>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label>Fecha y hora de fin</label>
-                                    <adm-dtp ng-model='model.dateEnd' ng-required="true"></adm-dtp>
+                                    <adm-dtp ng-model='model.dateEnd' ng-required="true" ng-change="onDatesChanged()"></adm-dtp>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label>Horas a subir</label>
-                                    <input class="form-control" type="text" readonly value="0"/>
+                                    <input class="form-control" type="text" readonly value="{{elapsedHours}}"/>
                                 </div>
                             </div>                            
                         </div>

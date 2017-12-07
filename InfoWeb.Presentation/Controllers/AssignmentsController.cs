@@ -739,7 +739,8 @@ namespace InfoWeb.Presentation.Controllers
 
                         var developerGroupHours = assignmentRepository.Assignments.Where(a => a.ProjectId == project.Id &&
                                                                               a.HourTypeId == hourType.Id &&
-                                                                              a.AssignmentTypeId == developerGroupAssignment.Id)
+                                                                              a.AssignmentTypeId == developerGroupAssignment.Id &&
+                                                                              a.Assignator.Id == assignator.Id)
                                                                               .Select(a => new { a.Date, a.Hours })
                                                                               .Distinct().Sum(o => o.Hours);
 
