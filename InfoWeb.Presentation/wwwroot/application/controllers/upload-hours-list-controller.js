@@ -1,13 +1,19 @@
 ﻿var app = angular.module("InfoWeb");
 
-app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'ProjectTypesService', '$filter', 'NgTableParams', 'ngToast',
-    function ($scope, $state, $uibModal, ProjectTypesService, $filter, NgTableParams, ngToast) {
+app.controller("UploadHoursListController", ['$scope', '$state', '$uibModal', 'WorkedHoursService', 'AuthenticationService','UserListService', '$filter', 'NgTableParams', 'ngToast',
+    function ($scope, $state, $uibModal, WorkedHoursService, AuthenticationService, UserListService, $filter, NgTableParams, ngToast) {
 
         $scope.model = {};
-        $scope.search = "";
+        $scope.search = "";        
         var orderedData = [];
+        var currentUser = AuthenticationService.getCurrentUser();
 
+        UserListService.getTechnicians().then(function (response) {            
+            $scope.technicians = response.data;            
+        }, function (error) { });
+        
         var fillTable = function () {
+
             // ProjectTypesService.getProjectTypes().then(function (response) {
             $scope.model.tableParams = new NgTableParams({
                 page: 1,
@@ -20,7 +26,8 @@ app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'Proj
                     //total: response.data.length,
                     getData: function (params) {
 
-                        return ProjectTypesService.getSearchProjectTypes($scope.search).then(function (response) {
+                        return WorkedHoursService.getWorkedHours(currentUser,$scope.search).then(function (response) {
+                            //console.log(response.data);
                             orderedData = $filter('orderBy')(response.data, params.orderBy());
 
                             params.total(orderedData.length);
@@ -32,17 +39,27 @@ app.controller("ProjectTypesController", ['$scope', '$state', '$uibModal', 'Proj
                 }
             );
             //}, function (error) { });
-            $scope.$watch("search", function () {
+            /*$scope.$watch("search", function () {
 
                 $scope.model.tableParams.reload();
 
-            });
+            });*/
+        }
+
+
+        $scope.onSearchChanged = function ()
+        {
+            if ($scope.model.tableParams)
+            {
+                $scope.model.tableParams.reload();
+            }
         }
 
         fillTable();
 
-        $scope.onCreateClicked = function () {
-            $state.go("createProjectTypes");
+        $scope.onTechnicianChanged = function () {
+            currentUser = $scope.technician;
+            fillTable();
         }
 
         $scope.onEditClicked = function (id) {

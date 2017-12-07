@@ -229,6 +229,15 @@
                     angular.element(currentMenu).addClass("activeMenu");
                 };
 
+                $scope.uploadHoursList = function ($event) {
+                    $event.stopPropagation();
+                    $state.go("uploadHoursList");
+                    var currentMenu = $event.currentTarget;
+                    var parentMenu = angular.element(currentMenu).parent().parent();
+                    angular.element(parentMenu).find('.activeMenu').removeClass();
+                    angular.element(currentMenu).addClass("activeMenu");
+                }
+
                 $scope.notificationState = function ($event) {
                     // $event.stopPropagation();
                     // alert('asdasd');
@@ -321,6 +330,7 @@
     <script src="application/controllers/project-detail-modal-controller.js"></script>
     <script src="application/controllers/remove-project-error-dialog-controller.js"></script>
     <script src="application/controllers/upload-hours-controller.js"></script>
+    <script src="application/controllers/upload-hours-list-controller.js"></script>
 
 
     <!--Tree directive-->
@@ -479,18 +489,7 @@
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="nav sub-nav" ng-class="{'toggleOn': open,'toggleOff': open}" ng-show="open" style="margin-left:10px;">
-                                            <li>
-                                                <a ng-click="listProject($event);">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                    <span class="sidebar-title">Ver Proyectos</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a ng-click="delegate($event);">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                    <span class="sidebar-title">Delegar Proyecto</span>
-                                                </a>
-                                            </li>
+                                         
                                             <li>
                                                 <a ng-click="assignHours($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -501,6 +500,24 @@
                                                 <a ng-click="assignProjectGroup($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Asignar Proyecto a Grupo</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="delegate($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Delegar Proyecto</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="listProject($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Ver Proyectos</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="uploadHoursList($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Ver Horas Trabajadas</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -519,15 +536,21 @@
                                                 </a>
                                             </li>
                                             <li>
+                                                <a ng-click="assignProjectGroup($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Asignar Proyecto a Grupo</span>
+                                                </a>
+                                            </li>
+                                            <li>
                                                 <a ng-click="listProject($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Ver Proyectos</span>
                                                 </a>
-                                            </li>
+                                            </li>                                           
                                             <li>
-                                                <a ng-click="assignProjectGroup($event);">
+                                                <a ng-click="uploadHoursList($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
-                                                    <span class="sidebar-title">Asignar Proyecto a Grupo</span>
+                                                    <span class="sidebar-title">Ver Horas Trabajadas</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -543,6 +566,12 @@
                                                 <a ng-click="uploadHours($event);">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                     <span class="sidebar-title">Subir Horas</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="uploadHoursList($event);">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="sidebar-title">Ver Horas Trabajadas</span>
                                                 </a>
                                             </li>
                                             <li>

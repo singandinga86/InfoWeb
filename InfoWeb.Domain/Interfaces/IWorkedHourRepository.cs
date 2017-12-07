@@ -9,5 +9,6 @@ namespace InfoWeb.Domain.Interfaces
     public interface IWorkedHourRepository: IGenericRepository<WorkedHour, int>
     {
         IQueryable<WorkedHour> WorkedHours { get; }
+        IEnumerable<WorkedHour> GetworkedHoursByUser(int userId, string search);
     }
 }

@@ -1,12 +1,21 @@
 ﻿<div class="container-fluid tableStyle">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span><b>Listado de Proyectos</b></span>
+            <span><b>Listado de Horas Trabajadas</b></span>
         </div>
-        <div class="panel-body">           
+        <div class="panel-body">  
+            <div class="pull-left" ng-if="currentUser.role.name == 'OM' || currentUser.role.name == 'PM' || currentUser.role.name == 'TAM' ">
+                <div class="form-group">
+                    <label>Seleccione Usuario</label>
+                    <select class="form-control selectStyle" ng-model="technician" ng-options="technician.name for technician in technicians"
+                            required name="projectName" ng-change="onTechnicianChanged()">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+            </div>
             <div id="search" class="pull-right">
                 <div class="inner-addon left-addon">
-                    <input type="text" class="form-control" placeholder="Buscar..." ng-model="search" />
+                    <input type="text" class="form-control" placeholder="Buscar..." ng-model="search" ng-change="onSearchChanged()"/>
                     <i class="glyphicon glyphicon-search"></i>
                 </div>
             </div>
@@ -21,21 +30,21 @@
                         </tr>
                     </thead>-->
                     <tbody>
-                        <tr ng-repeat="project in $data">
-                            <td title="'Nombre'" sortable="'name'">
-                                {{project.name}}
+                        <tr ng-repeat="uploadHour in $data">
+                            <td title="'Proyecto'" sortable="'projectHourType.project.name'">
+                                {{uploadHour.projectHourType.project.name}}
                             </td>
-                            <td title="'Cliente'" sortable="'client.name'">
-                                {{project.client.name}}
+                            <td title="'Tipo de hora'" sortable="'projectHourType.hourType.name'">
+                                {{uploadHour.projectHourType.hourType.name}}
                             </td>
-                            <td title="'Tipo'" sortable="'type.name'">
-                                {{project.type.name}}
+                            <td title="'Horas subidas'" sortable="'hours'">
+                                {{uploadHour.hours}}
                             </td>
                             <td title="'Opciones'">
                                 <span class="glyphicon glyphicon-list" ng-click="viewDetails(project.id)" title="Ver"></span>
-                                <span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(project.id)" ng-show="currentUser.role.name == 'ADMIN'"></span>
+                                <!--<span class="glyphicon glyphicon-pencil" ng-click="onEditClicked(project.id)" ng-show="currentUser.role.name == 'ADMIN'"></span>
                                 <span ng-if="currentUser.role.name == 'ADMIN'" class="glyphicon glyphicon-trash" ng-click="onRemoveClicked(project)" title="Eliminar"></span>
-                                <span class="glyphicon glyphicon-search" ng-click="onViewHoursClicked(project)" title="Ver horas"></span>
+                                <span class="glyphicon glyphicon-search" ng-click="onViewHoursClicked(project)" title="Ver horas"></span>-->
                             </td>
                         </tr>
                         <tr ng-if="$data.length == 0">

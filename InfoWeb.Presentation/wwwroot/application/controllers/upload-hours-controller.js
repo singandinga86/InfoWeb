@@ -44,7 +44,7 @@ app.controller("UploadHoursController", ['$scope', '$state', 'ProjectService',
                     dismissButton: true,
                     content: response.data
                 });
-
+                $state.go("uploadHoursList");
             }, function (error) {
                 ngToast.create({
                     className: "danger",

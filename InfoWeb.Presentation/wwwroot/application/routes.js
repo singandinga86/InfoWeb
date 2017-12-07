@@ -199,6 +199,12 @@
         url: "/uploadHours",
         authenticate: true
     }); 
+    $stateProvider.state('uploadHoursList', {
+        templateUrl: "application/views/upload-hours/list.html",
+        controller: 'UploadHoursListController',
+        url: "/uploadHoursList",
+        authenticate: true
+    }); 
 
     /*$stateProvider.state('tree', {
         templateUrl: "application/views/tree/tree.html",

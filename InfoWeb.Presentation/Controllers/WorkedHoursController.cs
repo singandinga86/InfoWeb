@@ -159,5 +159,11 @@ namespace InfoWeb.Presentation.Controllers
             return BadRequest(new ValidationResult("Error en los datos de entrada"));
         }
 
+        [HttpGet("{searchValue?}")]
+        public IEnumerable<WorkedHour> GetWorkedHours([FromRoute]int userId, [FromQuery]string searchValue = "")
+        {
+            return workedHourRepository.GetworkedHoursByUser(userId, searchValue);
+        }
+
     }
 }
