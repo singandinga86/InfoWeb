@@ -10,10 +10,10 @@ namespace InfoWeb.Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        DateTime DateBegin { get; set; }
+        public DateTime DateBegin { get; set; }
 
         [Required]
-        DateTime DateEnd { get; set; }
+        public DateTime DateEnd { get; set; }
 
         [Required]
         public int Hours { get; set; }
@@ -28,6 +28,7 @@ namespace InfoWeb.Domain.Entities
         
         public int UserId { get; set; }
 
+        [Required]
         public string Description { get; set; }
     }
 }
