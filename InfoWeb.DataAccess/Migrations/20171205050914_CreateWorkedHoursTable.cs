@@ -18,7 +18,7 @@ namespace InfoWeb.DataAccess.Migrations
                     Description = table.Column<string>(nullable: true),
                     Hours = table.Column<int>(nullable: false),
                     ProjectHourTypeId = table.Column<int>(nullable: false),
-                    DateStart = table.Column<DateTime>(nullable: false),
+                    DateBegin = table.Column<DateTime>(nullable: false),
                     DateEnd = table.Column<DateTime>(nullable:false),
                     UserId = table.Column<int>(nullable: false)
                 },
