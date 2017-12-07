@@ -37,22 +37,22 @@ app.controller("UploadHoursController", ['$scope', '$state', 'ProjectService',
                         alert('asdasd');
                     }
 
-                    $scope.uploadHours = function () {
-                        var userId = AuthenticationService.getCurrentUser().id;
-                        WorkedHoursService.uploadHours(userId, $scope.model).then(function (response) {
-                            ngToast.create({
-                                dismissButton: true,
-                                content: response.data
-                            });
-
-                        }, function (error) {
-                            ngToast.create({
-                                className: "danger",
-                                dismissButton: true,
-                                content: error.data.messages[0]
-                            });
-                        });         
-                    };
+        $scope.uploadHours = function () {
+            var userId = AuthenticationService.getCurrentUser().id;
+            WorkedHoursService.uploadHours(userId, $scope.model).then(function (response) {
+                ngToast.create({
+                    dismissButton: true,
+                    content: response.data
+                });
+                $state.go("uploadHoursList");
+            }, function (error) {
+                ngToast.create({
+                    className: "danger",
+                    dismissButton: true,
+                    content: error.data.messages[0]
+                });
+            });         
+        };
 
                     $scope.onDatesChanged = function ()
                     {

@@ -1,5 +1,6 @@
 ﻿using InfoWeb.Domain.Entities;
 using InfoWeb.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,21 @@ namespace InfoWeb.DataAccess.Repositories
         }
 
         public IQueryable<WorkedHour> WorkedHours => context.WorkedHours;
+
+        public IEnumerable<WorkedHour> GetworkedHoursByUser(int userId, string search)
+        {
+            string searchValue = search == null? "":search.Trim().ToLower();
+        
+            var result =  context.WorkedHours  
+                
+                   .Where(wh => wh.UserId == userId && (searchValue == "" || wh.Description.ToLower().Contains(searchValue) || wh.Hours.ToString().Contains(searchValue) ||
+                   wh.ProjectHourType.HourType.Name.ToLower().Contains(searchValue) || wh.ProjectHourType.Project.Name.ToLower().Contains(searchValue)))
+                   .Include(wh => wh.ProjectHourType)
+                   .ThenInclude(wh => wh.Project)
+                   .Include(wh => wh.ProjectHourType.HourType)
+                   .Include(wh => wh.User).ToList();
+            return result.ToList();
+        }
 
     }
 }

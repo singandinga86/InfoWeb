@@ -19,7 +19,7 @@ namespace InfoWeb.Domain.Entities
         public int Hours { get; set; }
 
         [Required]
-        ProjectsHoursTypes ProjectHourType { get; set; }
+        public ProjectsHoursTypes ProjectHourType { get; set; }
 
         public int ProjectHourTypeId { get; set; }
 

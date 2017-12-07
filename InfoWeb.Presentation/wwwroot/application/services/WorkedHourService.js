@@ -9,6 +9,16 @@ app.factory("WorkedHoursService", ['$http', "UrlService",
                     data: workedHoursData, 
                     url: baseUrl+ "user/" + userId + "/WorkedHours"
                 });
+            },
+            getWorkedHours: function (user, searchValue) {
+                //console.log(searchValue);
+                var userId = user.id;
+                var url = UrlService.getApiUrlPrefix() + "user/" + userId + "/WorkedHours/" +"?searchValue="+ searchValue;
+
+                return $http({
+                    method: 'GET',
+                    url: url
+                });
             }
         }
     }]);

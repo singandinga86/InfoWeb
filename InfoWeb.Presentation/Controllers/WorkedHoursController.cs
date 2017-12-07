@@ -172,5 +172,11 @@ namespace InfoWeb.Presentation.Controllers
 
             return result;
         }
+        [HttpGet("{searchValue?}")]
+        public IEnumerable<WorkedHour> GetWorkedHours([FromRoute]int userId, [FromQuery]string searchValue = "")
+        {
+            return workedHourRepository.GetworkedHoursByUser(userId, searchValue);
+        }
+
     }
 }
