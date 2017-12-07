@@ -78,9 +78,7 @@ namespace InfoWeb.Presentation.Controllers
                                             Description = inputModel.Description,
                                             Hours = hours,
                                             ProjectHourTypeId = hourType.Id,
-                                            UserId = userId,
-                                            DateBegin = startDate,
-                                            DateEnd = endTime
+                                            UserId = userId
                                         };
                                         var notification = new Notification()
                                         {
